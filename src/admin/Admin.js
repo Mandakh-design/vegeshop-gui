@@ -44,9 +44,12 @@ const items = [
 ];
 const Admin = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const [selectedMenuKey, setSelectedMenuKey] = useState(1);
+
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+
   return (
     <Layout
       style={{
@@ -79,14 +82,16 @@ const Admin = () => {
                   height={24}
                 />
               </Col>
-              <span
-                style={{
-                  fontSize: 24,
-                  color: "green",
-                }}
-              >
-                Сэлба
-              </span>
+              {!collapsed && (
+                <span
+                  style={{
+                    fontSize: 24,
+                    color: "green",
+                  }}
+                >
+                  Сэлба
+                </span>
+              )}
             </Space>
           </Row>
         </Col>
@@ -96,6 +101,7 @@ const Admin = () => {
             defaultSelectedKeys={["1"]}
             mode="inline"
             items={items}
+            onClick={(e) => setSelectedMenuKey(e.key)}
           />
         </Col>
       </Sider>
@@ -116,12 +122,15 @@ const Admin = () => {
               margin: "16px 0",
             }}
           >
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
+            <Breadcrumb.Item>Admin</Breadcrumb.Item>
+            <Breadcrumb.Item>{selectedMenuKey}</Breadcrumb.Item>
           </Breadcrumb>
 
           <Col span={24}>
-            <Package />
+            {selectedMenuKey === "1" && <Package />}
+            {selectedMenuKey === "2" && <>Бүтээгдэхүүн</>}
+            {selectedMenuKey === "3" && <>Category</>}
+            {selectedMenuKey === "4" && <>Test</>}
           </Col>
         </Content>
         <Footer
