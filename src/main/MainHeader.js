@@ -120,7 +120,7 @@ const MainHeader = ({ userLoading }) => {
                   type="primary"
                   icon={<LoginOutlined />}
                   onClick={() => {
-                    
+                    history.push('/login')
                   }}
                 >
                   Нэвтрэх

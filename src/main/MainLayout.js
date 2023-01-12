@@ -10,6 +10,7 @@ import {
   useHistory,
 } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import UserLogin from "./UserLogin";
 
 const MainLayout = () => {
   const { loggedUser } = React.useContext(contextLogin);
@@ -49,14 +50,14 @@ const MainLayout = () => {
     ) {
       return (
         <Switch location={location}>
-          <Route exact path="/chooseOrg">
+          <Route exact path="/login">
             <Row style={{ padding: "10px 15px 0px 15px" }}>
               <Col
                 span={24}
                 // className="tabBorder"
                 // style={{ paddingTop: "1rem", marginBottom: "1rem" }}
               >
-                ChooseOrg 
+                 <UserLogin/>
               </Col>
             </Row>
           </Route>
@@ -82,6 +83,17 @@ const MainLayout = () => {
         <Route exact path="/">
         LandingPage
         </Route>
+        <Route exact path="/login">
+            <Row style={{ padding: "10px 15px 0px 15px" }}>
+              <Col
+                span={24}
+                // className="tabBorder"
+                // style={{ paddingTop: "1rem", marginBottom: "1rem" }}
+              >
+                 <UserLogin/>
+              </Col>
+            </Row>
+          </Route>
         <Route exact path="/register">
           <Row style={{ padding: "10px 15px 0px 15px" }}>
             <Col
