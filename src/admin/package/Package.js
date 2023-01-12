@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { Button, Col, message, Modal, Row, Space, Table } from "antd";
+import { Button, Col, message, Modal, Row, Space, Spin, Table } from "antd";
 import PackageEdit from "./PackageEdit";
 import ProductIntoPackage from "./ProductIntoPackage";
+import adminService from "../../services/adminService";
 
 const Package = () => {
+  const [loading, setLoading] = useState(false);
   const [packageList, setPackageList] = useState([
     {
       id: 1,
@@ -181,7 +183,20 @@ const Package = () => {
   };
 
   const getPackageList = () => {
-    message.warning("Get package list");
+    setLoading(true);
+    adminService
+      .getPackage()
+      .then((res) => {
+        if (res) {
+          setPackageList(res.data);
+        }
+      })
+      .catch((err) => {
+        message.warn(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const deletePackage = (packageId) => {
@@ -193,86 +208,88 @@ const Package = () => {
   }, []);
 
   return (
-    <Row>
-      <Col span={24}>
-        <Table
-          rowKey="id"
-          dataSource={packageList}
-          columns={columns}
-          bordered
-          title={() => {
-            return (
-              <Row justify="space-between">
-                <Col>
-                  <b> Багцын жагсаалт</b>
-                </Col>
-                <Col>
-                  <Button
-                    type="primary"
-                    ghost
-                    onClick={() => {
-                      setPackageVisible(true);
-                    }}
-                  >
-                    Багц нэмэх
-                  </Button>
-                </Col>
-              </Row>
-            );
-          }}
-          expandable={{
-            expandedRowRender: (record) => {
-              return expandTable(record);
-            },
-            rowExpandable: (record) => true,
-          }}
-        />
-      </Col>
-      <Modal
-        open={packageVisible}
-        title={selectedPackageId ? "Багц засах" : "Багц нэмэх"}
-        okButtonProps={{ hidden: true }}
-        cancelButtonProps={{ hidden: true }}
-        onCancel={() => {
-          setPackageVisible(false);
-          setSelectedPackageId(null);
-        }}
-        footer={null}
-      >
-        {packageVisible && (
-          <PackageEdit
-            packageId={selectedPackageId}
-            onClose={() => {
-              setSelectedPackageId(null);
-              setPackageVisible(false);
-              getPackageList();
+    <Spin spinning={loading}>
+      <Row>
+        <Col span={24}>
+          <Table
+            rowKey="id"
+            dataSource={packageList}
+            columns={columns}
+            bordered
+            title={() => {
+              return (
+                <Row justify="space-between">
+                  <Col>
+                    <b> Багцын жагсаалт</b>
+                  </Col>
+                  <Col>
+                    <Button
+                      type="primary"
+                      ghost
+                      onClick={() => {
+                        setPackageVisible(true);
+                      }}
+                    >
+                      Багц нэмэх
+                    </Button>
+                  </Col>
+                </Row>
+              );
+            }}
+            expandable={{
+              expandedRowRender: (record) => {
+                return expandTable(record);
+              },
+              rowExpandable: (record) => true,
             }}
           />
-        )}
-      </Modal>
-      <Modal
-        open={productMapVisible}
-        title={"Багцад бүтээгдэхүүн нэмэх"}
-        okButtonProps={{ hidden: true }}
-        cancelButtonProps={{ hidden: true }}
-        onCancel={() => {
-          setProductMapVisible(false);
-          setProductMapPackId(null);
-        }}
-        footer={null}
-      >
-        {productMapVisible && productMapPackId && (
-          <ProductIntoPackage
-            packageId={productMapPackId}
-            onClose={() => {
-              setProductMapPackId(null);
-              setProductMapVisible(false);
-              getPackageList();
-            }}
-          />
-        )}
-      </Modal>
-    </Row>
+        </Col>
+        <Modal
+          open={packageVisible}
+          title={selectedPackageId ? "Багц засах" : "Багц нэмэх"}
+          okButtonProps={{ hidden: true }}
+          cancelButtonProps={{ hidden: true }}
+          onCancel={() => {
+            setPackageVisible(false);
+            setSelectedPackageId(null);
+          }}
+          footer={null}
+        >
+          {packageVisible && (
+            <PackageEdit
+              packageId={selectedPackageId}
+              onClose={() => {
+                setSelectedPackageId(null);
+                setPackageVisible(false);
+                getPackageList();
+              }}
+            />
+          )}
+        </Modal>
+        <Modal
+          open={productMapVisible}
+          title={"Багцад бүтээгдэхүүн нэмэх"}
+          okButtonProps={{ hidden: true }}
+          cancelButtonProps={{ hidden: true }}
+          onCancel={() => {
+            setProductMapVisible(false);
+            setProductMapPackId(null);
+          }}
+          footer={null}
+        >
+          {productMapVisible && productMapPackId && (
+            <ProductIntoPackage
+              packageId={productMapPackId}
+              onClose={() => {
+                setProductMapPackId(null);
+                setProductMapVisible(false);
+                getPackageList();
+              }}
+            />
+          )}
+        </Modal>
+      </Row>
+    </Spin>
   );
 };
 export default Package;
