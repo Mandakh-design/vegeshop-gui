@@ -4,7 +4,7 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import contextLogin from "./contextLogin";
 import MainLayout from "./MainLayout";
-// import { showErrorMsg } from "../common/utils";
+import { showErrorMsg } from "../common/utils";
 import MainHeader from "./MainHeader";
 import LoadingComponent from "./LoadingComponent";
 import adminService from "../services/adminService";
@@ -64,26 +64,26 @@ const AppLogin = () => {
       }
     );
     
-    // adminService.getPackage()
-    //   .then((res) => {
-    //     if (res) console.log("THEN",res)
-    //     // setLoggedUser(res);
-    //   })
-    //   .catch((er) => {
-    //     console.log("ERRR",er)
-    //     // if (er.request?.status === "Not a citizen")
-    //     //   setIsUserRequest(true);
-    //     // showErrorMsg(er);
-    //     // logoutUser();
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+    adminService.getLoggedUser()
+      .then((res) => {
+        if (res) 
+        {
+          console.log("THEN",res)
+         setLoggedUser(res.data.data);
+        }
+      })
+      .catch((er) => {
+        console.log("ERRR",er)
+        showErrorMsg(er);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
  
   React.useEffect(() => {
-    
     const token = localStorage.getItem("token")
+    console.log("token",token)
     if (token) setToken(token);
     else setLoading(false);
   }, [reload]);
@@ -96,9 +96,7 @@ const AppLogin = () => {
             <MainHeader
               userLoading={loading}
             />
-            
           </Layout.Header>
-          
           {loading ? <LoadingComponent /> : <MainLayout />}
           </Router> 
       </Layout>
