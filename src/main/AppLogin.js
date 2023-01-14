@@ -7,6 +7,7 @@ import MainLayout from "./MainLayout";
 // import { showErrorMsg } from "../common/utils";
 import MainHeader from "./MainHeader";
 import LoadingComponent from "./LoadingComponent";
+import adminService from "../services/adminService";
 
 const AppLogin = () => {
   const { setLoggedUser, reload} = React.useContext(contextLogin);
@@ -62,26 +63,29 @@ const AppLogin = () => {
         }
       }
     );
-    // getService(landingServiceUrl.getLoggedInfo)
-    //   .then((res) => {
-    //     if (res) setLoggedUser(res);
-    //   })
-    //   .catch((er) => {
-    //     // if (er.request?.status === "Not a citizen")
-    //     //   setIsUserRequest(true);
-    //     showErrorMsg(er);
-    //     // logoutUser();
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
-    setLoading(false);
+    
+    
   }, []);
  
   React.useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (token) setToken(token);
-    else setLoading(false);
+    adminService.getPackage()
+      .then((res) => {
+        if (res) console.log("THEN",res)
+        // setLoggedUser(res);
+      })
+      .catch((er) => {
+        console.log("ERRR",er)
+        // if (er.request?.status === "Not a citizen")
+        //   setIsUserRequest(true);
+        // showErrorMsg(er);
+        // logoutUser();
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+    // const token = localStorage.getItem("token")
+    // if (token) setToken(token);
+    // else setLoading(false);
   }, [reload]);
 
   return (
