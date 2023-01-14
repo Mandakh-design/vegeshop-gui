@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   Button,
   Col,
@@ -9,8 +9,9 @@ import {
   Row,
   Spin,
 } from "antd";
+import adminService from "../../services/adminService";
 
-const PackageEdit = ({ packageId, onClose }) => {
+const PackageEdit = ({ packageId, onClose, changeState }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState();
@@ -18,11 +19,16 @@ const PackageEdit = ({ packageId, onClose }) => {
   const savePackage = (value) => {
     setLoading(true);
     const model = { ...selectedPackage, ...value };
-    message.success("Багц хадгалах");
-    console.log(model);
-    onClose();
-
-    setLoading(false);
+    adminService
+      .savePackage(model)
+      .then((result) => {
+        if (result.data) {
+          message.success("Амжилттай хадгалагдлаа");
+          onClose();
+        }
+      })
+      .catch((err) => message.warning(err))
+      .finally(() => setLoading(false));
   };
 
   const setFormInfo = (value) => {
@@ -34,24 +40,28 @@ const PackageEdit = ({ packageId, onClose }) => {
   };
 
   const getPackageInfo = () => {
-    setLoading(true);
-    if (packageId > 0) {
-      // getService(getPackage).then((result) => {
-      //   if (result) {
-      setSelectedPackage({ id: packageId });
-      setFormInfo({ name: "Багц 15", discount: "11", price: "22000" });
-      //   }
-      // });
+    if (packageId !== null || packageId !== undefined) {
+      setLoading(true);
+      adminService
+        .getPackage()
+        .then((result) => {
+          if (result.data) {
+            let pack = result.data.data.find((d) => d.id === packageId);
+            setSelectedPackage(pack);
+            setFormInfo(pack);
+          }
+        })
+        .catch((err) => message.warning(err))
+        .finally(() => setLoading(false));
     } else {
       setFormInfo(null);
       setSelectedPackage(null);
     }
-    setLoading(false);
   };
 
   React.useEffect(() => {
     getPackageInfo();
-  }, [packageId]);
+  }, [packageId, changeState]);
 
   return (
     <Spin spinning={loading}>

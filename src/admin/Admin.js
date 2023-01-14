@@ -1,16 +1,15 @@
 import React, { useState } from "react";
 import {
-  DesktopOutlined,
-  FileOutlined,
+  UnorderedListOutlined,
+  AuditOutlined,
   PieChartOutlined,
   TeamOutlined,
   UserOutlined,
+  EnvironmentOutlined,
 } from "@ant-design/icons";
 import {
   Breadcrumb,
-  Button,
   Col,
-  Image,
   Layout,
   Menu,
   message,
@@ -30,17 +29,14 @@ function getItem(label, key, icon, children) {
 }
 const items = [
   getItem("Багц", "1", <PieChartOutlined />),
-  getItem("Option 2", "2", <DesktopOutlined />),
-  getItem("User", "sub1", <UserOutlined />, [
-    getItem("Tom", "3"),
-    getItem("Bill", "4"),
-    getItem("Alex", "5"),
-  ]),
+  getItem("Захиалга", "2", <UnorderedListOutlined />),
+  getItem("Ажилтан", "3", <UserOutlined />),
+  getItem("Бүтээгдэхүүн", "4", <AuditOutlined />),
+  getItem("Байршил", "5", <EnvironmentOutlined />),
   getItem("Team", "sub2", <TeamOutlined />, [
     getItem("Team 1", "6"),
     getItem("Team 2", "8"),
   ]),
-  getItem("Files", "9", <FileOutlined />),
 ];
 const Admin = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -128,9 +124,10 @@ const Admin = () => {
 
           <Col span={24}>
             {selectedMenuKey === "1" && <Package />}
-            {selectedMenuKey === "2" && <>Бүтээгдэхүүн</>}
-            {selectedMenuKey === "3" && <>Category</>}
-            {selectedMenuKey === "4" && <>Test</>}
+            {selectedMenuKey === "2" && <>Захиалга</>}
+            {selectedMenuKey === "3" && <>Ажилтан</>}
+            {selectedMenuKey === "4" && <>Бүтээгдэхүүн</>}
+            {selectedMenuKey === "5" && <>Байршилын жагсаалт</>}
           </Col>
         </Content>
         <Footer

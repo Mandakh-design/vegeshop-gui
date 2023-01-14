@@ -1,6 +1,16 @@
 import React, { useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { Button, Col, message, Modal, Row, Space, Spin, Table } from "antd";
+import {
+  Button,
+  Col,
+  message,
+  Modal,
+  Row,
+  Space,
+  Spin,
+  Switch,
+  Table,
+} from "antd";
 import PackageEdit from "./PackageEdit";
 import ProductIntoPackage from "./ProductIntoPackage";
 import adminService from "../../services/adminService";
@@ -41,6 +51,7 @@ const Package = () => {
 
   const [packageVisible, setPackageVisible] = useState(false);
   const [selectedPackageId, setSelectedPackageId] = useState(null);
+  const [changeState, setChangeState] = useState();
 
   const [productMapVisible, setProductMapVisible] = useState();
   const [productMapPackId, setProductMapPackId] = useState(null);
@@ -50,6 +61,10 @@ const Package = () => {
       title: "№",
       dataIndex: "order",
       key: "order",
+      align: "center",
+      render: (text, record, index) => {
+        return index + 1;
+      },
     },
     {
       title: "Нэр",
@@ -67,6 +82,21 @@ const Package = () => {
       key: "price",
     },
     {
+      title: "Идэвхитэй эсэх",
+      dataIndex: "active_flag",
+      key: "active_flag",
+      render: (text, record) => {
+        return (
+          <Switch
+            checkedChildren="Тийм"
+            unCheckedChildren="Үгүй"
+            checked={text}
+            onChange={(e) => deletePackage(record.id, e)}
+          />
+        );
+      },
+    },
+    {
       title: "",
       dataIndex: "action",
       key: "action",
@@ -80,14 +110,6 @@ const Package = () => {
               onClick={() => {
                 setSelectedPackageId(record.id);
                 setPackageVisible(true);
-              }}
-            />
-            <Button
-              icon={<DeleteOutlined />}
-              type="text"
-              danger
-              onClick={() => {
-                deletePackage(record.id);
               }}
             />
           </Space>
@@ -189,7 +211,6 @@ const Package = () => {
       .getPackage()
       .then((result) => {
         if (result) {
-          console.log(result.data);
           setPackageList(result.data.data);
         }
       })
@@ -201,8 +222,22 @@ const Package = () => {
       });
   };
 
-  const deletePackage = (packageId) => {
-    message.error("Багц устгах id: " + packageId);
+  const deletePackage = (packageId, activeFlag) => {
+    setLoading(true);
+    adminService
+      .deletePackage({
+        id: packageId,
+        activeFlag: activeFlag,
+      })
+      .then((result) => {
+        if (result.data) {
+          getPackageList();
+        }
+      })
+      .catch((err) => {
+        message.warning(err);
+        setLoading(false);
+      });
   };
 
   React.useEffect(() => {
@@ -262,10 +297,12 @@ const Package = () => {
           {packageVisible && (
             <PackageEdit
               packageId={selectedPackageId}
+              changeState={changeState}
               onClose={() => {
                 setSelectedPackageId(null);
                 setPackageVisible(false);
                 getPackageList();
+                setChangeState(changeState + 1);
               }}
             />
           )}

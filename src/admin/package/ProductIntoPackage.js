@@ -12,6 +12,7 @@ import {
   Spin,
   Table,
 } from "antd";
+import adminService from "../../services/adminService";
 
 const ProductIntoPackage = ({ packageId, onClose }) => {
   const [form] = Form.useForm();
@@ -19,7 +20,34 @@ const ProductIntoPackage = ({ packageId, onClose }) => {
   const [packageList, setPackageList] = useState();
 
   const getPackageList = () => {
-    message.warning("Get package list");
+    setLoading(true);
+    adminService
+      .getPackage()
+      .then((result) => {
+        if (result.data?.data) {
+          setPackageList(result.data.data);
+          form.setFieldsValue({ package_id: packageId });
+          getProductList();
+        }
+      })
+      .catch((err) => {
+        message.warning(err);
+        setLoading(false);
+      });
+  };
+
+  const getProductList = () => {
+    setLoading(true);
+    adminService
+      .getPackage()
+      .then((result) => {
+        if (result.data?.data) {
+          setPackageList(result.data.data);
+          form.setFieldsValue({ package_id: packageId });
+        }
+      })
+      .catch((err) => message.warning(err))
+      .finally(() => setLoading(false));
   };
 
   const savePackageMap = (value) => {
@@ -29,7 +57,6 @@ const ProductIntoPackage = ({ packageId, onClose }) => {
 
   React.useEffect(() => {
     getPackageList();
-    console.log(packageId);
   }, [packageId]);
 
   return (
@@ -39,7 +66,7 @@ const ProductIntoPackage = ({ packageId, onClose }) => {
           <Col span={24}>
             <Form.Item
               label="Багцын нэр"
-              name="name"
+              name="package_id"
               rules={[{ required: true, message: "Заавал сонгоно уу" }]}
             >
               <Select placeholder="Заавал сонгоно уу" disabled>
