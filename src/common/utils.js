@@ -49,8 +49,8 @@ const getErrorMsg = (err) => {
     if (err.request.status === 500) {
       var obj = JSON.parse(err.request.responseText);
       errMsg = obj.message;
-      if (obj.message.includes("Read timed out executing GET")) {
-        if (obj.message.includes("/getCitizenIDCardInfo?regNo=")) {
+      if (obj.message?.includes("Read timed out executing GET")) {
+        if (obj.message?.includes("/getCitizenIDCardInfo?regNo=")) {
           errMsg = "ХУР - сервистэй холбогдож чадсангүй";
         }
       }

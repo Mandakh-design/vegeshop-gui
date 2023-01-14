@@ -1,6 +1,8 @@
 import { Spin, Form, Row, Col, InputNumber, Input, Button } from "antd";
 import React from "react";
 import contextLogin from "./contextLogin";
+import adminService from "../services/adminService";
+import { showErrorMsg } from "../common/utils";
 
 const AppLogin = () => {
   const { reload, setReload} = React.useContext(contextLogin);
@@ -10,20 +12,33 @@ const AppLogin = () => {
 
   React.useEffect(() => {
   }, []);
-  const send1Code =(values)=>{
-    // sendCodeservice.then((res)=>{
-    //   if(res == "Success")
-    //     setSendCode(true);
-    // })
+  const send1Code =()=>{
+    const phone = form.getFieldsValue().phone;
+    if(!phone || phone.toString().length !== 8){
+      return "Утасны дугаар оруулна уу"
+    }
+    setLoading(true);
+    adminService.sendMsgPass({phone}).then((res)=>{
+      if(res == "Success")
+        setSendCode(true);
+    }).catch((err)=> {console.log("err::",err); showErrorMsg(err);})
+    .finally(()=> setLoading(false))
   }
   const login =(oneCode)=>{
-    // login({ phone : form.getFieldsValue().phone, password : oneCode })
-    // .then((res)=>{
-    //   if(res){
-    //   localStorage.setItem("token", res.token);
-    //   setReload(reload + 1);
-    //   }
-    // })
+    const phone = form.getFieldsValue().phone;
+    if(!phone || phone.toString().length !== 8){
+      return "Утасны дугаар оруулна уу"
+    }
+   
+    setLoading(true);
+    adminService.login({ phone : form.getFieldsValue().phone, password : oneCode })
+    .then((res)=>{
+      if(res){
+      localStorage.setItem("token", res.data.token);
+      setReload(reload + 1);
+      }
+    }).catch((err)=> showErrorMsg(err))
+    .finally(()=> setLoading(false))
   }
   return (
     <Spin spinning={loading}>
@@ -34,24 +49,27 @@ const AppLogin = () => {
               label="Утас"
               name="phone"
               disabled={sendCode}
-              rules={[{  required: true, message: "Заавал оруулна уу" }]}
+              rules={[{  required: false, message: "Заавал оруулна уу" }]}
             >
               <Input placeholder="Нэр оруулна уу" />
             </Form.Item>
           </Col>
             <Col>
-              <Button type="primary" htmlType="submit">
-                Нэг удаагийн код илгээх
-              </Button>
+            <Form.Item
+              label=" "
+                          > <Button type="primary" onClick={()=> send1Code()}>
+            Нэг удаагийн код илгээх
+          </Button></Form.Item>
+             
             </Col>
             <Col span={24}>
               <Form.Item
                 label="Нэг удаагийн нууц үг"
                 name="password"
-                rules={[{ required: true, message: "Заавал оруулна уу" }]}
+                rules={[{ required: false , message: "Заавал оруулна уу" }]}
               >
-                <InputNumber placeholder="Нэр оруулна уу"  onChange={(value)=>{ console.log(value);
-                  if(value && value.length == 4)
+                <InputNumber placeholder="Нэр оруулна уу"  onChange={(value)=>{ 
+                 if(value && value.toString().length === 4)
                     login(value);
                 }}/>
               </Form.Item>

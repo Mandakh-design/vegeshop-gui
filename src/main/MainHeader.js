@@ -34,7 +34,7 @@ const MainHeader = ({ userLoading }) => {
   const token = localStorage.getItem("token");
   let history = useHistory();
   React.useEffect(() => {
-  }, [userLoading]);
+  }, [userLoading, loggedUser]);
 
   const userMenu = (
     <Menu
