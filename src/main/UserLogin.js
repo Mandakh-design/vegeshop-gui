@@ -1,5 +1,6 @@
 import { Spin, Form, Row, Col, InputNumber, Input, Button } from "antd";
 import React from "react";
+import { useHistory } from "react-router-dom";
 import contextLogin from "./contextLogin";
 import adminService from "../services/adminService";
 import { showErrorMsg } from "../common/utils";
@@ -9,6 +10,7 @@ const AppLogin = () => {
   const [loading, setLoading] = React.useState(false);
   const [sendCode, setSendCode] = React.useState(false);
   const [form] = Form.useForm();
+  let history = useHistory();
 
   React.useEffect(() => {
   }, []);
@@ -35,7 +37,7 @@ const AppLogin = () => {
     .then((res)=>{
       if(res){
       localStorage.setItem("token", res.data.token);
-      setReload(reload + 1);
+      history.push("/");
       }
     }).catch((err)=> showErrorMsg(err))
     .finally(()=> setLoading(false))

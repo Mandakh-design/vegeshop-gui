@@ -15,22 +15,14 @@ import { withRouter, Link, useHistory } from "react-router-dom";
 import {
   ExportOutlined,
   ShoppingCartOutlined,
-  DownOutlined,
-  SwapOutlined,
-  ContactsOutlined,
-  LoginOutlined,
-  UserAddOutlined,
-  AppstoreOutlined,
-  TeamOutlined,
-  ApartmentOutlined,
   UserOutlined,
   LoadingOutlined,
-  UsergroupAddOutlined,
+
 } from "@ant-design/icons";
 import contextLogin from "./contextLogin";
 
 const MainHeader = ({ userLoading }) => {
-  const { loggedUser } = React.useContext(contextLogin);
+  const { loggedUser, reload, setReload } = React.useContext(contextLogin);
   const token = localStorage.getItem("token");
   let history = useHistory();
   React.useEffect(() => {
@@ -61,6 +53,7 @@ const MainHeader = ({ userLoading }) => {
               role="presentation"
               onClick={() => {
                 localStorage.removeItem("token");
+                setReload(reload + 1);
                 history.push("/");
               }}
             >
