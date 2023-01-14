@@ -1,9 +1,11 @@
 import axios from "axios";
 
+// G service
 const login = (data) => axios.post(`/api/v1/login`, data);
 const getLoggedUser = (data) => axios.get(`/api/v1/getLoggedUser`);
 const sendMsgPass = (data) => axios.post(`/api/v1/customer/otp`, data);
 
+// M service
 const saveCategory = (data) => axios.post(`/saveCategory`, data);
 const getCategory = (data) => axios.get(`/getCategory`, { params: data });
 
@@ -17,9 +19,12 @@ const deleteProduct = (data) => axios.post(`/api/v1/deleteProduct`, data);
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
+  // G service
   login,
   getLoggedUser,
   sendMsgPass,
+
+  // M service
   saveCategory,
   getCategory,
   savePackage,
