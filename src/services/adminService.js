@@ -1,11 +1,11 @@
 import axios from "axios";
 
-// G service
+// Ga service
 const login = (data) => axios.post(`/api/v1/login`, data);
 const getLoggedUser = (data) => axios.get(`/api/v1/getLoggedUser`);
 const sendMsgPass = (data) => axios.post(`/api/v1/customer/otp`, data);
 
-// M service
+// Ma service
 const saveCategory = (data) => axios.post(`/saveCategory`, data);
 const getCategory = (data) => axios.get(`/getCategory`, { params: data });
 
