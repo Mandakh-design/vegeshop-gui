@@ -1,10 +1,11 @@
-import { Spin, Menu, Row, Col, Card, List, Button } from "antd";
+import { Spin, Menu, Row, Col, Card, List, Divider, Skeleton } from "antd";
 import {MailOutlined} from "@ant-design/icons";
 import React from "react";
 
 const Landing = () => {
   const [loading, setLoading] = React.useState(false);
   const [current, setCurrent] = React.useState("package");
+  const [data, setData] = React.useState([{title:"asdas"},{title:"asdas"},{title:"asdas"},{title:"asdas"},{title:"asdas"},{title:"asdas"},{title:"asdas"},{title:"asdas"},{title:"asdas"}]);
   const onClick = (e) => {
     setCurrent(e.key);
   };
@@ -16,32 +17,23 @@ const Landing = () => {
     }];
   React.useEffect(() => {
   }, []);
-  const data = [
-    {
-      title: 'Title 1',
-    },
-    {
-      title: 'Title 2',
-    },
-    {
-      title: 'Title 3',
-    },
-    {
-      title: 'Title 4',
-    },
-    {
-      title: 'Title 4',
-    },
-    {
-      title: 'Title 4',
-    },
-    {
-      title: 'Title 4',
-    },
-    {
-      title: 'Title 4',
-    },
-  ];
+  const loadMoreData = () => {
+    setData([...data, ...[{title:"asdas"},{title:"asdas"},{title:"asdas"}]]);
+    // if (loading) {
+    //   return;
+    // }
+
+    // setLoading(true);
+    // fetch('https://randomuser.me/api/?results=10&inc=name,gender,email,nat,picture&noinfo')
+    //   .then((res) => res.json())
+    //   .then((body) => {
+    //     setData([...data, ...body.results]);
+    //     setLoading(false);
+    //   })
+    //   .catch(() => {
+    //     setLoading(false);
+    //   });
+  };
   return (
     <Spin spinning={loading}>
         <Row>
@@ -50,6 +42,7 @@ const Landing = () => {
 
           </Col>
           <Col span={24}>
+          
            <List
               grid={{
                 gutter: 16,
