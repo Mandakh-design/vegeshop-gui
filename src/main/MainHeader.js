@@ -2,7 +2,6 @@ import {
   Typography,
   Col,
   Row,
-  Tooltip,
   Button,
   Space,
   Dropdown,
@@ -15,7 +14,7 @@ import React from "react";
 import { withRouter, Link, useHistory } from "react-router-dom";
 import {
   ExportOutlined,
-  FilePdfOutlined,
+  ShoppingCartOutlined,
   DownOutlined,
   SwapOutlined,
   ContactsOutlined,
@@ -83,19 +82,24 @@ const MainHeader = ({ userLoading }) => {
     <Spin spinning={false}>
       <Row>
         <Col xs={2} sm={2} md={2} lg={6} xl={6} xxl={6}>
-          <Space size="small">
+          <Space size="small" >
               <img
                 role="presentation"
                 onClick={() => {
-                  // history.push("/");
+                  history.push("/");
                 }}
-                src="/logo192.png"
+                src="/logos/selba_logo.svg"
                 alt=""
-                height="50"
-                style={{ cursor: "pointer" }}
+                height={40}
+                style={{ cursor: "pointer", marginTop: "12px" }}
               />
-           
-          </Space>
+              <Typography.Text type="success" style={{cursor: "pointer", fontSize:"xx-large"}}
+               onClick={() => {
+                history.push("/");
+              }}
+              >СЭЛБА</Typography.Text>
+              
+           </Space>
         </Col>
         <Col
           xs={22}
@@ -113,17 +117,28 @@ const MainHeader = ({ userLoading }) => {
             <Space size="small">
               
              
-             
+              <Button
+                  shape="round"
+                  type="primary"
+                  ghost
+                  icon={<ShoppingCartOutlined />}
+                  onClick={() => {
+                    
+                  }}
+                >
+                  
+                </Button>
               {!loggedUser && (
                 <Button
                   shape="round"
+                  ghost
                   type="primary"
-                  icon={<LoginOutlined />}
+                  icon={<UserOutlined />}
                   onClick={() => {
                     history.push('/login')
                   }}
                 >
-                  Нэвтрэх
+                  
                 </Button>
               )}
            

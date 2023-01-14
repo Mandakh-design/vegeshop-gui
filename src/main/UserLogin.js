@@ -1,12 +1,6 @@
-import axios from "axios";
 import { Spin, Form, Row, Col, InputNumber, Input, Button } from "antd";
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
 import contextLogin from "./contextLogin";
-import MainLayout from "./MainLayout";
-// import { showErrorMsg } from "../common/utils";
-import MainHeader from "./MainHeader";
-import LoadingComponent from "./LoadingComponent";
 
 const AppLogin = () => {
   const { reload, setReload} = React.useContext(contextLogin);

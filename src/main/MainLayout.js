@@ -11,11 +11,12 @@ import {
 } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import UserLogin from "./UserLogin";
+import Landing from "../landing/Landing";
 
 const MainLayout = () => {
   const { loggedUser } = React.useContext(contextLogin);
   const [collapse, setCollapse] = React.useState(false);
-  const [currentRoute, setCurrentRoute] = React.useState("haha");
+  const [currentRoute, setCurrentRoute] = React.useState();
   const location = useLocation();
   React.useEffect(() => {
     
@@ -50,6 +51,9 @@ const MainLayout = () => {
     ) {
       return (
         <Switch location={location}>
+           <Route exact path="/">
+        <Landing/>
+        </Route>
           <Route exact path="/login">
             <Row style={{ padding: "10px 15px 0px 15px" }}>
               <Col
@@ -81,7 +85,7 @@ const MainLayout = () => {
     return (
       <Switch location={location}>
         <Route exact path="/">
-        LandingPage
+        <Landing/>
         </Route>
         <Route exact path="/login">
             <Row style={{ padding: "10px 15px 0px 15px" }}>
@@ -119,9 +123,9 @@ const MainLayout = () => {
   };
   return (
     <Layout
-      style={{
-        marginTop: "65px",
-      }}
+      // style={{
+      //   marginTop: "65px",
+      // }}
       hasSider={
         loggedUser &&
         loggedUser.role 
@@ -149,7 +153,7 @@ const MainLayout = () => {
               <Col span={24} style={{ padding: "10px 15px 0px 15px" }}>
                 <Row justify="left">
                   <Breadcrumb>
-                    <Breadcrumb.Item>{currentRoute}</Breadcrumb.Item>
+                    <Breadcrumb.Item>{currentRoute} dddd</Breadcrumb.Item>
                   </Breadcrumb>
                 </Row>
               </Col>
