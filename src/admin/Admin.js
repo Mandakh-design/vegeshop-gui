@@ -44,7 +44,7 @@ const items = [
 ];
 const Admin = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const [selectedMenuKey, setSelectedMenuKey] = useState(1);
+  const [selectedMenuKey, setSelectedMenuKey] = useState("1");
 
   const {
     token: { colorBgContainer },

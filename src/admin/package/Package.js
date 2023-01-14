@@ -7,36 +7,37 @@ import adminService from "../../services/adminService";
 
 const Package = () => {
   const [loading, setLoading] = useState(false);
-  const [packageList, setPackageList] = useState([
-    {
-      id: 1,
-      name: "Багц 1",
-      order: 1,
-      discount: "10%",
-      price: "10000",
-    },
-    {
-      id: 2,
-      name: "Багц 2",
-      order: 2,
-      discount: "10%",
-      price: "2000",
-    },
-    {
-      id: 3,
-      name: "Багц 3",
-      order: 3,
-      discount: "10%",
-      price: "10000",
-    },
-    {
-      id: 4,
-      name: "Багц 4",
-      order: 4,
-      discount: "10%",
-      price: "50000",
-    },
-  ]);
+  const [packageList, setPackageList] = useState();
+  // [
+  //   {
+  //     id: 1,
+  //     name: "Багц 1",
+  //     order: 1,
+  //     discount: "10%",
+  //     price: "10000",
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "Багц 2",
+  //     order: 2,
+  //     discount: "10%",
+  //     price: "2000",
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "Багц 3",
+  //     order: 3,
+  //     discount: "10%",
+  //     price: "10000",
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "Багц 4",
+  //     order: 4,
+  //     discount: "10%",
+  //     price: "50000",
+  //   },
+  // ]
 
   const [packageVisible, setPackageVisible] = useState(false);
   const [selectedPackageId, setSelectedPackageId] = useState(null);
@@ -186,9 +187,10 @@ const Package = () => {
     setLoading(true);
     adminService
       .getPackage()
-      .then((res) => {
-        if (res) {
-          setPackageList(res.data);
+      .then((result) => {
+        if (result) {
+          console.log(result.data);
+          setPackageList(result.data.data);
         }
       })
       .catch((err) => {
@@ -211,38 +213,40 @@ const Package = () => {
     <Spin spinning={loading}>
       <Row>
         <Col span={24}>
-          <Table
-            rowKey="id"
-            dataSource={packageList}
-            columns={columns}
-            bordered
-            title={() => {
-              return (
-                <Row justify="space-between">
-                  <Col>
-                    <b> Багцын жагсаалт</b>
-                  </Col>
-                  <Col>
-                    <Button
-                      type="primary"
-                      ghost
-                      onClick={() => {
-                        setPackageVisible(true);
-                      }}
-                    >
-                      Багц нэмэх
-                    </Button>
-                  </Col>
-                </Row>
-              );
-            }}
-            expandable={{
-              expandedRowRender: (record) => {
-                return expandTable(record);
-              },
-              rowExpandable: (record) => true,
-            }}
-          />
+          {packageList && (
+            <Table
+              rowKey="id"
+              dataSource={packageList}
+              columns={columns}
+              bordered
+              title={() => {
+                return (
+                  <Row justify="space-between">
+                    <Col>
+                      <b> Багцын жагсаалт</b>
+                    </Col>
+                    <Col>
+                      <Button
+                        type="primary"
+                        ghost
+                        onClick={() => {
+                          setPackageVisible(true);
+                        }}
+                      >
+                        Багц нэмэх
+                      </Button>
+                    </Col>
+                  </Row>
+                );
+              }}
+              expandable={{
+                expandedRowRender: (record) => {
+                  return expandTable(record);
+                },
+                rowExpandable: (record) => true,
+              }}
+            />
+          )}
         </Col>
         <Modal
           open={packageVisible}
