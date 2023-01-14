@@ -64,28 +64,28 @@ const AppLogin = () => {
       }
     );
     
-    
+    // adminService.getPackage()
+    //   .then((res) => {
+    //     if (res) console.log("THEN",res)
+    //     // setLoggedUser(res);
+    //   })
+    //   .catch((er) => {
+    //     console.log("ERRR",er)
+    //     // if (er.request?.status === "Not a citizen")
+    //     //   setIsUserRequest(true);
+    //     // showErrorMsg(er);
+    //     // logoutUser();
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
   }, []);
  
   React.useEffect(() => {
-    adminService.getPackage()
-      .then((res) => {
-        if (res) console.log("THEN",res)
-        // setLoggedUser(res);
-      })
-      .catch((er) => {
-        console.log("ERRR",er)
-        // if (er.request?.status === "Not a citizen")
-        //   setIsUserRequest(true);
-        // showErrorMsg(er);
-        // logoutUser();
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-    // const token = localStorage.getItem("token")
-    // if (token) setToken(token);
-    // else setLoading(false);
+    
+    const token = localStorage.getItem("token")
+    if (token) setToken(token);
+    else setLoading(false);
   }, [reload]);
 
   return (
