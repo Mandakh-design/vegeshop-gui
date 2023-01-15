@@ -119,7 +119,7 @@ const MainHeader = ({ userLoading }) => {
                     
                   }}
                 >
-                  
+                  Сагс
                 </Button>
               {!loggedUser && (
                 <Button
@@ -131,7 +131,7 @@ const MainHeader = ({ userLoading }) => {
                     history.push('/login')
                   }}
                 >
-                  
+                  Нэвтрэх
                 </Button>
               )}
            
@@ -142,6 +142,7 @@ const MainHeader = ({ userLoading }) => {
                     role="presentation"
                     onClick={(e) => e.preventDefault()}
                   >
+
                     <UserOutlined
                       style={{
                         color: "#1890ff",
@@ -149,7 +150,7 @@ const MainHeader = ({ userLoading }) => {
                         cursor: "pointer",
                         paddingRight: "5px",
                       }}
-                    />
+                    />{loggedUser.firstname}
                   </span>
                 </Dropdown>
               )}
