@@ -18,7 +18,7 @@ import {
   theme,
 } from "antd";
 import Package from "./package/Package";
-import Product from "./package/Product";
+import Product from "./product/Product";
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
   return {

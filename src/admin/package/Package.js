@@ -14,6 +14,7 @@ import {
 import PackageEdit from "./PackageEdit";
 import ProductIntoPackage from "./ProductIntoPackage";
 import adminService from "../../services/adminService";
+import { showErrorMsg } from "../../common/utils";
 
 const Package = () => {
   const [loading, setLoading] = useState(false);
@@ -90,6 +91,7 @@ const Package = () => {
   ];
 
   const expandTable = (value) => {
+    getProducListFormPackage(value.id);
     const expandColumn = [
       {
         title: "Барааны нэр",
@@ -134,32 +136,32 @@ const Package = () => {
       },
     ];
 
-    const productList = [
-      {
-        id: 1,
-        name: "Төмс",
-        price: 10000,
-        category: "Хүнсний ногоо",
-      },
-      {
-        id: 2,
-        name: "Лууван",
-        price: 2000,
-        category: "Хүнсний ногоо",
-      },
-      {
-        id: 3,
-        name: "Байцай",
-        price: 50000,
-        category: "Хүнсний ногоо",
-      },
-      {
-        id: 4,
-        name: "Сонгино",
-        price: 14000,
-        category: "Хүнсний ногоо",
-      },
-    ];
+    // const productList = [
+    //   {
+    //     id: 1,
+    //     name: "Төмс",
+    //     price: 10000,
+    //     category: "Хүнсний ногоо",
+    //   },
+    //   {
+    //     id: 2,
+    //     name: "Лууван",
+    //     price: 2000,
+    //     category: "Хүнсний ногоо",
+    //   },
+    //   {
+    //     id: 3,
+    //     name: "Байцай",
+    //     price: 50000,
+    //     category: "Хүнсний ногоо",
+    //   },
+    //   {
+    //     id: 4,
+    //     name: "Сонгино",
+    //     price: 14000,
+    //     category: "Хүнсний ногоо",
+    //   },
+    // ];
 
     return (
       <Table
@@ -187,11 +189,18 @@ const Package = () => {
   };
 
   const getProducListFormPackage = (packId) => {
-    adminService.getProducListFormPackage(packId).then((result) => {
-      if (result.data.data) {
-      }
-    });
+    setLoading(true);
+    adminService
+      .getProducListFormPackage({ package_id: packId })
+      .then((result) => {
+        if (result.data.data) {
+          setProductList(result.data.data);
+        }
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
   };
+
   const getPackageList = () => {
     setLoading(true);
     adminService

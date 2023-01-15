@@ -6,8 +6,8 @@ const getLoggedUser = (data) => axios.get(`/api/v1/getLoggedUser`);
 const sendMsgPass = (data) => axios.post(`/api/v1/customer/otp`, data);
 
 // Ma service
-const saveCategory = (data) => axios.post(`/saveCategory`, data);
-const getCategory = (data) => axios.get(`/getCategory`, { params: data });
+const saveCategory = (data) => axios.post(`/api/v1/saveCategory`, data);
+const getCategory = (data) => axios.get(`/api/v1/category`, { params: data });
 
 const savePackage = (data) => axios.post(`/api/v1/package`, data);
 const getPackage = (data) => axios.get(`/api/v1/package`, { params: data });
@@ -17,9 +17,11 @@ const saveProduct = (data) => axios.post(`/api/v1/saveProduct`, data);
 const getProduct = (data) => axios.get(`/api/v1/getProduct`, { params: data });
 const deleteProduct = (data) => axios.post(`/api/v1/deleteProduct`, data);
 
-const getProducListByCategory = (data) =>
-  axios.get(`/api/v1/getProducListByCategory`, { params: data });
+const getProductListByCategory = (data) =>
+  axios.get(`/api/v1/getProductListByCategory`, { params: data });
 
+const getProducListFormPackage = (data) =>
+  axios.get(`/api/v1/getProducListFormPackage`, { params: data });
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   // G service
@@ -36,5 +38,6 @@ export default {
   saveProduct,
   getProduct,
   deleteProduct,
-  getProducListByCategory,
+  getProductListByCategory,
+  getProducListFormPackage,
 };
