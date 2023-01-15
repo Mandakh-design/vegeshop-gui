@@ -11,6 +11,7 @@ import contextLogin from "./contextLogin";
 import { Row, Col, Breadcrumb, Button } from "antd";
 import Landing from "../landing/Landing";
 import UserLogin from "./UserLogin";
+import Admin from "../admin/Admin";
 
 const MainRoutes = () => {
   const { loggedUser } = React.useContext(contextLogin);
@@ -27,12 +28,16 @@ const MainRoutes = () => {
     //choose Org songoogui
     if (
       loggedUser &&
-      loggedUser.role
+      loggedUser.role &&
+      loggedUser.role === "admin"
     ) {
       return (
         <Switch location={location}>
            <Route exact path="/">
               <Landing/>
+          </Route>
+          <Route exact path="/admin">
+              <Admin/>
           </Route>
           <Route key={1} path="/userProfile">
             <Row style={{ padding: "10px 15px 0px 15px" }}>

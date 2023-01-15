@@ -17,7 +17,7 @@ import {
   ShoppingCartOutlined,
   UserOutlined,
   LoadingOutlined,
-
+  TeamOutlined,
 } from "@ant-design/icons";
 import contextLogin from "./contextLogin";
 
@@ -70,7 +70,12 @@ const MainHeader = ({ userLoading }) => {
       ]}
     />
   );
-
+  const items = [
+    {
+      label: 'Admin',
+      key: 'admin',
+      icon: <TeamOutlined />,
+    }];
   return (
     <Spin spinning={false}>
       <Row>
@@ -94,13 +99,23 @@ const MainHeader = ({ userLoading }) => {
               
            </Space>
         </Col>
+        <Col xs={2} sm={2} md={2} lg={6} xl={6} xxl={6}>
+        {loggedUser && loggedUser.role === "admin" &&
+              <Menu mode="horizontal" selectedKeys={["admin"]} items={items} onClick={(e)=> {
+                  if(e?.key === "admin"){
+                    history.push("/admin")
+                  }
+              }}>
+                </Menu>
+}
+        </Col>
         <Col
-          xs={22}
-          sm={22}
-          md={22}
-          lg={18}
-          xl={18}
-          xxl={18}
+          xs={20}
+          sm={20}
+          md={20}
+          lg={12}
+          xl={12}
+          xxl={12}
           style={{ textAlign: "right" }}
         >
           {userLoading && (
@@ -108,9 +123,8 @@ const MainHeader = ({ userLoading }) => {
           )}
           {!userLoading && (
             <Space size="small">
-              
-             
-              <Button
+ 
+                <Button
                   shape="round"
                   type="primary"
                   ghost
@@ -138,14 +152,14 @@ const MainHeader = ({ userLoading }) => {
               {loggedUser && (
                 <Dropdown overlay={userMenu} trigger={["click"]}>
                   <span
-                    style={{ color: "#1890ff", cursor: "pointer" }}
+                    style={{ color: "#17a34a", cursor: "pointer" }}
                     role="presentation"
                     onClick={(e) => e.preventDefault()}
                   >
 
                     <UserOutlined
                       style={{
-                        color: "#1890ff",
+                        color: "#17a34a",
                         fontSize: "20px",
                         cursor: "pointer",
                         paddingRight: "5px",
