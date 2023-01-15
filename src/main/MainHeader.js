@@ -7,7 +7,7 @@ import {
   Dropdown,
   Menu,
   Spin,
-  
+  Drawer
 } from "antd";
 import PropTypes from "prop-types";
 import React from "react";
@@ -18,12 +18,20 @@ import {
   UserOutlined,
   LoadingOutlined,
   TeamOutlined,
+  CloseOutlined
 } from "@ant-design/icons";
 import contextLogin from "./contextLogin";
 
 const MainHeader = ({ userLoading }) => {
   const { loggedUser, reload, setReload } = React.useContext(contextLogin);
   const token = localStorage.getItem("token");
+  const [open, setOpen] = React.useState(false);
+  const showDrawer = () => {
+    setOpen(true);
+  };
+  const onClose = () => {
+    setOpen(false);
+  };
   let history = useHistory();
   React.useEffect(() => {
   }, [userLoading, loggedUser]);
@@ -43,6 +51,22 @@ const MainHeader = ({ userLoading }) => {
             </Link>
           ),
           key: "0",
+        },
+        {
+          type: "divider",
+        },
+        {
+          label: (
+            <Link to="/orderList">
+              <ShoppingCartOutlined
+                style={{
+                  paddingRight: "10px",
+                }}
+              />
+              Захиалгууд
+            </Link>
+          ),
+          key: "4",
         },
         {
           type: "divider",
@@ -129,9 +153,7 @@ const MainHeader = ({ userLoading }) => {
                   type="primary"
                   ghost
                   icon={<ShoppingCartOutlined />}
-                  onClick={() => {
-                    
-                  }}
+                  onClick={showDrawer}
                 >
                   Сагс
                 </Button>
@@ -173,6 +195,18 @@ const MainHeader = ({ userLoading }) => {
             </Space>
           )}
         </Col>
+      <Drawer title="Сагс" closeIcon={<CloseOutlined />} placement="right" onClose={onClose} open={open}>
+        <Row>
+          <Col span={24}>11</Col>
+          <Col span={24}>22</Col>
+          <Col span={24}>33</Col>
+          <Col span={24}>44</Col>
+          <Col span={24}><Button type="primary" onClick={()=>{
+            history.push("/order");
+            onClose();
+            }}>Баталгаажуулах</Button></Col>
+        </Row>
+      </Drawer>
       </Row>
     </Spin>
   );
