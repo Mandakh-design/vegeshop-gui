@@ -66,12 +66,14 @@ const AppLogin = () => {
     
     adminService.getLoggedUser()
       .then((res) => {
-        if (res) 
+        if (res?.data?.data) 
         {
          setLoggedUser(res.data.data);
-        }
+        }else
+            setLoggedUser();
       })
       .catch((er) => {
+        
         showErrorMsg(er);
       })
       .finally(() => {
@@ -82,7 +84,10 @@ const AppLogin = () => {
   React.useEffect(() => {
     const token = localStorage.getItem("token")
     if (token) setToken(token);
-    else setLoading(false);
+    else {
+      setLoggedUser();
+      setLoading(false);
+    }
   }, [reload]);
 
   return (

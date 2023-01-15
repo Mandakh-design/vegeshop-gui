@@ -38,6 +38,7 @@ const AppLogin = () => {
       if(res){
       localStorage.setItem("token", res.data.token);
       history.push("/");
+      setReload(reload + 1)
       }
     }).catch((err)=> showErrorMsg(err))
     .finally(()=> setLoading(false))

@@ -21,7 +21,6 @@ const MainRoutes = () => {
   React.useEffect(() => {
     // let currRoute = "";
     // setCurrentRoute(currRoute);
-    console.log("useEffect", location)
     setAfterUseEffect(true);
   }, [location]);
   const RenderChildRoutes = () => {

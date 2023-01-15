@@ -53,8 +53,8 @@ const MainHeader = ({ userLoading }) => {
               role="presentation"
               onClick={() => {
                 localStorage.removeItem("token");
+                 history.push("/");
                 setReload(reload + 1);
-                history.push("/");
               }}
             >
               <ExportOutlined
