@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Ga service
-const login = (data) => axios.post(`https://api.selba.mn/api/v1/login`, data);
+const login = (data) => axios.post(`/api/v1/login`, data);
 const getLoggedUser = (data) => axios.get(`/api/v1/getLoggedUser`);
 const sendMsgPass = (data) => axios.post(`/api/v1/customer/otp`, data);
 
