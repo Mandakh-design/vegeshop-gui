@@ -9,9 +9,11 @@ import {
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import contextLogin from "./contextLogin";
 import { Row, Col, Breadcrumb, Button } from "antd";
-import Landing from "../landing/Landing";
+import Landing from "../customer/Landing";
 import UserLogin from "./UserLogin";
 import Admin from "../admin/Admin";
+import Order from "../customer/order/Order";
+import OrderList from "../customer/order/OrderList";
 
 const MainRoutes = () => {
   const { loggedUser } = React.useContext(contextLogin);
@@ -27,18 +29,24 @@ const MainRoutes = () => {
   const RenderChildRoutes = () => {
     //choose Org songoogui
     if (
-      loggedUser &&
-      loggedUser.role &&
-      loggedUser.role === "admin"
+      loggedUser 
     ) {
       return (
         <Switch location={location}>
            <Route exact path="/">
               <Landing/>
           </Route>
-          <Route exact path="/admin">
-              <Admin/>
-          </Route>
+          {loggedUser.role === "admin" &&
+            <Route exact path="/admin">
+                <Admin/>
+            </Route>
+          }
+          <Route exact path="/order">
+            <Order/>
+        </Route>
+        <Route exact path="/orderList">
+            <OrderList/>
+        </Route>
           <Route key={1} path="/userProfile">
             <Row style={{ padding: "10px 15px 0px 15px" }}>
               <Col
@@ -50,7 +58,7 @@ const MainRoutes = () => {
               </Col>
             </Row>
           </Route>
-          <Redirect to="/chooseOrg" />
+          <Redirect to="/" />
         </Switch>
       );
     }
