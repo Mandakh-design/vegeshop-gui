@@ -17,6 +17,9 @@ const saveProduct = (data) => axios.post(`/api/v1/saveProduct`, data);
 const getProduct = (data) => axios.get(`/api/v1/getProduct`, { params: data });
 const deleteProduct = (data) => axios.post(`/api/v1/deleteProduct`, data);
 
+const getProducListByCategory = (data) =>
+  axios.get(`/api/v1/getProducListByCategory`, { params: data });
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   // G service
@@ -33,4 +36,5 @@ export default {
   saveProduct,
   getProduct,
   deleteProduct,
+  getProducListByCategory,
 };

@@ -18,6 +18,7 @@ import {
   theme,
 } from "antd";
 import Package from "./package/Package";
+import Product from "./package/Product";
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
   return {
@@ -29,8 +30,9 @@ function getItem(label, key, icon, children) {
 }
 const items = [
   getItem("Багц", "1", <PieChartOutlined />),
-  getItem("Захиалга", "2", <UnorderedListOutlined />),
+  getItem("Бараа", "6", <PieChartOutlined />),
   getItem("Ажилтан", "3", <UserOutlined />),
+  getItem("Захиалга", "2", <UnorderedListOutlined />),
   getItem("Бүтээгдэхүүн", "4", <AuditOutlined />),
   getItem("Байршил", "5", <EnvironmentOutlined />),
   getItem("Team", "sub2", <TeamOutlined />, [
@@ -58,40 +60,6 @@ const Admin = () => {
         onCollapse={(value) => setCollapsed(value)}
       >
         <Col span={24}>
-          <Row
-            onClick={() => {
-              message.success("route /");
-            }}
-            style={{
-              height: 30,
-              margin: 16,
-              background: "rgba(244, 244, 244, 255)",
-            }}
-            justify="center"
-          >
-            <Space>
-              <Col>
-                <img
-                  src="/logos/selba_logo.svg"
-                  alt="SVG as an image"
-                  width={24}
-                  height={24}
-                />
-              </Col>
-              {!collapsed && (
-                <span
-                  style={{
-                    fontSize: 24,
-                    color: "green",
-                  }}
-                >
-                  Сэлба
-                </span>
-              )}
-            </Space>
-          </Row>
-        </Col>
-        <Col span={24}>
           <Menu
             theme="dark"
             defaultSelectedKeys={["1"]}
@@ -102,12 +70,6 @@ const Admin = () => {
         </Col>
       </Sider>
       <Layout className="site-layout">
-        <Header
-          style={{
-            padding: 0,
-            background: colorBgContainer,
-          }}
-        />
         <Content
           style={{
             margin: "0 16px",
@@ -124,10 +86,11 @@ const Admin = () => {
 
           <Col span={24}>
             {selectedMenuKey === "1" && <Package />}
-            {selectedMenuKey === "2" && <>Захиалга</>}
-            {selectedMenuKey === "3" && <>Ажилтан</>}
+            {selectedMenuKey === "6" && <Product />}
+            {selectedMenuKey === "3" && <Package />}
+            {selectedMenuKey === "2" && "Захиалга"}
             {selectedMenuKey === "4" && <>Бүтээгдэхүүн</>}
-            {selectedMenuKey === "5" && <>Байршилын жагсаалт</>}
+            {selectedMenuKey === "5" && <>Хуваарь - Байршилын жагсаалт</>}
           </Col>
         </Content>
         <Footer

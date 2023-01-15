@@ -11,11 +11,11 @@ import {
   Switch,
   Table,
 } from "antd";
-import PackageEdit from "./PackageEdit";
-import ProductIntoPackage from "./ProductIntoPackage";
+import PackageEdit from "../package/PackageEdit";
+import ProductIntoPackage from "../package/ProductIntoPackage";
 import adminService from "../../services/adminService";
 
-const Package = () => {
+const Users = () => {
   const [loading, setLoading] = useState(false);
   const [packageList, setPackageList] = useState();
 
@@ -318,4 +318,4 @@ const Package = () => {
     </Spin>
   );
 };
-export default Package;
+export default Users;
