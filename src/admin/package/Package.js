@@ -27,6 +27,7 @@ const Package = () => {
   const [productMapVisible, setProductMapVisible] = useState();
   const [productMapPackId, setProductMapPackId] = useState(null);
   const [productList, setProductList] = useState(null);
+  const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
   const columns = [
     {
@@ -91,7 +92,6 @@ const Package = () => {
   ];
 
   const expandTable = (value) => {
-    getProducListFormPackage(value.id);
     const expandColumn = [
       {
         title: "Барааны нэр",
@@ -236,6 +236,16 @@ const Package = () => {
       });
   };
 
+  const onTableRowExpand = (expanded, record) => {
+    const keys = [];
+    if (expanded) {
+      keys.push(record.id); // I have set my record.id as row key. Check the documentation for more details.
+    }
+
+    setExpandedRowKeys(keys);
+    if (keys.length > 0) getProducListFormPackage(keys[0]);
+  };
+
   React.useEffect(() => {
     getPackageList();
   }, []);
@@ -269,6 +279,8 @@ const Package = () => {
                 </Row>
               );
             }}
+            expandedRowKeys={expandedRowKeys}
+            onExpand={onTableRowExpand}
             expandable={{
               expandedRowRender: (record) => {
                 return expandTable(record);

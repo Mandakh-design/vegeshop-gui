@@ -36,7 +36,7 @@ const items = [
   getItem("Бүтээгдэхүүн", "4", <AuditOutlined />),
   getItem("Байршил", "5", <EnvironmentOutlined />),
   getItem("Team", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "6"),
+    getItem("Team 1", "9"),
     getItem("Team 2", "8"),
   ]),
 ];
