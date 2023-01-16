@@ -25,6 +25,10 @@ const getProductListFormPackage = (data) =>
 
 const savePackageDtl = (data) => axios.post(`/api/v1/savePackageDtl`, data);
 
+// S service
+const getUserList = () => axios.get(`api/v1/getUserList`);
+const saveUser = (data) => axios.put(`api/v1/saveUser`, data);
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   // G service
@@ -44,4 +48,8 @@ export default {
   getProductListByCategory,
   getProductListFormPackage,
   savePackageDtl,
+
+  // S service
+  getUserList,
+  saveUser,
 };
