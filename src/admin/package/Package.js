@@ -5,6 +5,7 @@ import {
   Col,
   message,
   Modal,
+  Popconfirm,
   Row,
   Space,
   Spin,
@@ -111,13 +112,13 @@ const Package = () => {
       },
       {
         title: "Нийт дүн",
-        dataIndex: "total_price",
-        key: "total_price",
+        dataIndex: "total_amount",
+        key: "total_amount",
       },
       {
         title: "Төрөл",
-        dataIndex: "category",
-        key: "category",
+        dataIndex: "category_name",
+        key: "category_name",
       },
       {
         title: "",
@@ -125,13 +126,14 @@ const Package = () => {
         key: "action",
         render: (text, record) => {
           return (
-            <Button
-              icon={<DeleteOutlined />}
-              danger
-              onClick={() => {
-                message.error("Багцаас бүтээгдэхүүн устгах");
+            <Popconfirm
+              title="Устгахдаа итгэлтэй байна уу?"
+              onConfirm={() => {
+                deletePackageDtl(record.id);
               }}
-            />
+            >
+              <Button icon={<DeleteOutlined />} danger />
+            </Popconfirm>
           );
         },
       },
@@ -160,6 +162,22 @@ const Package = () => {
         }}
       />
     );
+  };
+
+  const deletePackageDtl = (id) => {
+    setLoading(true);
+    adminService
+      .deletePackageDtl({ id: id })
+      .then((result) => {
+        if (result.data) {
+          message.success("Амжилттай устгагдлаа");
+          getProductListFormPackage(expandedRowKeys[0]);
+        }
+      })
+      .catch((err) => {
+        showErrorMsg(err);
+        setLoading(false);
+      });
   };
 
   const getProductListFormPackage = (packId) => {
@@ -295,6 +313,7 @@ const Package = () => {
           onCancel={() => {
             setProductMapVisible(false);
             setProductMapPackId(null);
+            getProductListFormPackage(expandedRowKeys[0]);
           }}
           footer={null}
         >
@@ -304,7 +323,7 @@ const Package = () => {
               onClose={() => {
                 setProductMapPackId(null);
                 setProductMapVisible(false);
-                getPackageList();
+                getProductListFormPackage(expandedRowKeys[0]);
               }}
             />
           )}

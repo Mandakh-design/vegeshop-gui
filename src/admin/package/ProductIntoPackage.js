@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import {
+  Alert,
   Button,
   Col,
   Form,
   Input,
+  InputNumber,
   message,
   Row,
   Select,
@@ -74,6 +76,14 @@ const ProductIntoPackage = ({ packageId, onClose }) => {
       <Form form={form} onFinish={savePackageMap} layout="vertical">
         <Row justify="space-between">
           <Col span={24}>
+            <Form.Item>
+              <Alert
+                type="warning"
+                description="Тухайн бүтээгдэхүүн багцад байвал тоо ширхэг болон нийт дүн засагдахыг анхаарна уу!"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
             <Form.Item
               label="Багцын нэр"
               name="package_id"
@@ -118,7 +128,7 @@ const ProductIntoPackage = ({ packageId, onClose }) => {
           </Col>
           <Col span={5}>
             <Form.Item label="Тоо" name="count" initialValue={1}>
-              <Input placeholder="Тоо оруулна уу" />
+              <InputNumber placeholder="Тоо оруулна уу" />
             </Form.Item>
           </Col>
           <Col span={24}>

@@ -22,6 +22,7 @@ const getProductListByCategory = (data) =>
 
 const getProductListFormPackage = (data) =>
   axios.get(`/api/v1/getProductListFormPackage`, { params: data });
+const deletePackageDtl = (data) => axios.post(`/api/v1/deletePackageDtl`, data);
 
 const savePackageDtl = (data) => axios.post(`/api/v1/savePackageDtl`, data);
 
@@ -48,6 +49,7 @@ export default {
   getProductListByCategory,
   getProductListFormPackage,
   savePackageDtl,
+  deletePackageDtl,
 
   // S service
   getUserList,
