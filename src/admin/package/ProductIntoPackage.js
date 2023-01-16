@@ -56,7 +56,10 @@ const ProductIntoPackage = ({ packageId, onClose }) => {
     adminService
       .savePackageDtl(value)
       .then((result) => {
-        if (result.data) message.success("Амжилттай");
+        if (result.data) {
+          message.success("Амжилттай");
+          form.setFieldsValue({ product_id: null, count: 1 });
+        }
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));

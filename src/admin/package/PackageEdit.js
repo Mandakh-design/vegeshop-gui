@@ -81,14 +81,18 @@ const PackageEdit = ({ packageId, onClose, changeState }) => {
               <InputNumber
                 placeholder="Хөнгөлөлт оруулна уу"
                 style={{ width: "100%" }}
+                max={100}
+                prefix={<b>%</b>}
               />
             </Form.Item>
           </Col>
           <Col span={24}>
             <Form.Item label="Үнийн дүн" name="price">
               <InputNumber
+                disabled
                 placeholder="Үнийн дүн оруулна уу"
                 style={{ width: "100%" }}
+                prefix={<b>₮</b>}
               />
             </Form.Item>
           </Col>
