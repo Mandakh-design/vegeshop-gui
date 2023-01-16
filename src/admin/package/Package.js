@@ -27,6 +27,7 @@ const Package = () => {
   const [productMapVisible, setProductMapVisible] = useState();
   const [productMapPackId, setProductMapPackId] = useState(null);
   const [productList, setProductList] = useState(null);
+  const [packageDtlList, setPackageDtlList] = useState();
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
   const columns = [
@@ -136,38 +137,11 @@ const Package = () => {
       },
     ];
 
-    // const productList = [
-    //   {
-    //     id: 1,
-    //     name: "Төмс",
-    //     price: 10000,
-    //     category: "Хүнсний ногоо",
-    //   },
-    //   {
-    //     id: 2,
-    //     name: "Лууван",
-    //     price: 2000,
-    //     category: "Хүнсний ногоо",
-    //   },
-    //   {
-    //     id: 3,
-    //     name: "Байцай",
-    //     price: 50000,
-    //     category: "Хүнсний ногоо",
-    //   },
-    //   {
-    //     id: 4,
-    //     name: "Сонгино",
-    //     price: 14000,
-    //     category: "Хүнсний ногоо",
-    //   },
-    // ];
-
     return (
       <Table
         rowKey="id"
         columns={expandColumn}
-        dataSource={productList}
+        dataSource={packageDtlList}
         title={() => {
           return (
             <Row justify="end">
@@ -188,13 +162,13 @@ const Package = () => {
     );
   };
 
-  const getProducListFormPackage = (packId) => {
+  const getProductListFormPackage = (packId) => {
     setLoading(true);
     adminService
-      .getProducListFormPackage({ package_id: packId })
+      .getProductListFormPackage({ package_id: packId })
       .then((result) => {
         if (result.data.data) {
-          setProductList(result.data.data);
+          setPackageDtlList(result.data.data);
         }
       })
       .catch((err) => showErrorMsg(err))
@@ -206,7 +180,7 @@ const Package = () => {
     adminService
       .getPackage()
       .then((result) => {
-        if (result) {
+        if (result.data?.data) {
           setPackageList(result.data.data);
         }
       })
@@ -243,7 +217,7 @@ const Package = () => {
     }
 
     setExpandedRowKeys(keys);
-    if (keys.length > 0) getProducListFormPackage(keys[0]);
+    if (keys.length > 0) getProductListFormPackage(keys[0]);
   };
 
   React.useEffect(() => {

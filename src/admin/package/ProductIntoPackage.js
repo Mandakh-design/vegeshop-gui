@@ -13,11 +13,13 @@ import {
   Table,
 } from "antd";
 import adminService from "../../services/adminService";
+import { showErrorMsg } from "../../common/utils";
 
 const ProductIntoPackage = ({ packageId, onClose }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [packageList, setPackageList] = useState();
+  const [productList, setProductList] = useState();
 
   const getPackageList = () => {
     setLoading(true);
@@ -39,20 +41,25 @@ const ProductIntoPackage = ({ packageId, onClose }) => {
   const getProductList = () => {
     setLoading(true);
     adminService
-      .getPackage()
+      .getProduct()
       .then((result) => {
         if (result.data?.data) {
-          setPackageList(result.data.data);
-          form.setFieldsValue({ package_id: packageId });
+          setProductList(result.data?.data);
         }
       })
-      .catch((err) => message.warning(err))
+      .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
   };
 
   const savePackageMap = (value) => {
-    message.success("Багцд бүтээгдэхүүн нэмэх");
-    onClose();
+    setLoading(true);
+    adminService
+      .savePackageDtl(value)
+      .then((result) => {
+        if (result.data) message.success("Амжилттай");
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
   };
 
   React.useEffect(() => {
@@ -83,14 +90,23 @@ const ProductIntoPackage = ({ packageId, onClose }) => {
           <Col span={18}>
             <Form.Item
               label="Бүтээгдэхүүн сонгох"
-              name="name"
+              name="product_id"
               rules={[{ required: true, message: "Заавал сонгоно уу" }]}
             >
-              <Select placeholder="Бүтээгдэхүүн сонгоно уу">
-                {packageList?.map((p) => {
+              <Select
+                placeholder="Бүтээгдэхүүн сонгоно уу"
+                filterOption={(input, option) =>
+                  (option?.label ?? "")
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                optionFilterProp="children"
+                showSearch
+              >
+                {productList?.map((p) => {
                   return (
                     <Select.Option key={p.id} value={p.id}>
-                      {p.name}
+                      {p.name + " /" + p.category + "/"}
                     </Select.Option>
                   );
                 })}

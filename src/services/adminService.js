@@ -20,8 +20,11 @@ const deleteProduct = (data) => axios.post(`/api/v1/deleteProduct`, data);
 const getProductListByCategory = (data) =>
   axios.get(`/api/v1/getProductListByCategory`, { params: data });
 
-const getProducListFormPackage = (data) =>
-  axios.get(`/api/v1/getProducListFormPackage`, { params: data });
+const getProductListFormPackage = (data) =>
+  axios.get(`/api/v1/getProductListFormPackage`, { params: data });
+
+const savePackageDtl = (data) => axios.post(`/api/v1/savePackageDtl`, data);
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   // G service
@@ -39,5 +42,6 @@ export default {
   getProduct,
   deleteProduct,
   getProductListByCategory,
-  getProducListFormPackage,
+  getProductListFormPackage,
+  savePackageDtl,
 };
