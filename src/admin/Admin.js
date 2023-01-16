@@ -7,20 +7,11 @@ import {
   UserOutlined,
   EnvironmentOutlined,
 } from "@ant-design/icons";
-import {
-  Breadcrumb,
-  Col,
-  Layout,
-  Menu,
-  message,
-  Row,
-  Space,
-  theme,
-} from "antd";
+import { Breadcrumb, Col, Layout, Menu } from "antd";
 import Package from "./package/Package";
 import Product from "./product/Product";
 import Users from "./users/Users";
-const { Header, Content, Footer, Sider } = Layout;
+const { Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
   return {
     key,
@@ -44,10 +35,6 @@ const items = [
 const Admin = () => {
   const [collapsed, setCollapsed] = useState(false);
   const [selectedMenuKey, setSelectedMenuKey] = useState("1");
-
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
 
   return (
     <Layout

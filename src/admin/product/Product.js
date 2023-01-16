@@ -13,8 +13,6 @@ import {
   Switch,
   Table,
 } from "antd";
-import PackageEdit from "../package/PackageEdit";
-import ProductIntoPackage from "../package/ProductIntoPackage";
 import adminService from "../../services/adminService";
 import { showErrorMsg } from "../../common/utils";
 import ProductEdit from "./ProductEdit";

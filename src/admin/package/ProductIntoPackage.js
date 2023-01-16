@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
+import React, { useState } from "react";
 import {
   Alert,
   Button,
   Col,
   Form,
-  Input,
   InputNumber,
   message,
   Row,
   Select,
-  Space,
   Spin,
-  Table,
 } from "antd";
 import adminService from "../../services/adminService";
 import { showErrorMsg } from "../../common/utils";

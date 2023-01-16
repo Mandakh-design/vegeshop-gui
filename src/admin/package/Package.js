@@ -27,7 +27,6 @@ const Package = () => {
 
   const [productMapVisible, setProductMapVisible] = useState();
   const [productMapPackId, setProductMapPackId] = useState(null);
-  const [productList, setProductList] = useState(null);
   const [packageDtlList, setPackageDtlList] = useState();
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
