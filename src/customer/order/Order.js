@@ -5,17 +5,18 @@ import {
     
   } from "@ant-design/icons";
 import contextLogin from "../../main/contextLogin";
-import QpayInvoice from "./QpayInvoice";
+import OrderInvoice from "./OrderInvoice";
+import OrderPayment from "./OrderPayment";
+import OrderShow from "./OrderShow";
 
 const Order = () => {
   const { loggedUser } = React.useContext(contextLogin);
   const [loading, setLoading] = React.useState(false);
-
-  const [placement, setPlacement] = React.useState('Qpay');
-  const [qpayVisible, setQpayVisible] = React.useState(false);
-  const placementChange = (e) => {
-    setPlacement(e.target.value);
+  const [size, setSize] = React.useState('order');
+  const handleSizeChange = (e) => {
+    setSize(e.target.value);
   };
+
   React.useEffect(() => {
     
   }, [loggedUser]);
@@ -44,51 +45,19 @@ const Order = () => {
   /></Col>
         <Col span={16}>
             <Row>
-                <Col span={24}>
-            <List
-          dataSource={[{title: "sss"}, {title: "sss"}]}
-          renderItem={(item, index) => (
-            <List.Item key={index}
-            actions={[<a key="list-loadmore-edit">edit</a>, <a key="list-loadmore-more">more</a>]}
-            >
-                <Skeleton avatar title={false} loading={false} active>
-            <List.Item.Meta
-              avatar={<Avatar style={{width:"5rem", height:"5rem"}} src="https://blog-images-1.pharmeasy.in/blog/production/wp-content/uploads/2021/04/23175719/shutterstock_440493100-1.jpg" />}
-              title={<a href="https://ant.design">Luuvaa</a>}
-              description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-            />
-          </Skeleton>
-              
-            </List.Item>
-            
-          )}
-            />
-            </Col>
-            <Col span={12}>
-            <Radio.Group value={placement} onChange={placementChange}>
-        <Radio.Button style={{width:"10rem", height:"10rem"}} value="Qpay" ><img style={{width:"100%", marginTop:'1rem'}} src="/images/qpay-icon.png"/></Radio.Button>
+            <Col span={24}>
+            <Radio.Group value={size} onChange={handleSizeChange}>
+        <Radio.Button value="order">Захиалах</Radio.Button>
+        <Radio.Button value="payment">Төлбөр төлөх</Radio.Button>
+        <Radio.Button value="confirm">Баталгаажсан</Radio.Button>
       </Radio.Group>
-        </Col>
-        <Col span={12} style={{ textAlign: "right" }}>
-        <h3>{placement}</h3>
-        <h3>Niit etr : 10230203</h3>
-        <Button size="large" type="primary" onClick={()=> {
-                setQpayVisible(true)
-            }}>Төлөх</Button>
-        </Col>
+            </Col>
+         {size === "order" && <OrderInvoice/>}
+         {size === "payment" && <OrderPayment/>}
+         {size === "confirm" && <OrderShow/>}
         </Row>
         </Col>
-        <Modal 
-        width="50%"
-        open={qpayVisible}
-        title={"Qpay төлбөр төлөлт"}
-        footer={null}
-        onCancel={() => {
-            setQpayVisible(false);
-        }}>
-            {qpayVisible && placement === "Qpay" && <QpayInvoice/>}
-            {qpayVisible && placement !== "Qpay" && <>Not configed Payment</>}
-        </Modal>
+      
     </Row>
     </Spin>
   );

@@ -18,7 +18,8 @@ import {
   UserOutlined,
   LoadingOutlined,
   TeamOutlined,
-  CloseOutlined
+  CloseOutlined,
+  CarOutlined
 } from "@ant-design/icons";
 import contextLogin from "./contextLogin";
 
@@ -100,6 +101,12 @@ const MainHeader = ({ userLoading }) => {
       key: 'admin',
       icon: <TeamOutlined />,
     }];
+    const itemsDist = [
+      {
+        label: 'Түгээлт',
+        key: 'dist_driver',
+        icon: <CarOutlined />,
+      }];
   return (
     <Spin spinning={false}>
       <Row>
@@ -128,6 +135,14 @@ const MainHeader = ({ userLoading }) => {
               <Menu mode="horizontal" selectedKeys={["admin"]} items={items} onClick={(e)=> {
                   if(e?.key === "admin"){
                     history.push("/admin")
+                  }
+              }}>
+                </Menu>
+}
+{loggedUser && loggedUser.role && loggedUser.role.startsWith("dist_") &&
+              <Menu mode="horizontal" selectedKeys={["dist_driver"]} items={itemsDist} onClick={(e)=> {
+                  if(e?.key === "dist_driver"){
+                    history.push("/distributor")
                   }
               }}>
                 </Menu>

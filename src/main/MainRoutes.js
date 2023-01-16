@@ -14,6 +14,7 @@ import UserLogin from "./UserLogin";
 import Admin from "../admin/Admin";
 import Order from "../customer/order/Order";
 import OrderList from "../customer/order/OrderList";
+import Distributor from "../distributor/Distributor";
 
 const MainRoutes = () => {
   const { loggedUser } = React.useContext(contextLogin);
@@ -39,6 +40,11 @@ const MainRoutes = () => {
           {loggedUser.role === "admin" &&
             <Route exact path="/admin">
                 <Admin/>
+            </Route>
+          }
+          {loggedUser && loggedUser.role && loggedUser.role.startsWith("dist_") &&
+            <Route exact path="/distributor">
+                <Distributor/>
             </Route>
           }
           <Route exact path="/order">

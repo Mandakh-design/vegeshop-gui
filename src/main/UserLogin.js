@@ -1,4 +1,4 @@
-import { Spin, Form, Row, Col, InputNumber, Input, Button } from "antd";
+import { Spin, Form, Row, Col, InputNumber, Input, Button, Space } from "antd";
 import React from "react";
 import { useHistory } from "react-router-dom";
 import contextLogin from "./contextLogin";
@@ -45,6 +45,7 @@ const AppLogin = () => {
   }
   return (
     <Spin spinning={loading}>
+      <Space style={{width:'100%'}} align="center">
       <Form form={form} onFinish={send1Code} layout="vertical">
         <Row justify="end">
           <Col span={24}>
@@ -80,6 +81,7 @@ const AppLogin = () => {
           
         </Row>
       </Form>
+      </Space>
     </Spin>
   );
 };
