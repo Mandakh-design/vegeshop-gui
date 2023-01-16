@@ -11,21 +11,17 @@ import {
   Switch,
   Table,
 } from "antd";
-import PackageEdit from "../package/PackageEdit";
+import UserEdit from "../users/UserEdit";
 import ProductIntoPackage from "../package/ProductIntoPackage";
 import adminService from "../../services/adminService";
 
 const Users = () => {
   const [loading, setLoading] = useState(false);
-  const [packageList, setPackageList] = useState();
+  const [userList, setUserList] = useState();
 
-  const [packageVisible, setPackageVisible] = useState(false);
-  const [selectedPackageId, setSelectedPackageId] = useState(null);
+  const [userEditVisible, setUserEditVisible] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
   const [changeState, setChangeState] = useState();
-
-  const [productMapVisible, setProductMapVisible] = useState();
-  const [productMapPackId, setProductMapPackId] = useState(null);
-  const [productList, setProductList] = useState(null);
 
   const columns = [
     {
@@ -38,34 +34,24 @@ const Users = () => {
       },
     },
     {
+      title: "Овог",
+      dataIndex: "lastname",
+      key: "lastname",
+    },
+    {
       title: "Нэр",
-      dataIndex: "name",
-      key: "name",
+      dataIndex: "firstname",
+      key: "firstname",
     },
     {
-      title: "Хөнгөлөлт",
-      dataIndex: "discount",
-      key: "discount",
+      title: "Утасны дугаар",
+      dataIndex: "phone",
+      key: "phone",
     },
     {
-      title: "Нийт үнийн дүн",
-      dataIndex: "price",
-      key: "price",
-    },
-    {
-      title: "Идэвхитэй эсэх",
-      dataIndex: "active_flag",
-      key: "active_flag",
-      render: (text, record) => {
-        return (
-          <Switch
-            checkedChildren="Тийм"
-            unCheckedChildren="Үгүй"
-            checked={text}
-            onChange={(e) => deletePackage(record.id, e)}
-          />
-        );
-      },
+      title: "Хэрэглэгчийн эрх",
+      dataIndex: "role",
+      key: "role",
     },
     {
       title: "",
@@ -79,8 +65,8 @@ const Users = () => {
               type="primary"
               ghost
               onClick={() => {
-                setSelectedPackageId(record.id);
-                setPackageVisible(true);
+                setSelectedUserId(record.id);
+                setUserEditVisible(true);
               }}
             />
           </Space>
@@ -89,116 +75,13 @@ const Users = () => {
     },
   ];
 
-  const expandTable = (value) => {
-    const expandColumn = [
-      {
-        title: "Барааны нэр",
-        dataIndex: "name",
-        key: "name",
-      },
-      {
-        title: "Үнэ",
-        dataIndex: "price",
-        key: "price",
-      },
-      {
-        title: "Тоо",
-        dataIndex: "qty",
-        key: "qty",
-      },
-      {
-        title: "Нийт дүн",
-        dataIndex: "total_price",
-        key: "total_price",
-      },
-      {
-        title: "Төрөл",
-        dataIndex: "category",
-        key: "category",
-      },
-      {
-        title: "",
-        dataIndex: "action",
-        key: "action",
-        render: (text, record) => {
-          return (
-            <Button
-              icon={<DeleteOutlined />}
-              danger
-              onClick={() => {
-                message.error("Багцаас бүтээгдэхүүн устгах");
-              }}
-            />
-          );
-        },
-      },
-    ];
-
-    const productList = [
-      {
-        id: 1,
-        name: "Төмс",
-        price: 10000,
-        category: "Хүнсний ногоо",
-      },
-      {
-        id: 2,
-        name: "Лууван",
-        price: 2000,
-        category: "Хүнсний ногоо",
-      },
-      {
-        id: 3,
-        name: "Байцай",
-        price: 50000,
-        category: "Хүнсний ногоо",
-      },
-      {
-        id: 4,
-        name: "Сонгино",
-        price: 14000,
-        category: "Хүнсний ногоо",
-      },
-    ];
-
-    return (
-      <Table
-        rowKey="id"
-        columns={expandColumn}
-        dataSource={productList}
-        title={() => {
-          return (
-            <Row justify="end">
-              <Button
-                type="primary"
-                ghost
-                onClick={() => {
-                  setProductMapVisible(true);
-                  setProductMapPackId(value.id);
-                }}
-              >
-                Бүтээгдэхүүн нэмэх
-              </Button>
-            </Row>
-          );
-        }}
-      />
-    );
-  };
-
-  const getProducListFormPackage = (packId) => {
-    adminService.getProducListFormPackage(packId).then((result) => {
-      if (result.data.data) {
-      }
-    });
-  };
-  const getPackageList = () => {
+  const getUserList = () => {
     setLoading(true);
     adminService
-      .getPackage()
+      .getUserList()
       .then((result) => {
         if (result) {
-          setPackageList(result.data.data);
+          setUserList(result.data.data);
         }
       })
       .catch((err) => {
@@ -209,16 +92,16 @@ const Users = () => {
       });
   };
 
-  const deletePackage = (packageId, activeFlag) => {
+  const deleteUser = (userId, activeFlag) => {
     setLoading(true);
     adminService
-      .deletePackage({
-        id: packageId,
+      .deleteUser({
+        id: userId,
         activeFlag: activeFlag,
       })
       .then((result) => {
         if (result.data) {
-          getPackageList();
+          getUserList();
         }
       })
       .catch((err) => {
@@ -228,7 +111,7 @@ const Users = () => {
   };
 
   React.useEffect(() => {
-    getPackageList();
+    getUserList();
   }, []);
 
   return (
@@ -237,79 +120,51 @@ const Users = () => {
         <Col span={24}>
           <Table
             rowKey="id"
-            dataSource={packageList}
+            dataSource={userList}
             columns={columns}
             bordered
             title={() => {
               return (
                 <Row justify="space-between">
                   <Col>
-                    <b> Багцын жагсаалт</b>
+                    <b> Хэрэглэгчийн жагсаалт</b>
                   </Col>
                   <Col>
                     <Button
                       type="primary"
                       ghost
                       onClick={() => {
-                        setPackageVisible(true);
+                        setUserEditVisible(true);
                       }}
                     >
-                      Багц нэмэх
+                      Хэрэглэгч нэмэх
                     </Button>
                   </Col>
                 </Row>
               );
             }}
-            expandable={{
-              expandedRowRender: (record) => {
-                return expandTable(record);
-              },
-              rowExpandable: (record) => true,
-            }}
           />
         </Col>
         <Modal
-          open={packageVisible}
-          title={selectedPackageId ? "Багц засах" : "Багц нэмэх"}
+          open={userEditVisible}
+          title={selectedUserId ? "Хэрэглэгч засах" : "Хэрэглэгч нэмэх"}
           okButtonProps={{ hidden: true }}
           cancelButtonProps={{ hidden: true }}
           onCancel={() => {
-            setPackageVisible(false);
-            setSelectedPackageId(null);
+            setUserEditVisible(false);
+            setSelectedUserId(null);
           }}
           footer={null}
         >
-          {packageVisible && (
-            <PackageEdit
-              packageId={selectedPackageId}
+          {userEditVisible && (
+            <UserEdit
+              userId={selectedUserId}
               changeState={changeState}
               onClose={() => {
-                setSelectedPackageId(null);
-                setPackageVisible(false);
-                getPackageList();
+                setSelectedUserId(null);
+                setUserEditVisible(false);
+                getUserList();
                 setChangeState(changeState + 1);
-              }}
-            />
-          )}
-        </Modal>
-        <Modal
-          open={productMapVisible}
-          title={"Багцад бүтээгдэхүүн нэмэх"}
-          okButtonProps={{ hidden: true }}
-          cancelButtonProps={{ hidden: true }}
-          onCancel={() => {
-            setProductMapVisible(false);
-            setProductMapPackId(null);
-          }}
-          footer={null}
-        >
-          {productMapVisible && productMapPackId && (
-            <ProductIntoPackage
-              packageId={productMapPackId}
-              onClose={() => {
-                setProductMapPackId(null);
-                setProductMapVisible(false);
-                getPackageList();
               }}
             />
           )}

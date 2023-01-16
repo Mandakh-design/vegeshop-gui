@@ -19,6 +19,7 @@ import {
 } from "antd";
 import Package from "./package/Package";
 import Product from "./product/Product";
+import Users from "./users/Users";
 const { Header, Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
   return {
@@ -87,7 +88,7 @@ const Admin = () => {
           <Col span={24}>
             {selectedMenuKey === "1" && <Package />}
             {selectedMenuKey === "6" && <Product />}
-            {selectedMenuKey === "3" && <Package />}
+            {selectedMenuKey === "3" && <Users />}
             {selectedMenuKey === "2" && "Захиалга"}
             {selectedMenuKey === "4" && <>Бүтээгдэхүүн</>}
             {selectedMenuKey === "5" && <>Хуваарь - Байршилын жагсаалт</>}
