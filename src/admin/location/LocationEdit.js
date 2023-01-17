@@ -1,15 +1,5 @@
 import React, { useState } from "react";
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  message,
-  Row,
-  Select,
-  Spin,
-} from "antd";
+import { Button, Col, Form, Input, message, Row, Select, Spin } from "antd";
 import adminService from "../../services/adminService";
 import { showErrorMsg } from "../../common/utils";
 

@@ -25,8 +25,8 @@ const getProductListFormPackage = (data) =>
 const deletePackageDtl = (data) => axios.post(`/api/v1/deletePackageDtl`, data);
 
 const savePackageDtl = (data) => axios.post(`/api/v1/savePackageDtl`, data);
-const getSchedulList = (data) =>
-  axios.get(`/api/v1/getSchedulList`, { params: data });
+const getScheduleList = (data) =>
+  axios.get(`/api/v1/getScheduleList`, { params: data });
 const getLocationList = (data) =>
   axios.get(`/api/v1/getLocation`, { params: data });
 const getDistrictList = (data) =>
@@ -36,10 +36,12 @@ const getKhorooList = (data) =>
 const saveLocation = (data) => axios.post(`/api/v1/saveLocation`, data);
 const deleteLocation = (data) => axios.post(`/api/v1/deleteLocation`, data);
 const deleteSchedule = (data) => axios.post(`/api/v1/deleteSchedule`, data);
-
+const deleteLocationMap = (data) =>
+  axios.post(`/api/v1/deleteLocationMap`, data);
 // S service
 const getUserList = () => axios.get(`api/v1/getUserList`);
 const saveUser = (data) => axios.put(`api/v1/saveUser`, data);
+const saveSchedule = (data) => axios.post(`/api/v1/saveSchedule`, data);
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -61,13 +63,15 @@ export default {
   getProductListFormPackage,
   savePackageDtl,
   deletePackageDtl,
-  getSchedulList,
+  getScheduleList,
   getLocationList,
   getDistrictList,
   getKhorooList,
   deleteSchedule,
   saveLocation,
   deleteLocation,
+  deleteLocationMap,
+  saveSchedule,
 
   // S service
   getUserList,
