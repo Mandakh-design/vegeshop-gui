@@ -180,6 +180,7 @@ const Product = () => {
             rowKey="id"
             dataSource={productList}
             columns={columns}
+            size="small"
             bordered
             title={() => {
               return (

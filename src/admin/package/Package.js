@@ -250,6 +250,7 @@ const Package = () => {
             dataSource={packageList}
             columns={columns}
             bordered
+            size="small"
             title={() => {
               return (
                 <Row justify="space-between">

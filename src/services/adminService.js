@@ -28,7 +28,14 @@ const savePackageDtl = (data) => axios.post(`/api/v1/savePackageDtl`, data);
 const getSchedulList = (data) =>
   axios.get(`/api/v1/getSchedulList`, { params: data });
 const getLocationList = (data) =>
-  axios.get(`/api/v1/getLocationList`, { params: data });
+  axios.get(`/api/v1/getLocation`, { params: data });
+const getDistrictList = (data) =>
+  axios.get(`/api/v1/getDistrict`, { params: data });
+const getKhorooList = (data) =>
+  axios.get(`/api/v1/getKhoroo`, { params: data });
+const saveLocation = (data) => axios.post(`/api/v1/saveLocation`, data);
+const deleteLocation = (data) => axios.post(`/api/v1/deleteLocation`, data);
+const deleteSchedule = (data) => axios.post(`/api/v1/deleteSchedule`, data);
 
 // S service
 const getUserList = () => axios.get(`api/v1/getUserList`);
@@ -56,6 +63,11 @@ export default {
   deletePackageDtl,
   getSchedulList,
   getLocationList,
+  getDistrictList,
+  getKhorooList,
+  deleteSchedule,
+  saveLocation,
+  deleteLocation,
 
   // S service
   getUserList,

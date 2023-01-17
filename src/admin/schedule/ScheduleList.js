@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { Button, Col, Row, Spin, Table } from "antd";
+import { Button, Col, message, Row, Space, Spin, Table } from "antd";
+import { DeleteOutlined } from "@ant-design/icons";
 import adminService from "../../services/adminService";
 import { showErrorMsg } from "../../common/utils";
 
@@ -23,8 +24,39 @@ const ScheduleList = () => {
       dataIndex: "status",
       key: "status",
     },
+    {
+      title: "",
+      dataIndex: "action",
+      key: "action",
+      render: (text, record) => {
+        return (
+          <Space>
+            <Button
+              icon={<DeleteOutlined />}
+              danger
+              onClick={() => deleteSchedule(record.id)}
+            />
+          </Space>
+        );
+      },
+    },
   ];
 
+  const deleteSchedule = () => {
+    setLoading(true);
+    adminService
+      .deleteSchedule()
+      .then((result) => {
+        if (result?.data?.data) {
+          message.success("Амжилттай");
+          getSchedulList();
+        }
+      })
+      .catch((err) => {
+        showErrorMsg(err);
+        setLoading(false);
+      });
+  };
   const getSchedulList = () => {
     setLoading(true);
     adminService
@@ -54,6 +86,7 @@ const ScheduleList = () => {
                 </Row>
               );
             }}
+            bordered
             dataSource={scheduleList}
             columns={columns}
           />

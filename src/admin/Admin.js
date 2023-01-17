@@ -4,7 +4,7 @@ import {
   AuditOutlined,
   PieChartOutlined,
   TeamOutlined,
-  UserOutlined,
+  FolderOpenOutlined,
   EnvironmentOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Col, Layout, Menu } from "antd";
@@ -22,16 +22,11 @@ function getItem(label, key, icon, children) {
   };
 }
 const items = [
-  getItem("Багц", "1", <PieChartOutlined />),
+  getItem("Багц", "1", <FolderOpenOutlined />),
   getItem("Бараа", "6", <PieChartOutlined />),
-  getItem("Ажилтан", "3", <UserOutlined />),
+  getItem("Ажилтан", "3", <TeamOutlined />),
   getItem("Хуваарь", "5", <EnvironmentOutlined />),
   getItem("Захиалга", "2", <UnorderedListOutlined />),
-  getItem("Бүтээгдэхүүн", "4", <AuditOutlined />),
-  getItem("Team", "sub2", <TeamOutlined />, [
-    getItem("Team 1", "9"),
-    getItem("Team 2", "8"),
-  ]),
 ];
 const Admin = () => {
   const [collapsed, setCollapsed] = useState(false);

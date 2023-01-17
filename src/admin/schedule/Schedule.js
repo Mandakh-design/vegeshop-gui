@@ -1,6 +1,6 @@
 import { Col, Row, Tabs } from "antd";
 import ScheduleList from "./ScheduleList";
-import Location from "./Location";
+import Location from "../location/Location";
 
 const Schedule = () => {
   const items = [
