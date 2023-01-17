@@ -25,6 +25,10 @@ const getProductListFormPackage = (data) =>
 const deletePackageDtl = (data) => axios.post(`/api/v1/deletePackageDtl`, data);
 
 const savePackageDtl = (data) => axios.post(`/api/v1/savePackageDtl`, data);
+const getSchedulList = (data) =>
+  axios.get(`/api/v1/getSchedulList`, { params: data });
+const getLocationList = (data) =>
+  axios.get(`/api/v1/getLocationList`, { params: data });
 
 // S service
 const getUserList = () => axios.get(`api/v1/getUserList`);
@@ -50,6 +54,8 @@ export default {
   getProductListFormPackage,
   savePackageDtl,
   deletePackageDtl,
+  getSchedulList,
+  getLocationList,
 
   // S service
   getUserList,

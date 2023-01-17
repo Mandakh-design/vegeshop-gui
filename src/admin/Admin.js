@@ -11,6 +11,7 @@ import { Breadcrumb, Col, Layout, Menu } from "antd";
 import Package from "./package/Package";
 import Product from "./product/Product";
 import Users from "./users/Users";
+import Schedule from "./schedule/Schedule";
 const { Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
   return {
@@ -26,7 +27,7 @@ const items = [
   getItem("Ажилтан", "3", <UserOutlined />),
   getItem("Захиалга", "2", <UnorderedListOutlined />),
   getItem("Бүтээгдэхүүн", "4", <AuditOutlined />),
-  getItem("Байршил", "5", <EnvironmentOutlined />),
+  getItem("Хуваарь", "5", <EnvironmentOutlined />),
   getItem("Team", "sub2", <TeamOutlined />, [
     getItem("Team 1", "9"),
     getItem("Team 2", "8"),
@@ -76,9 +77,9 @@ const Admin = () => {
             {selectedMenuKey === "1" && <Package />}
             {selectedMenuKey === "6" && <Product />}
             {selectedMenuKey === "3" && <Users />}
+            {selectedMenuKey === "5" && <Schedule />}
             {selectedMenuKey === "2" && "Захиалга"}
             {selectedMenuKey === "4" && <>Бүтээгдэхүүн</>}
-            {selectedMenuKey === "5" && <>Хуваарь - Байршилын жагсаалт</>}
           </Col>
         </Content>
         <Footer
