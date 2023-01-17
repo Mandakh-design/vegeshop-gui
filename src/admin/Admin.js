@@ -25,9 +25,9 @@ const items = [
   getItem("Багц", "1", <PieChartOutlined />),
   getItem("Бараа", "6", <PieChartOutlined />),
   getItem("Ажилтан", "3", <UserOutlined />),
+  getItem("Хуваарь", "5", <EnvironmentOutlined />),
   getItem("Захиалга", "2", <UnorderedListOutlined />),
   getItem("Бүтээгдэхүүн", "4", <AuditOutlined />),
-  getItem("Хуваарь", "5", <EnvironmentOutlined />),
   getItem("Team", "sub2", <TeamOutlined />, [
     getItem("Team 1", "9"),
     getItem("Team 2", "8"),
