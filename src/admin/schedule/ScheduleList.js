@@ -15,6 +15,7 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import adminService from "../../services/adminService";
 import { scheduleStatus, showErrorMsg } from "../../common/utils";
 import ScheduleEdit from "./ScheduleEdit";
+import ScheduleLocationMap from "./ScheduleLocationMap";
 
 const ScheduleList = () => {
   const [loading, setLoading] = useState(false);
@@ -27,6 +28,8 @@ const ScheduleList = () => {
 
   const [selectedSchedule, setSelectedSchedule] = useState();
   const [changeState, setChangeState] = useState();
+
+  const [expandedSchedule, setExpandedSchedule] = useState();
 
   const columns = [
     {
@@ -146,7 +149,7 @@ const ScheduleList = () => {
                   setLocationMapVisible(true);
                 }}
               >
-                Байршил нэмэх
+                Байршил холбох
               </Button>
             </Row>
           );
@@ -224,7 +227,10 @@ const ScheduleList = () => {
     }
 
     setExpandedRowKeys(keys);
-    if (keys.length > 0) getScheduleLocationList(keys[0]);
+    if (keys.length > 0) {
+      getScheduleLocationList(keys[0]);
+      setExpandedSchedule(record);
+    } else setExpandedSchedule(null);
   };
 
   return (
@@ -284,6 +290,25 @@ const ScheduleList = () => {
               getSchedulList();
               setChangeState(changeState + 1);
             }}
+          />
+        )}
+      </Modal>
+      <Modal
+        open={locationMapVisible}
+        title="Байршил холбох"
+        okButtonProps={{ hidden: true }}
+        cancelButtonProps={{ hidden: true }}
+        onCancel={() => {
+          setLocationMapVisible(false);
+          setChangeState(changeState + 1);
+          getScheduleLocationList(expandedRowKeys[0]);
+        }}
+        footer={null}
+      >
+        {locationMapVisible && (
+          <ScheduleLocationMap
+            schedule={expandedSchedule}
+            changeState={changeState}
           />
         )}
       </Modal>

@@ -44,6 +44,8 @@ const saveUser = (data) => axios.put(`api/v1/saveUser`, data);
 const saveSchedule = (data) => axios.post(`/api/v1/saveSchedule`, data);
 const getScheduleLocationList = (data) =>
   axios.get(`/api/v1/getScheduleLocationList`, { params: data });
+const saveScheduleLocationMap = (data) =>
+  axios.post(`/api/v1/saveScheduleLocationMap`, data);
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -75,6 +77,7 @@ export default {
   deleteLocationMap,
   saveSchedule,
   getScheduleLocationList,
+  saveScheduleLocationMap,
 
   // S service
   getUserList,
