@@ -9,10 +9,11 @@ import {
   Space,
   Spin,
   Table,
+  Tag,
 } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import adminService from "../../services/adminService";
-import { showErrorMsg } from "../../common/utils";
+import { scheduleStatus, showErrorMsg } from "../../common/utils";
 import ScheduleEdit from "./ScheduleEdit";
 
 const ScheduleList = () => {
@@ -42,6 +43,16 @@ const ScheduleList = () => {
       title: "Төлөв",
       dataIndex: "status",
       key: "status",
+      render: (text, record) => {
+        let key = Object.keys(scheduleStatus).find(
+          (d) => scheduleStatus[d].id === text
+        );
+        return (
+          <Tag color={scheduleStatus[key].color}>
+            {scheduleStatus[key].name}
+          </Tag>
+        );
+      },
     },
     {
       title: "",
@@ -54,13 +65,17 @@ const ScheduleList = () => {
               icon={<EditOutlined />}
               type="primary"
               ghost
-              onClick={() => setSelectedSchedule(record)}
+              onClick={() => {
+                setSelectedSchedule(record);
+                setScheduleVisible(true);
+              }}
             />
-            <Button
-              icon={<DeleteOutlined />}
-              danger
-              onClick={() => deleteSchedule(record.id)}
-            />
+            <Popconfirm
+              title="Устгахдаа итгэлтэй байна уу?"
+              onConfirm={() => deleteSchedule(record.id)}
+            >
+              <Button icon={<DeleteOutlined />} danger />
+            </Popconfirm>
           </Space>
         );
       },
@@ -161,7 +176,11 @@ const ScheduleList = () => {
     adminService
       .deleteSchedule({ id: id })
       .then((result) => {
-        if (result?.data?.data) {
+        if (result?.data?.message === "order_registered")
+          message.error(
+            "Хуваарь дээр захиалга бүртгэгдсэн байгаа тул устах боломжгүй!"
+          );
+        else if (result?.data) {
           message.success("Амжилттай");
           getSchedulList();
         }
@@ -230,6 +249,7 @@ const ScheduleList = () => {
               );
             }}
             bordered
+            rowKey="id"
             dataSource={scheduleList}
             columns={columns}
             expandedRowKeys={expandedRowKeys}

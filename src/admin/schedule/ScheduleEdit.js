@@ -7,33 +7,40 @@ const ScheduleEdit = ({ schedule, onClose, changeState }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
+  const [dStartDateStr, setDStartDateStr] = useState();
+  const [oCloseDateStr, setOCloseDateStr] = useState();
+
   const savePackage = (value) => {
-    // setLoading(true);
-    // const closeDate = moment().format(value.order_close_date);
-    console.log(value);
-    // const model = { ...schedule, ...value };
-    // adminService
-    //   .saveSchedule(model)
-    //   .then((result) => {
-    //     if (result.data) {
-    //       message.success("Амжилттай хадгалагдлаа");
-    //       onClose();
-    //     }
-    //   })
-    //   .catch((err) => message.warning(err))
-    //   .finally(() => setLoading(false));
+    setLoading(true);
+    value.order_close_date = oCloseDateStr;
+    value.delivery_start_date = dStartDateStr;
+    const model = { ...schedule, ...value };
+    adminService
+      .saveSchedule(model)
+      .then((result) => {
+        if (result?.data?.message === "order_registered")
+          message.error(
+            "Хуваарь дээр захиалга бүртгэгдсэн байгаа тул өөрчлөх боломжгүй!"
+          );
+        else if (result?.data) {
+          message.success("Амжилттай хадгалагдлаа");
+          onClose();
+        }
+      })
+      .catch((err) => message.warning(err))
+      .finally(() => setLoading(false));
   };
 
   const setFormInfo = (value) => {
     form.setFieldsValue({
-      name: value?.name,
-      discount: value?.discount,
-      price: value?.price,
+      order_close_date: value?.order_close_date,
+      delivery_start_date: value?.delivery_start_date,
     });
   };
 
   React.useEffect(() => {
     if (schedule) setFormInfo(schedule);
+    else setFormInfo(null);
   }, [schedule, changeState]);
 
   return (
@@ -46,7 +53,10 @@ const ScheduleEdit = ({ schedule, onClose, changeState }) => {
               name="order_close_date"
               rules={[{ required: true, message: "Заавал оруулна уу" }]}
             >
-              <DatePicker format="YYYY-MM-DD HH:mm" />
+              <DatePicker
+                format="YYYY-MM-DD"
+                onChange={(e, v) => setOCloseDateStr(v)}
+              />
             </Form.Item>
           </Col>
           <Col span={24}>
@@ -55,7 +65,10 @@ const ScheduleEdit = ({ schedule, onClose, changeState }) => {
               name="delivery_start_date"
               rules={[{ required: true, message: "Заавал оруулна уу" }]}
             >
-              <DatePicker />
+              <DatePicker
+                format="YYYY-MM-DD"
+                onChange={(e, v) => setDStartDateStr(v)}
+              />
             </Form.Item>
           </Col>
           <Col>
