@@ -17,7 +17,7 @@ import OrderList from "../customer/order/OrderList";
 import Distributor from "../distributor/Distributor";
 
 const MainRoutes = () => {
-  const { loggedUser } = React.useContext(contextLogin);
+  const { loggedUser, order } = React.useContext(contextLogin);
   const [currentRoute, setCurrentRoute] = React.useState();
   const [afterUseEffect, setAfterUseEffect] = React.useState(false);
   const location = useLocation();
@@ -28,31 +28,30 @@ const MainRoutes = () => {
     setAfterUseEffect(true);
   }, [location]);
   const RenderChildRoutes = () => {
-    //choose Org songoogui
-    if (
-      loggedUser 
-    ) {
+    if (loggedUser) {
       return (
         <Switch location={location}>
-           <Route exact path="/">
-              <Landing/>
+          <Route exact path="/">
+            <Landing />
           </Route>
-          {loggedUser.role === "admin" &&
+          {loggedUser.role === "admin" && (
             <Route exact path="/admin">
-                <Admin/>
+              <Admin />
             </Route>
-          }
-          {loggedUser && loggedUser.role && loggedUser.role.startsWith("dist_") &&
-            <Route exact path="/distributor">
-                <Distributor/>
-            </Route>
-          }
+          )}
+          {loggedUser &&
+            loggedUser.role &&
+            loggedUser.role.startsWith("dist_") && (
+              <Route exact path="/distributor">
+                <Distributor />
+              </Route>
+            )}
           <Route exact path="/order">
-            <Order/>
-        </Route>
-        <Route exact path="/orderList">
-            <OrderList/>
-        </Route>
+            <Order />
+          </Route>
+          <Route exact path="/orderList">
+            <OrderList />
+          </Route>
           <Route key={1} path="/userProfile">
             <Row style={{ padding: "10px 15px 0px 15px" }}>
               <Col
@@ -72,29 +71,26 @@ const MainRoutes = () => {
     return (
       <Switch location={location}>
         <Route exact path="/">
-            <Landing/>
+          <Landing />
         </Route>
         <Route exact path="/login">
-            <Row style={{ padding: "10px 15px 0px 15px" }}>
-              <Col
-                span={24}
-                // className="tabBorder"
-                // style={{ paddingTop: "1rem", marginBottom: "1rem" }}
-              >
-                 <UserLogin/>
-              </Col>
-            </Row>
-          </Route>
-          <Route exact path="/userProfile">
-            <Row style={{ padding: "10px 15px 0px 15px" }}>
-              <Col span={24}>
-                UserProfile
-              </Col>
-            </Row>
-          </Route>
+          <Row style={{ padding: "10px 15px 0px 15px" }}>
+            <Col
+              span={24}
+              // className="tabBorder"
+              // style={{ paddingTop: "1rem", marginBottom: "1rem" }}
+            >
+              <UserLogin />
+            </Col>
+          </Row>
+        </Route>
+        <Route exact path="/userProfile">
+          <Row style={{ padding: "10px 15px 0px 15px" }}>
+            <Col span={24}>UserProfile</Col>
+          </Row>
+        </Route>
         <Redirect to="/" />
-       
-       </Switch>
+      </Switch>
     );
   };
   return (

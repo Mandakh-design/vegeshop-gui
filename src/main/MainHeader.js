@@ -8,9 +8,12 @@ import {
   Menu,
   Spin,
   Drawer,
+  message,
+  Badge,
+  Card,
 } from "antd";
 import PropTypes from "prop-types";
-import React from "react";
+import React, { useState } from "react";
 import { withRouter, Link, useHistory } from "react-router-dom";
 import {
   ExportOutlined,
@@ -22,19 +25,42 @@ import {
   CarOutlined,
 } from "@ant-design/icons";
 import contextLogin from "./contextLogin";
+import adminService from "../services/adminService";
+import { showErrorMsg } from "../common/utils";
 
 const MainHeader = ({ userLoading }) => {
-  const { loggedUser, reload, setReload } = React.useContext(contextLogin);
+  const { loggedUser, reload, setReload, orderDtlCount, setOrderDtlCount } =
+    React.useContext(contextLogin);
   const token = localStorage.getItem("token");
   const [open, setOpen] = React.useState(false);
+  const [loading, setLoading] = useState(false);
+  const [orderDtlList, setOrderDtlList] = useState();
   const showDrawer = () => {
     setOpen(true);
+    getOrder(1);
   };
   const onClose = () => {
     setOpen(false);
   };
   let history = useHistory();
-  React.useEffect(() => {}, [userLoading, loggedUser]);
+
+  const getOrder = (e) => {
+    setLoading(true);
+    adminService
+      .getOrderDetail()
+      .then((result) => {
+        if (result?.data?.data) {
+          setOrderDtlCount(result.data.data.length);
+          if (e) setOrderDtlList(result.data.data);
+        }
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
+  React.useEffect(() => {
+    if (loggedUser) getOrder();
+  }, [userLoading, loggedUser]);
 
   const userMenu = (
     <Menu
@@ -109,7 +135,7 @@ const MainHeader = ({ userLoading }) => {
     },
   ];
   return (
-    <Spin spinning={false}>
+    <Spin spinning={loading}>
       <Row>
         <Col xs={2} sm={2} md={2} lg={6} xl={6} xxl={6}>
           <Space size="small">
@@ -176,15 +202,20 @@ const MainHeader = ({ userLoading }) => {
           )}
           {!userLoading && (
             <Space size="small">
-              <Button
-                shape="round"
-                type="primary"
-                ghost
-                icon={<ShoppingCartOutlined />}
-                onClick={showDrawer}
-              >
-                Сагс
-              </Button>
+              {orderDtlCount && (
+                <Badge count={orderDtlCount}>
+                  <Button
+                    shape="round"
+                    type="primary"
+                    ghost
+                    icon={<ShoppingCartOutlined />}
+                    onClick={showDrawer}
+                  >
+                    Сагс
+                  </Button>
+                </Badge>
+              )}
+
               {!loggedUser && (
                 <Button
                   shape="round"
@@ -228,21 +259,43 @@ const MainHeader = ({ userLoading }) => {
           onClose={onClose}
           open={open}
         >
-          <Row>
-            <Col span={24}>11</Col>
-            <Col span={24}>22</Col>
-            <Col span={24}>33</Col>
-            <Col span={24}>44</Col>
+          <Row gutter={[0, 16]}>
+            {orderDtlList?.map((p) => {
+              return (
+                <Col span={24}>
+                  <Card key={p.id}>
+                    <Row justify="space-between">
+                      <Col>Нэр: </Col>
+                      <Col>{p.product}</Col>
+                    </Row>
+                    <Row justify="space-between">
+                      <Col>Үнэ: </Col>
+                      <Col>{p.price}</Col>
+                    </Row>
+                    <Row justify="space-between">
+                      <Col>Тоо: </Col>
+                      <Col>{p.qty}</Col>
+                    </Row>
+                    <Row justify="space-between">
+                      <Col>Нийт үнэ: </Col>
+                      <Col>{p.amount}</Col>
+                    </Row>
+                  </Card>
+                </Col>
+              );
+            })}
             <Col span={24}>
-              <Button
-                type="primary"
-                onClick={() => {
-                  history.push("/order");
-                  onClose();
-                }}
-              >
-                Баталгаажуулах
-              </Button>
+              <Row justify="end">
+                <Button
+                  type="primary"
+                  onClick={() => {
+                    history.push("/order");
+                    onClose();
+                  }}
+                >
+                  Баталгаажуулах
+                </Button>
+              </Row>
             </Col>
           </Row>
         </Drawer>
