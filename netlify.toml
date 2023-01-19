@@ -5,7 +5,7 @@
   force = false
 
 [context.production.environment]
-REACT_APP_SERVICE_URL = "https://api.selba.mn/api"
+REACT_APP_SERVICE_URL = "https://api.selba.mn/"
 
 [context.development.environment]
 REACT_APP_SERVICE_URL = "localhost:8080"
