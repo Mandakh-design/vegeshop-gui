@@ -63,6 +63,7 @@ const Landing = () => {
   };
   const getProductList = () => {
     setLoading(true);
+    console.log(process.env.REACT_APP_SERVICE_URL);
     adminService
       .getProduct()
       .then((result) => {
