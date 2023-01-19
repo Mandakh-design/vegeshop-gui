@@ -1,35 +1,21 @@
-import { Spin, Menu, Row, Col, Card, List, Space, Button, message } from "antd";
-import {
-  MailOutlined,
-  PlusOutlined,
-  AlignLeftOutlined,
-} from "@ant-design/icons";
+import { Spin, Row, Col, Card, List, Button, message } from "antd";
+import { PlusOutlined, EyeOutlined } from "@ant-design/icons";
 import React from "react";
 import adminService from "../services/adminService";
 import { showErrorMsg } from "../common/utils";
 import contextLogin from "../main/contextLogin";
+import { useHistory } from "react-router-dom";
 
 const Landing = () => {
+  let history = useHistory();
   const [loading, setLoading] = React.useState(false);
-  const [current, setCurrent] = React.useState("package");
-  const [data, setData] = React.useState();
+  const [productLoading, setProductLoading] = React.useState(false);
+  const [packageLoading, setPackageLoading] = React.useState(false);
+
+  const [productList, setProductList] = React.useState();
+  const [packageList, setPackageList] = React.useState();
+
   const { setOrderDtlCount } = React.useContext(contextLogin);
-  const onClick = (e) => {
-    setCurrent(e.key);
-  };
-  const items = [
-    {
-      label: "Танд санал болгох багцууд",
-      key: "package",
-      icon: <MailOutlined style={{ fontSize: "x-large" }} />,
-    },
-  ];
-  const IconText = ({ icon, text }) => (
-    <Space>
-      {React.createElement(icon)}
-      {text}
-    </Space>
-  );
 
   const getOrder = () => {
     setLoading(true);
@@ -61,19 +47,36 @@ const Landing = () => {
         setLoading(false);
       });
   };
+
+  const getPackageList = () => {
+    setPackageLoading(true);
+    adminService
+      .getPackage()
+      .then((result) => {
+        if (result?.data?.data) setPackageList(result.data.data);
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => {
+        setPackageLoading(false);
+      });
+  };
   const getProductList = () => {
-    setLoading(true);
+    setProductLoading(true);
     adminService
       .getProduct()
       .then((result) => {
-        if (result?.data?.data) setData(result.data.data);
+        if (result?.data?.data) setProductList(result.data.data);
       })
       .catch((err) => showErrorMsg(err))
-      .finally(() => setLoading(false));
+      .finally(() => {
+        setProductLoading(false);
+        getPackageList();
+      });
   };
   React.useEffect(() => {
     getProductList();
   }, []);
+
   const loadMoreData = () => {
     // setData([...data, ...[{title:"asdas"},{title:"asdas"},{title:"asdas"}]]);
     // if (loading) {
@@ -90,37 +93,35 @@ const Landing = () => {
     //     setLoading(false);
     //   });
   };
+
   return (
     <Spin spinning={loading}>
       <Row>
         <Col span={24}>
-          <Menu
-            style={{ fontSize: "x-large" }}
-            onClick={onClick}
-            selectedKeys={[current]}
-            mode="horizontal"
-            items={items}
-          />
-        </Col>
-        <Col span={24}>
           <List
             grid={{
-              gutter: 16,
-              column: 4,
+              gutter: 0,
+              xs: 1,
+              sm: 2,
+              md: 4,
+              lg: 4,
+              xl: 5,
+              xxl: 6,
             }}
             itemLayout="horizontal"
-            size="large"
+            size="small"
             pagination={{
               onChange: (page) => {
                 console.log(page);
               },
               pageSize: 4,
             }}
-            dataSource={data}
+            dataSource={packageList}
             renderItem={(item) => (
               <List.Item key={item.id}>
                 <Card
                   style={{ marginTop: "1rem" }}
+                  onClick={() => history.push(`/package/${item.id}`)}
                   cover={
                     <img
                       alt="example"
@@ -132,28 +133,73 @@ const Landing = () => {
                       key="order"
                       type="primary"
                       icon={<PlusOutlined />}
+                      ghost
                       onClick={() => {
                         addProductToOrder(item.id, 1);
                       }}
                     >
                       Захиалах
                     </Button>,
-                    <Button
-                      key="detail"
-                      type="primary"
-                      ghost
-                      icon={<AlignLeftOutlined />}
-                    >
-                      Дэлгэрэнгүй
-                    </Button>,
                   ]}
                 >
                   <Card.Meta
                     // avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
                     title={item.name}
-                    description={item.description}
+                    description="{item.description}"
                   />
+                  {<b>{item.total_amount} ₮</b>}
                 </Card>
+              </List.Item>
+            )}
+          />
+          {/* product list */}
+          <List
+            size="small"
+            dataSource={productList}
+            itemLayout="horizontal"
+            grid={{
+              gutter: 0,
+              xs: 1,
+              sm: 2,
+              md: 4,
+              lg: 4,
+              xl: 5,
+              xxl: 6,
+            }}
+            renderItem={(item) => (
+              <List.Item key={item.id}>
+                <Col span={20}>
+                  <Card
+                    style={{ marginTop: "1rem" }}
+                    cover={
+                      <img
+                        alt="example"
+                        src="https://blog-images-1.pharmeasy.in/blog/production/wp-content/uploads/2021/04/23175719/shutterstock_440493100-1.jpg"
+                      />
+                    }
+                    onClick={() => history.push(`/package/${item.id}`)}
+                    actions={[
+                      <Button
+                        key="order"
+                        type="primary"
+                        icon={<PlusOutlined />}
+                        onClick={() => {
+                          addProductToOrder(item.id, 1);
+                        }}
+                        ghost
+                      >
+                        Захиалах
+                      </Button>,
+                    ]}
+                  >
+                    <Card.Meta
+                      // avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
+                      title={item.name}
+                      description={item.description}
+                    />
+                    {<b>{item.total_amount} ₮</b>}
+                  </Card>
+                </Col>
               </List.Item>
             )}
           />

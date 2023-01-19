@@ -29,8 +29,14 @@ import adminService from "../services/adminService";
 import { showErrorMsg } from "../common/utils";
 
 const MainHeader = ({ userLoading }) => {
-  const { loggedUser, reload, setReload, orderDtlCount, setOrderDtlCount } =
-    React.useContext(contextLogin);
+  const {
+    loggedUser,
+    reload,
+    setReload,
+    orderDtlCount,
+    setOrderDtlCount,
+    setLoggedUser,
+  } = React.useContext(contextLogin);
   const token = localStorage.getItem("token");
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
@@ -60,6 +66,7 @@ const MainHeader = ({ userLoading }) => {
 
   React.useEffect(() => {
     if (loggedUser) getOrder();
+    else setOrderDtlCount();
   }, [userLoading, loggedUser]);
 
   const userMenu = (
@@ -103,6 +110,7 @@ const MainHeader = ({ userLoading }) => {
               role="presentation"
               onClick={() => {
                 localStorage.removeItem("token");
+                setLoggedUser();
                 history.push("/");
                 setReload(reload + 1);
               }}

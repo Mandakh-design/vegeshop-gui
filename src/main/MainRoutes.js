@@ -15,6 +15,8 @@ import Admin from "../admin/Admin";
 import Order from "../customer/order/Order";
 import OrderList from "../customer/order/OrderList";
 import Distributor from "../distributor/Distributor";
+import PackageDetail from "../customer/PackageDetail";
+import ProductDetail from "../customer/ProductDetail";
 
 const MainRoutes = () => {
   const { loggedUser, order } = React.useContext(contextLogin);
@@ -52,6 +54,20 @@ const MainRoutes = () => {
           <Route exact path="/orderList">
             <OrderList />
           </Route>
+          <Route exact path="/package/:id">
+            <Row>
+              <Col span={24}>
+                <PackageDetail />
+              </Col>
+            </Row>
+          </Route>
+          <Route exact path="/product/:id">
+            <Row>
+              <Col span={24}>
+                <ProductDetail />
+              </Col>
+            </Row>
+          </Route>
           <Route key={1} path="/userProfile">
             <Row style={{ padding: "10px 15px 0px 15px" }}>
               <Col
@@ -75,11 +91,7 @@ const MainRoutes = () => {
         </Route>
         <Route exact path="/login">
           <Row style={{ padding: "10px 15px 0px 15px" }}>
-            <Col
-              span={24}
-              // className="tabBorder"
-              // style={{ paddingTop: "1rem", marginBottom: "1rem" }}
-            >
+            <Col span={24}>
               <UserLogin />
             </Col>
           </Row>
@@ -98,22 +110,14 @@ const MainRoutes = () => {
       {afterUseEffect && (
         <CSSTransition timeout={300} unmountOnExit>
           <Row
+            justify="start"
             style={{
               backgroundColor: "#f1f1f1",
-              // height: window.innerHeight - 66,
             }}
-            justify="start"
           >
             {currentRoute && (
               <Col span={24} style={{ padding: "10px 15px 0px 15px" }}>
                 <Row justify="left">
-                  {/* <Button
-                    icon={<ArrowLeftOutlined />}
-                    type="text"
-                    ghost
-                    style={{ margin: "-5px 0px -5px -5px" }}
-                    onClick={() => history.goBack()}
-                  /> */}
                   <Breadcrumb>
                     <Breadcrumb.Item>{currentRoute}</Breadcrumb.Item>
                   </Breadcrumb>
