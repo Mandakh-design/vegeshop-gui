@@ -3,3 +3,9 @@
   to = "https://api.selba.mn/api"
   status = 200
   force = false
+
+[context.production.environment]
+REACT_APP_SERVICE_URL = "https://api.selba.mn/api"
+
+[context.development.environment]
+REACT_APP_SERVICE_URL = "localhost:8080"
