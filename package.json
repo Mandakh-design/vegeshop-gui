@@ -12,11 +12,12 @@
     "react-infinite-scroll-component": "^6.1.0",
     "react-scripts": "^5.0.1",
     "react-transition-group": "^4.4.5",
-    "web-vitals": "^3.1.1"
+    "web-vitals": "^3.1.1",
+    "dotenv-cra": "^3.0.2"
   },
   "scripts": {
     "start": "craco start",
-    "build": "craco build",
+    "build": "craco build .env.build; react-scripts build",
     "test": "craco test"
   },
   "eslintConfig": {
@@ -39,6 +40,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
+    "eslint": "^8.32.0",
     "react-router-dom": "^5.2.0"
   }
 }
