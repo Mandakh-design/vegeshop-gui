@@ -1,9 +1,8 @@
 [[redirects]]
-  from = "/api/*"
+  from = "https://selba.mn/api/*"
   to = "https://api.selba.mn/:splat"
   status = 200
   force = true
-  headers = {X-From = "Netlify"}
 
 [context.production.environment]
 REACT_APP_SERVICE_URL = "https://api.selba.mn"
