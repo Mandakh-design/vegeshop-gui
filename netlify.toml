@@ -1,9 +1,8 @@
 [[redirects]]
-  from = "/api"
-  to = "https://api.selba.mn"
-  status = 200
+  from = "/api/*"
+  to = "https://api.selba.mn/:splat"
+  status = 301
   force = true
-  query = {path = ":path"}
 
 [context.production.environment]
 REACT_APP_SERVICE_URL = "https://api.selba.mn"
