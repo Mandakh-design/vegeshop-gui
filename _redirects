@@ -1,2 +1,4 @@
 /home              /
 /api               https://api.selba.mn
+
+https://selba.mn/api/* https://api.selba.mn/api/:splat 200
