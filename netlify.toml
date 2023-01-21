@@ -1,11 +1,11 @@
 [[redirects]]
-  from = "https://selba.mn/api/*"
-  to = "https://api.selba.mn/:splat"
+  from = "https://selba.mn/login"
+  to = "https://selba.mn/"
   status = 200
   force = true
 
 [context.production.environment]
-REACT_APP_SERVICE_URL = "https://api.selba.mn"
+REACT_APP_SERVICE_URL = "https://api.selba.mn/test"
 
 [context.development.environment]
 REACT_APP_SERVICE_URL = "localhost:8080"
