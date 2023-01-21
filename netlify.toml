@@ -3,6 +3,11 @@
   to = "https://selba.mn/"
   status = 200
   force = true
+[[redirects]]
+  from = "https://selba.mn/api/*"
+  to = "https://api.selba.mn/api/:splat"
+  status = 200
+  force = true
 
 [context.production.environment]
 REACT_APP_SERVICE_URL = "https://api.selba.mn/test"
