@@ -313,7 +313,7 @@ const MainHeader = ({ userLoading }) => {
                           </Row>
                           <Row justify="space-between">
                             <Col>Нэр: </Col>
-                            <Col>{p.productId ? p.product : p.package}</Col>
+                            <Col>{p.product ?? p.package}</Col>
                           </Row>
                           <Row justify="space-between">
                             <Col>Үнэ: </Col>

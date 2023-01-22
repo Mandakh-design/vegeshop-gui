@@ -77,13 +77,6 @@ const Admin = () => {
             {selectedMenuKey === "4" && <>Бүтээгдэхүүн</>}
           </Col>
         </Content>
-        <Footer
-          style={{
-            textAlign: "center",
-          }}
-        >
-          Selba ©2023
-        </Footer>
       </Layout>
     </Layout>
   );

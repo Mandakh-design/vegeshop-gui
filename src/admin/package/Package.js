@@ -15,7 +15,7 @@ import {
 import PackageEdit from "./PackageEdit";
 import ProductIntoPackage from "./ProductIntoPackage";
 import adminService from "../../services/adminService";
-import { showErrorMsg } from "../../common/utils";
+import { moneyFormat, showErrorMsg } from "../../common/utils";
 
 const Package = () => {
   const [loading, setLoading] = useState(false);
@@ -49,11 +49,25 @@ const Package = () => {
       title: "Хөнгөлөлт",
       dataIndex: "discount",
       key: "discount",
+      render: (text, record) => {
+        return text + " %";
+      },
+    },
+    {
+      title: "Анхны үнийн дүн",
+      dataIndex: "price",
+      key: "price",
+      render: (text, record) => {
+        return moneyFormat(text);
+      },
     },
     {
       title: "Нийт үнийн дүн",
-      dataIndex: "price",
-      key: "price",
+      dataIndex: "total_amount",
+      key: "total_amount",
+      render: (text, record) => {
+        return moneyFormat(text);
+      },
     },
     {
       title: "Идэвхитэй эсэх",
@@ -128,7 +142,7 @@ const Package = () => {
             <Popconfirm
               title="Устгахдаа итгэлтэй байна уу?"
               onConfirm={() => {
-                deletePackageDtl(record.id);
+                deletePackageDtl(record.id, expandedRowKeys[0]);
               }}
             >
               <Button icon={<DeleteOutlined />} danger />
@@ -170,7 +184,7 @@ const Package = () => {
       .then((result) => {
         if (result.data) {
           message.success("Амжилттай устгагдлаа");
-          getProductListFormPackage(expandedRowKeys[0]);
+          getPackageList();
         }
       })
       .catch((err) => {
@@ -199,6 +213,8 @@ const Package = () => {
       .then((result) => {
         if (result.data?.data) {
           setPackageList(result.data.data);
+          if (expandedRowKeys.length > 0)
+            getProductListFormPackage(expandedRowKeys[0]);
         }
       })
       .catch((err) => {
@@ -255,7 +271,7 @@ const Package = () => {
               return (
                 <Row justify="space-between">
                   <Col>
-                    <b> Багцын жагсаалт</b>
+                    <b>Багцын жагсаалт</b>
                   </Col>
                   <Col>
                     <Button
@@ -313,7 +329,7 @@ const Package = () => {
           onCancel={() => {
             setProductMapVisible(false);
             setProductMapPackId(null);
-            getProductListFormPackage(expandedRowKeys[0]);
+            getPackageList();
           }}
           footer={null}
         >

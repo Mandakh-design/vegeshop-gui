@@ -124,8 +124,13 @@ const ProductIntoPackage = ({ packageId, onClose }) => {
             </Form.Item>
           </Col>
           <Col span={5}>
-            <Form.Item label="Тоо" name="count" initialValue={1}>
-              <InputNumber placeholder="Тоо оруулна уу" />
+            <Form.Item
+              label="Тоо"
+              name="count"
+              initialValue={1}
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+              <InputNumber placeholder="Тоо оруулна уу" addonAfter="кг" />
             </Form.Item>
           </Col>
           <Col span={24}>
