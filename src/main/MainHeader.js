@@ -10,9 +10,9 @@ import {
   Drawer,
   Badge,
   Card,
-  Tooltip,
   Popconfirm,
   message,
+  Empty,
 } from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -59,7 +59,10 @@ const MainHeader = ({ userLoading }) => {
       .getOrderDetail({ status: 0 })
       .then((result) => {
         if (result?.data?.data) {
-          setOrderDtlCount(result.data.data[0].detailList.length);
+          let length = 0;
+          if (result.data.data[0].detailList?.length > 0)
+            length = result.data.data[0].detailList.length;
+          setOrderDtlCount(length);
           setScheduleOrder(result.data.data[0]);
         }
       })
@@ -67,10 +70,10 @@ const MainHeader = ({ userLoading }) => {
       .finally(() => setLoading(false));
   };
 
-  const deleteProductFromOrder = (e) => {
+  const deleteProductFromOrder = (dtl_id, order_id) => {
     setLoading(true);
     adminService
-      .deleteOrderDtl({ id: e })
+      .deleteOrderDtl({ id: dtl_id, order_id: order_id })
       .then((result) => {
         if (result?.data) {
           getOrder(1);
@@ -229,19 +232,17 @@ const MainHeader = ({ userLoading }) => {
           )}
           {!userLoading && (
             <Space size="small">
-              {orderDtlCount && (
-                <Badge count={orderDtlCount}>
-                  <Button
-                    shape="round"
-                    type="primary"
-                    ghost
-                    icon={<ShoppingCartOutlined />}
-                    onClick={showDrawer}
-                  >
-                    Сагс
-                  </Button>
-                </Badge>
-              )}
+              <Badge count={orderDtlCount}>
+                <Button
+                  shape="round"
+                  type="primary"
+                  ghost
+                  icon={<ShoppingCartOutlined />}
+                  onClick={showDrawer}
+                >
+                  Сагс
+                </Button>
+              </Badge>
               {!loggedUser && (
                 <Button
                   shape="round"
@@ -287,65 +288,72 @@ const MainHeader = ({ userLoading }) => {
         >
           {open && (
             <Spin spinning={loading}>
-              <Row gutter={[0, 16]}>
-                {scheduleOrder?.detailList?.map((p) => {
-                  return (
-                    <Col span={24} key={p.id}>
-                      <Card key={p.id}>
-                        <Row justify="end">
-                          <Popconfirm
-                            title="Сагснаас устгахдаа итгэлтэй байна уу?"
-                            placement="topRight"
-                            onConfirm={() => deleteProductFromOrder(p.id)}
-                          >
-                            <Button
-                              type="primary"
-                              danger
-                              size="small"
-                              ghost
-                              icon={<CloseOutlined />}
-                            />
-                          </Popconfirm>
-                        </Row>
-                        <Row justify="space-between">
-                          <Col>Нэр: </Col>
-                          <Col>{p.productId ? p.product : p.package}</Col>
-                        </Row>
-                        <Row justify="space-between">
-                          <Col>Үнэ: </Col>
-                          <Col>{p.price}</Col>
-                        </Row>
-                        <Row justify="space-between">
-                          <Col>Тоо: </Col>
-                          <Col>{p.qty}</Col>
-                        </Row>
-                        <Row justify="space-between">
-                          <Col>Нийт үнэ: </Col>
-                          <Col>{p.amount}</Col>
-                        </Row>
-                      </Card>
-                    </Col>
-                  );
-                })}
-                <Col span={24}>
-                  <Row justify="space-between">
-                    <Col>
-                      Нийт дүн: <b>{moneyFormat(scheduleOrder.total_amount)}</b>
-                    </Col>
-                    <Col>
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          history.push("/order");
-                          onClose();
-                        }}
-                      >
-                        Баталгаажуулах
-                      </Button>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
+              {scheduleOrder?.detailList ? (
+                <Row gutter={[0, 16]}>
+                  {scheduleOrder?.detailList?.map((p) => {
+                    return (
+                      <Col span={24} key={p.id}>
+                        <Card key={p.id}>
+                          <Row justify="end">
+                            <Popconfirm
+                              title="Сагснаас устгахдаа итгэлтэй байна уу?"
+                              placement="topRight"
+                              onConfirm={() =>
+                                deleteProductFromOrder(p.id, scheduleOrder.id)
+                              }
+                            >
+                              <Button
+                                type="primary"
+                                danger
+                                size="small"
+                                ghost
+                                icon={<CloseOutlined />}
+                              />
+                            </Popconfirm>
+                          </Row>
+                          <Row justify="space-between">
+                            <Col>Нэр: </Col>
+                            <Col>{p.productId ? p.product : p.package}</Col>
+                          </Row>
+                          <Row justify="space-between">
+                            <Col>Үнэ: </Col>
+                            <Col>{p.price}</Col>
+                          </Row>
+                          <Row justify="space-between">
+                            <Col>Тоо: </Col>
+                            <Col>{p.qty}</Col>
+                          </Row>
+                          <Row justify="space-between">
+                            <Col>Нийт үнэ: </Col>
+                            <Col>{p.amount}</Col>
+                          </Row>
+                        </Card>
+                      </Col>
+                    );
+                  })}
+                  <Col span={24}>
+                    <Row justify="space-between">
+                      <Col>
+                        Нийт дүн:{" "}
+                        <b>{moneyFormat(scheduleOrder.total_amount)}</b>
+                      </Col>
+                      <Col>
+                        <Button
+                          type="primary"
+                          onClick={() => {
+                            history.push("/order");
+                            onClose();
+                          }}
+                        >
+                          Баталгаажуулах
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+              ) : (
+                <Empty description="Сагс хоосон байна!" />
+              )}
             </Spin>
           )}
         </Drawer>
