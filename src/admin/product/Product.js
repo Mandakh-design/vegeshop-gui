@@ -12,9 +12,11 @@ import {
   Spin,
   Switch,
   Table,
+  Tooltip,
 } from "antd";
+import { EyeOutlined } from "@ant-design/icons";
 import adminService from "../../services/adminService";
-import { showErrorMsg } from "../../common/utils";
+import { moneyFormat, showErrorMsg } from "../../common/utils";
 import ProductEdit from "./ProductEdit";
 
 const Product = () => {
@@ -47,16 +49,45 @@ const Product = () => {
       title: "Үнэ",
       dataIndex: "price",
       key: "price",
-    },
-    {
-      title: "Үлдэгдэл",
-      dataIndex: "qty",
-      key: "qty",
+      render: (text, record) => {
+        return moneyFormat(text);
+      },
     },
     {
       title: "Хөнгөлөлт",
       dataIndex: "discount",
       key: "discount",
+      render: (text, record) => {
+        return text + " %";
+      },
+    },
+    {
+      title: "Хөнгөлөлтийн дараах үнэ",
+      dataIndex: "total_amount",
+      key: "total_amount",
+      render: (text, record) => {
+        return moneyFormat(text);
+      },
+    },
+    {
+      title: "Үлдэгдэл",
+      dataIndex: "qty",
+      key: "qty",
+      render: (text, record) => {
+        return text + " кг";
+      },
+    },
+    {
+      title: "Тайлбар",
+      dataIndex: "description",
+      key: "description",
+      render: (text, record) => {
+        return (
+          <Tooltip title={text}>
+            <Button icon={<EyeOutlined />} type="primary" ghost />
+          </Tooltip>
+        );
+      },
     },
     {
       title: "Идэвхитэй эсэх",

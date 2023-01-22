@@ -37,9 +37,10 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
     form.setFieldsValue({
       name: value?.name,
       description: value?.description,
-      discount: value?.discount,
+      discount: value?.discount ? value.discount : 0,
       price: value?.price,
       qty: value?.qty,
+      total_amount: value?.total_amount,
     });
   };
 
@@ -67,12 +68,12 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
     getProductInfo();
     setCategoryList([category]);
     form.setFieldsValue({ category_id: category.id });
-  }, [category, productId, changeState]);
+  }, [category, productId, changeState, form]);
 
   return (
     <Spin spinning={loading}>
       <Form form={form} onFinish={saveProduct} layout="vertical">
-        <Row justify="end">
+        <Row justify="end" gutter={[16, 0]}>
           <Col span={24}>
             <Form.Item name="category_id" label="Ангилал">
               <Select disabled>
@@ -104,27 +105,27 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
               <Input.TextArea placeholder="Тайлбар оруулна уу" />
             </Form.Item>
           </Col>
-          <Col span={24}>
-            <Form.Item label="Хөнгөлөлт" name="discount" initialValue={0}>
-              <InputNumber
-                placeholder="Хөнгөлөлт оруулна уу"
-                style={{ width: "100%" }}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item
-              label="Үнийн дүн"
-              name="price"
+              label="Хөнгөлөлт"
+              name="discount"
+              initialValue={0}
               rules={[{ required: true, message: "Заавал оруулна уу" }]}
             >
               <InputNumber
-                placeholder="Үнийн дүн оруулна уу"
+                placeholder="Хөнгөлөлт оруулна уу"
                 style={{ width: "100%" }}
+                addonAfter="%"
+                onChange={(e) => {
+                  let tAmount =
+                    form.getFieldsValue().price -
+                    (form.getFieldsValue().price * e) / 100;
+                  form.setFieldsValue({ total_amount: tAmount });
+                }}
               />
             </Form.Item>
           </Col>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item
               label="Үлдэгдэл"
               name="qty"
@@ -133,6 +134,38 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
               <InputNumber
                 placeholder="Үлдэгдэл оруулна уу"
                 style={{ width: "100%" }}
+                addonAfter="кг"
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="Үнийн дүн"
+              name="price"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+              <InputNumber
+                placeholder="Үнийн дүн оруулна уу"
+                style={{ width: "100%" }}
+                addonAfter="₮"
+                onChange={(e) => {
+                  let tAmount = e - (e * form.getFieldsValue().discount) / 100;
+                  form.setFieldsValue({ total_amount: tAmount });
+                }}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="Хөнгөлөлтийн дараах үнийн дүн"
+              name="total_amount"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+              <InputNumber
+                placeholder="Хөнгөлөлтийн дараах үнийн дүн"
+                disabled
+                style={{ width: "100%" }}
+                addonAfter="₮"
               />
             </Form.Item>
           </Col>
