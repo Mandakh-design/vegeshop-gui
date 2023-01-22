@@ -163,10 +163,10 @@ const Package = () => {
     );
   };
 
-  const deletePackageDtl = (id) => {
+  const deletePackageDtl = (id, package_id) => {
     setLoading(true);
     adminService
-      .deletePackageDtl({ id: id })
+      .deletePackageDtl({ id: id, package_id: package_id })
       .then((result) => {
         if (result.data) {
           message.success("Амжилттай устгагдлаа");
