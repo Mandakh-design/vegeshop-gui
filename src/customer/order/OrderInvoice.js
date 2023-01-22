@@ -19,8 +19,10 @@ import {
 } from "@ant-design/icons";
 import adminService from "../../services/adminService";
 import { moneyFormat, renderDateNoSec, showErrorMsg } from "../../common/utils";
+import { useHistory } from "react-router-dom";
 
 const OrderInvoice = ({ order, getOrder }) => {
+  let history = useHistory();
   const [form] = Form.useForm();
   const [loading, setLoading] = React.useState(false);
   const [locationMapList, setLocationMapList] = React.useState();
@@ -67,9 +69,16 @@ const OrderInvoice = ({ order, getOrder }) => {
                 src="https://blog-images-1.pharmeasy.in/blog/production/wp-content/uploads/2021/04/23175719/shutterstock_440493100-1.jpg"
               />
             }
-            title={<a href="https://ant.design">{prod.prodDesc}</a>}
+            title={
+              <Button
+                type="link"
+                onClick={() => history.push(`/product/${prod.product_id}/${1}`)}
+              >
+                {prod.prodDesc}
+              </Button>
+            }
             description={
-              <Row justify="space-between">
+              <Row justify="space-between" style={{ marginLeft: "1rem" }}>
                 <Col>{prod.product}</Col>
                 <Col style={{ color: "black" }}>
                   <b>{prod.qty + "кг " + moneyFormat(prod.amount)}</b>
@@ -93,9 +102,16 @@ const OrderInvoice = ({ order, getOrder }) => {
                 src="/images/vegetablePack.jpg"
               />
             }
-            title={<a href="https://ant.design">{pack.packageDesc}</a>}
+            title={
+              <Button
+                type="link"
+                onClick={() => history.push(`/product/${pack.package_id}/${2}`)}
+              >
+                {pack.packageDesc}
+              </Button>
+            }
             description={
-              <Row justify="space-between">
+              <Row justify="space-between" style={{ marginLeft: "1rem" }}>
                 <Col>{pack.package}</Col>
                 <Col style={{ color: "black" }}>
                   <b>{pack.qty + "ш " + moneyFormat(pack.amount)}</b>
@@ -134,7 +150,14 @@ const OrderInvoice = ({ order, getOrder }) => {
   };
 
   const submit = (value) => {
-    message.info("Төлбөрийн нэхэмлэх үүсгэх");
+    setLoading(true);
+    adminService
+      .submitOrder(value)
+      .then((result) => {
+        if (result?.data) getOrder();
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
   };
 
   React.useEffect(() => {
@@ -177,7 +200,7 @@ const OrderInvoice = ({ order, getOrder }) => {
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={8}>
             <Form.Item
-              name="location_map_id"
+              name="location_id"
               label="Байршил сонгох"
               rules={[{ required: true, message: "Заавал сонгоно уу" }]}
             >
@@ -187,7 +210,7 @@ const OrderInvoice = ({ order, getOrder }) => {
               >
                 {locationMapList?.map((s) => {
                   return (
-                    <Select.Option key={s.id} value={s.id}>
+                    <Select.Option key={s.id} value={s.location_id}>
                       {s.district + " " + s.khoroo + " " + s.name}
                     </Select.Option>
                   );

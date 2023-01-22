@@ -2,7 +2,7 @@ import React from "react";
 import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import contextLogin from "./contextLogin";
-import { Row, Col, Breadcrumb } from "antd";
+import { Row, Col, Breadcrumb, Card } from "antd";
 import Landing from "../customer/Landing";
 import UserLogin from "./UserLogin";
 import Admin from "../admin/Admin";
@@ -27,7 +27,11 @@ const MainRoutes = () => {
       return (
         <Switch location={location}>
           <Route exact path="/">
-            <Landing />
+            <Row>
+              <Col span={24}>
+                <Landing />
+              </Col>
+            </Row>
           </Route>
           {loggedUser.role === "admin" && (
             <Route exact path="/admin">
@@ -42,10 +46,18 @@ const MainRoutes = () => {
               </Route>
             )}
           <Route exact path="/order">
-            <Order />
+            <Row>
+              <Col span={24}>
+                <Order />
+              </Col>
+            </Row>
           </Route>
           <Route exact path="/orderList">
-            <OrderList />
+            <Row>
+              <Col span={24}>
+                <OrderList />
+              </Col>
+            </Row>
           </Route>
           <Route exact path="/product/:id/:type">
             <Row>
@@ -110,7 +122,24 @@ const MainRoutes = () => {
                 </Row>
               </Col>
             )}
-            <Col span={24}>{RenderChildRoutes()}</Col>
+            <Col span={24}>
+              <Row justify="center">
+                {window.location.href.includes("admin") ? (
+                  RenderChildRoutes()
+                ) : (
+                  <Col
+                    xs={23}
+                    sm={23}
+                    md={23}
+                    lg={22}
+                    xl={22}
+                    style={{ margin: "25px 0px 25px 0px" }}
+                  >
+                    <Card>{RenderChildRoutes()}</Card>
+                  </Col>
+                )}
+              </Row>
+            </Col>
           </Row>
         </CSSTransition>
       )}

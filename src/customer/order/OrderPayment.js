@@ -1,17 +1,4 @@
-import {
-  Steps,
-  Col,
-  Row,
-  Spin,
-  Divider,
-  List,
-  Avatar,
-  Skeleton,
-  Button,
-  message,
-  Radio,
-  Modal,
-} from "antd";
+import { Col, Row, Spin, Divider, Button, Radio, Modal } from "antd";
 import React from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import QpayInvoice from "./QpayInvoice";
@@ -43,6 +30,7 @@ const OrderPayment = () => {
               <img
                 style={{ width: "100%", marginTop: "1rem" }}
                 src="/images/qpay-icon.png"
+                alt=""
               />
             </Radio.Button>
           </Radio.Group>

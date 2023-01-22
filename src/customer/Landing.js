@@ -69,7 +69,7 @@ const Landing = () => {
   return (
     <Spin spinning={loading}>
       <Row justify="center">
-        <Col span={22}>
+        <Col xs={23} sm={23} md={23} lg={22} xl={22}>
           <List
             size="small"
             dataSource={productList}

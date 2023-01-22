@@ -1,4 +1,4 @@
-import { Steps, Col, Row, Spin, Divider, message } from "antd";
+import { Steps, Col, Row, Spin, Divider, message, Card } from "antd";
 import React from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import contextLogin from "../../main/contextLogin";
@@ -18,11 +18,12 @@ const Order = () => {
   const [step, setStep] = React.useState();
 
   const setOrderStep = (status) => {
-    if (status < 2) setStep(0);
-    if (status === 2) setStep(1);
-    if (status === 3) setStep(2);
-    if (status === 4) setStep(3);
-    if (status === 5) setStep(4);
+    if (status === 0) setStep(0);
+    if (status === 1) setStep(1);
+    if (status === 2) setStep(2);
+    if (status === 3) setStep(3);
+    if (status === 4) setStep(4);
+    if (status === 5) setStep(5);
   };
 
   const getOrderDetail = () => {
@@ -56,14 +57,7 @@ const Order = () => {
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
       <Row justify="center">
-        <Col
-          xs={23}
-          sm={23}
-          md={23}
-          lg={22}
-          xl={22}
-          style={{ margin: "25px 0px 25px 0px" }}
-        >
+        <Col span={24}>
           <Row>
             <Col span={24}>
               <Divider orientation="left">Захиалга баталгаажуулах</Divider>
@@ -88,7 +82,7 @@ const Order = () => {
                 ]}
               />
             </Col>
-            <Col xs={24} sm={24} md={16} lg={18} xl={16}>
+            <Col xs={24} sm={24} md={16} lg={18} xl={18}>
               <Row>
                 {step === 0 && (
                   <OrderInvoice order={orderDetail} getOrder={getOrderDetail} />

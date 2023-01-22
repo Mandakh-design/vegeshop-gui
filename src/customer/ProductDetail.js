@@ -7,7 +7,6 @@ import {
   Image,
   InputNumber,
   message,
-  Radio,
   Row,
   Space,
   Spin,
@@ -24,9 +23,11 @@ import { useParams } from "react-router-dom";
 import { moneyFormat, showErrorMsg } from "../common/utils";
 import adminService from "../services/adminService";
 import contextLogin from "../main/contextLogin";
+import { useHistory } from "react-router-dom";
 
 const ProductDetail = () => {
   const { id, type } = useParams();
+  let history = useHistory();
   const { setOrderDtlCount } = React.useContext(contextLogin);
 
   const [form] = Form.useForm();
@@ -137,75 +138,60 @@ const ProductDetail = () => {
     <Spin spinning={loading}>
       <Row justify="center">
         {productDetail && (
-          <Col
-            xs={23}
-            sm={23}
-            md={23}
-            lg={22}
-            xl={22}
-            style={{ margin: "25px 0px 25px 0px" }}
-          >
-            <Card
-              title={
-                <Row justify="space-between" style={{ marginTop: "8px" }}>
+          <Col span={24}>
+            <>
+              <Row justify="space-between" style={{ marginTop: "8px" }}>
+                <Col>
                   <Col>
-                    <Col>
-                      <span
-                        style={{
-                          color: "rgb(36, 36, 36)",
-                          fontSize: "20px",
-                          fontWeight: 500,
-                          marginBottom: "2px",
-                        }}
-                      >
-                        {productDetail.description}
-                      </span>
-                    </Col>
                     <span
                       style={{
-                        display: "flex",
-                        alignItems: "center",
-                        color: "rgb(109, 113, 117)",
-                        fontSize: "14px",
-                        fontWeight: 400,
-                        marginBottom: "0px",
+                        color: "rgb(36, 36, 36)",
+                        fontSize: "20px",
+                        fontWeight: 500,
+                        marginBottom: "2px",
                       }}
                     >
-                      {productDetail.name}
+                      {productDetail.description}
                     </span>
                   </Col>
-                  <Col>
-                    <Button
-                      type="text"
-                      icon={<HeartOutlined />}
-                      onClick={() =>
-                        message.warning("Хөгжүүлэлт хийгдэж байна")
-                      }
-                    >
-                      Хадгалах
-                    </Button>
-                    <Button
-                      type="text"
-                      icon={<FacebookOutlined />}
-                      onClick={() =>
-                        message.warning("Хөгжүүлэлт хийгдэж байна")
-                      }
-                    >
-                      Хуваалцах
-                    </Button>
-                    <Button
-                      type="text"
-                      icon={<CopyOutlined />}
-                      onClick={() =>
-                        message.warning("Хөгжүүлэлт хийгдэж байна")
-                      }
-                    >
-                      Төстэй бараа
-                    </Button>
-                  </Col>
-                </Row>
-              }
-            >
+                  <span
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      color: "rgb(109, 113, 117)",
+                      fontSize: "14px",
+                      fontWeight: 400,
+                      marginBottom: "0px",
+                    }}
+                  >
+                    {productDetail.name}
+                  </span>
+                </Col>
+                <Col>
+                  <Button
+                    type="text"
+                    icon={<HeartOutlined />}
+                    onClick={() => message.warning("Хөгжүүлэлт хийгдэж байна")}
+                  >
+                    Хадгалах
+                  </Button>
+                  <Button
+                    type="text"
+                    icon={<FacebookOutlined />}
+                    onClick={() => message.warning("Хөгжүүлэлт хийгдэж байна")}
+                  >
+                    Хуваалцах
+                  </Button>
+                  <Button
+                    type="text"
+                    icon={<CopyOutlined />}
+                    onClick={() => message.warning("Хөгжүүлэлт хийгдэж байна")}
+                  >
+                    Төстэй бараа
+                  </Button>
+                </Col>
+              </Row>
+              <Divider />
               <Row justify="space-between">
                 <Col
                   xs={24}
@@ -253,8 +239,11 @@ const ProductDetail = () => {
                               type="primary"
                               size="large"
                               style={{ width: "100%" }}
+                              onClick={() => {
+                                history.push("/order");
+                              }}
                             >
-                              ХУДАЛДАН АВАХ
+                              ЗАХИАЛАХ
                             </Button>
                           </Col>
                         </Row>
@@ -307,7 +296,7 @@ const ProductDetail = () => {
                   </Form>
                 </Col>
               </Row>
-            </Card>
+            </>
           </Col>
         )}
       </Row>
