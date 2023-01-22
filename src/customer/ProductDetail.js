@@ -37,9 +37,10 @@ const ProductDetail = () => {
   const getOrder = () => {
     setLoading(true);
     adminService
-      .getOrderDetail()
+      .getOrderDetail({ status: 0 })
       .then((result) => {
-        if (result?.data?.data) setOrderDtlCount(result.data.data.length);
+        if (result?.data?.data)
+          setOrderDtlCount(result.data.data[0].detailList.length);
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));

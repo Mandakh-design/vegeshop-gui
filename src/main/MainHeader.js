@@ -28,7 +28,7 @@ import {
 } from "@ant-design/icons";
 import contextLogin from "./contextLogin";
 import adminService from "../services/adminService";
-import { showErrorMsg } from "../common/utils";
+import { moneyFormat, showErrorMsg } from "../common/utils";
 
 const MainHeader = ({ userLoading }) => {
   const {
@@ -44,7 +44,7 @@ const MainHeader = ({ userLoading }) => {
 
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
-  const [orderDtlList, setOrderDtlList] = useState();
+  const [scheduleOrder, setScheduleOrder] = useState();
   const showDrawer = () => {
     setOpen(true);
     getOrder(1);
@@ -56,11 +56,11 @@ const MainHeader = ({ userLoading }) => {
   const getOrder = (e) => {
     setLoading(true);
     adminService
-      .getOrderDetail()
+      .getOrderDetail({ status: 0 })
       .then((result) => {
         if (result?.data?.data) {
-          setOrderDtlCount(result.data.data.length);
-          if (e) setOrderDtlList(result.data.data);
+          setOrderDtlCount(result.data.data[0].detailList.length);
+          setScheduleOrder(result.data.data[0]);
         }
       })
       .catch((err) => showErrorMsg(err))
@@ -242,7 +242,6 @@ const MainHeader = ({ userLoading }) => {
                   </Button>
                 </Badge>
               )}
-
               {!loggedUser && (
                 <Button
                   shape="round"
@@ -286,62 +285,69 @@ const MainHeader = ({ userLoading }) => {
           onClose={onClose}
           open={open}
         >
-          <Spin spinning={loading}>
-            <Row gutter={[0, 16]}>
-              {orderDtlList?.map((p) => {
-                return (
-                  <Col span={24}>
-                    <Card key={p.id}>
-                      <Row justify="end">
-                        <Popconfirm
-                          title="Сагснаас устгахдаа итгэлтэй байна уу?"
-                          placement="topRight"
-                          onConfirm={() => deleteProductFromOrder(p.id)}
-                        >
-                          <Button
-                            type="primary"
-                            danger
-                            size="small"
-                            ghost
-                            icon={<CloseOutlined />}
-                          />
-                        </Popconfirm>
-                      </Row>
-                      <Row justify="space-between">
-                        <Col>Нэр: </Col>
-                        <Col>{p.product}</Col>
-                      </Row>
-                      <Row justify="space-between">
-                        <Col>Үнэ: </Col>
-                        <Col>{p.price}</Col>
-                      </Row>
-                      <Row justify="space-between">
-                        <Col>Тоо: </Col>
-                        <Col>{p.qty}</Col>
-                      </Row>
-                      <Row justify="space-between">
-                        <Col>Нийт үнэ: </Col>
-                        <Col>{p.amount}</Col>
-                      </Row>
-                    </Card>
-                  </Col>
-                );
-              })}
-              <Col span={24}>
-                <Row justify="end">
-                  <Button
-                    type="primary"
-                    onClick={() => {
-                      history.push("/order");
-                      onClose();
-                    }}
-                  >
-                    Баталгаажуулах
-                  </Button>
-                </Row>
-              </Col>
-            </Row>
-          </Spin>
+          {open && (
+            <Spin spinning={loading}>
+              <Row gutter={[0, 16]}>
+                {scheduleOrder?.detailList?.map((p) => {
+                  return (
+                    <Col span={24} key={p.id}>
+                      <Card key={p.id}>
+                        <Row justify="end">
+                          <Popconfirm
+                            title="Сагснаас устгахдаа итгэлтэй байна уу?"
+                            placement="topRight"
+                            onConfirm={() => deleteProductFromOrder(p.id)}
+                          >
+                            <Button
+                              type="primary"
+                              danger
+                              size="small"
+                              ghost
+                              icon={<CloseOutlined />}
+                            />
+                          </Popconfirm>
+                        </Row>
+                        <Row justify="space-between">
+                          <Col>Нэр: </Col>
+                          <Col>{p.productId ? p.product : p.package}</Col>
+                        </Row>
+                        <Row justify="space-between">
+                          <Col>Үнэ: </Col>
+                          <Col>{p.price}</Col>
+                        </Row>
+                        <Row justify="space-between">
+                          <Col>Тоо: </Col>
+                          <Col>{p.qty}</Col>
+                        </Row>
+                        <Row justify="space-between">
+                          <Col>Нийт үнэ: </Col>
+                          <Col>{p.amount}</Col>
+                        </Row>
+                      </Card>
+                    </Col>
+                  );
+                })}
+                <Col span={24}>
+                  <Row justify="space-between">
+                    <Col>
+                      Нийт дүн: <b>{moneyFormat(scheduleOrder.total_amount)}</b>
+                    </Col>
+                    <Col>
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          history.push("/order");
+                          onClose();
+                        }}
+                      >
+                        Баталгаажуулах
+                      </Button>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            </Spin>
+          )}
         </Drawer>
       </Row>
     </Spin>

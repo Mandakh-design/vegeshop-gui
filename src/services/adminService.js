@@ -48,7 +48,8 @@ const getScheduleLocationList = (data) =>
   axios.get(`/api/v1/getScheduleLocationList`, { params: data });
 const saveScheduleLocationMap = (data) =>
   axios.post(`/api/v1/saveScheduleLocationMap`, data);
-const getOrderDetail = (data) => axios.get(`/api/v1/getOrderDetail`);
+const getOrderDetail = (data) =>
+  axios.get(`/api/v1/getOrderDetail`, { params: data });
 const addProductToScheduleOrder = (data) =>
   axios.post(`/api/v1/addProductToScheduleOrder`, data);
 

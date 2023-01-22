@@ -345,7 +345,8 @@ const scheduleOrderStatus = {
   ORDER_CONFIRM: { id: 1, name: "Захиалга баталгаажуулах", color: "geekblue" },
   PAYMENT: { id: 2, name: "Төлбөр төлөх", color: "blue" },
   PAYMENT_CONFIRM: { id: 3, name: "Төлбөр баталгаажсан", color: "processing" },
-  SUCCESS: { id: 4, name: "Баталгаажсан", color: "success" },
+  CANCELED: { id: 4, name: "Цуцлагдсан", color: "red" },
+  SUCCESS: { id: 5, name: "Баталгаажсан", color: "success" },
 };
 
 const moneyFormat = (value) => {
