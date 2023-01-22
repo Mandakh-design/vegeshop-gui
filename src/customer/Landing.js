@@ -18,9 +18,13 @@ import React from "react";
 import adminService from "../services/adminService";
 import { showErrorMsg } from "../common/utils";
 import { useHistory } from "react-router-dom";
+import contextLogin from "../main/contextLogin";
 
 const Landing = () => {
   let history = useHistory();
+  const { loggedUser } = React.useContext(contextLogin);
+  const token = localStorage.getItem("token");
+
   const [form] = Form.useForm();
   const [loading, setLoading] = React.useState(false);
 
@@ -113,17 +117,16 @@ const Landing = () => {
                         src="https://blog-images-1.pharmeasy.in/blog/production/wp-content/uploads/2021/04/23175719/shutterstock_440493100-1.jpg"
                       />
                     }
-                    onClick={() =>
-                      history.push(`/product/${item.id}/${item.type}`)
-                    }
+                    onClick={() => {
+                      if (loggedUser && token)
+                        history.push(`/product/${item.id}/${item.type}`);
+                      else history.push(`/login`);
+                    }}
                     actions={[
                       <Button
                         key="order"
                         type="primary"
                         icon={<ShoppingCartOutlined />}
-                        onClick={() =>
-                          history.push(`/product/${item.id}/${item.type}`)
-                        }
                         ghost
                       >
                         Захиалах

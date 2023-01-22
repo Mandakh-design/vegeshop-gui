@@ -8,13 +8,12 @@ import {
   Menu,
   Spin,
   Drawer,
-  message,
   Badge,
   Card,
 } from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
-import { withRouter, Link, useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   ExportOutlined,
   ShoppingCartOutlined,
