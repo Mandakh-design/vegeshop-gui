@@ -354,4 +354,26 @@ const moneyFormat = (value) => {
   return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + " ₮";
 };
 
-export { countryList, activeStatus, showErrorMsg, scheduleStatus, moneyFormat };
+const renderDate = (date) => {
+  if (date) {
+    return moment(date).format("yyyy-MM-DD HH:mm:ss");
+  }
+  return null;
+};
+
+const renderDateNoSec = (date) => {
+  if (date) {
+    return moment(date).format("yyyy-MM-DD");
+  }
+  return null;
+};
+
+export {
+  countryList,
+  activeStatus,
+  showErrorMsg,
+  scheduleStatus,
+  moneyFormat,
+  renderDate,
+  renderDateNoSec,
+};

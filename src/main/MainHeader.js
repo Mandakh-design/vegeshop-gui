@@ -13,6 +13,7 @@ import {
   Popconfirm,
   message,
   Empty,
+  Avatar,
 } from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -294,22 +295,34 @@ const MainHeader = ({ userLoading }) => {
                     return (
                       <Col span={24} key={p.id}>
                         <Card key={p.id}>
-                          <Row justify="end">
-                            <Popconfirm
-                              title="Сагснаас устгахдаа итгэлтэй байна уу?"
-                              placement="topRight"
-                              onConfirm={() =>
-                                deleteProductFromOrder(p.id, scheduleOrder.id)
-                              }
-                            >
-                              <Button
-                                type="primary"
-                                danger
-                                size="small"
-                                ghost
-                                icon={<CloseOutlined />}
-                              />
-                            </Popconfirm>
+                          <Row
+                            justify="space-between"
+                            style={{ marginBottom: "2px" }}
+                          >
+                            <Col>
+                              {p.type === 1 ? (
+                                <Avatar src="https://blog-images-1.pharmeasy.in/blog/production/wp-content/uploads/2021/04/23175719/shutterstock_440493100-1.jpg" />
+                              ) : (
+                                <Avatar src="/images/vegetablePack.jpg" />
+                              )}
+                            </Col>
+                            <Col>
+                              <Popconfirm
+                                title="Сагснаас устгахдаа итгэлтэй байна уу?"
+                                placement="topRight"
+                                onConfirm={() =>
+                                  deleteProductFromOrder(p.id, scheduleOrder.id)
+                                }
+                              >
+                                <Button
+                                  type="primary"
+                                  danger
+                                  size="small"
+                                  ghost
+                                  icon={<CloseOutlined />}
+                                />
+                              </Popconfirm>
+                            </Col>
                           </Row>
                           <Row justify="space-between">
                             <Col>Нэр: </Col>
@@ -317,15 +330,17 @@ const MainHeader = ({ userLoading }) => {
                           </Row>
                           <Row justify="space-between">
                             <Col>Үнэ: </Col>
-                            <Col>{p.price}</Col>
+                            <Col>{moneyFormat(p.price)}</Col>
                           </Row>
                           <Row justify="space-between">
                             <Col>Тоо: </Col>
-                            <Col>{p.qty}</Col>
+                            <Col>
+                              {p.type === 1 ? p.qty + "кг" : p.qty + "ш"}
+                            </Col>
                           </Row>
                           <Row justify="space-between">
                             <Col>Нийт үнэ: </Col>
-                            <Col>{p.amount}</Col>
+                            <Col>{moneyFormat(p.amount)}</Col>
                           </Row>
                         </Card>
                       </Col>

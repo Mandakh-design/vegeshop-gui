@@ -134,7 +134,6 @@ const Landing = () => {
                     ]}
                   >
                     <Card.Meta
-                      // avatar={<Avatar src="https://joeschmoe.io/api/v1/random" />}
                       title={item.name}
                       description={
                         <div style={{ marginBottom: "1rem" }}>

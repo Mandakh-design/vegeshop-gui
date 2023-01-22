@@ -99,6 +99,15 @@ const ProductDetail = () => {
   };
 
   const addProductToOrder = (value) => {
+    if (value.count === 0) {
+      message.warning("Тоо ширхэгт 0 ээс их тоо оруулна уу!");
+      return;
+    }
+    if (value.count !== 1 && value.count % 2 !== 0) {
+      message.warning("Тоо ширхэгт бүхэл тоо оруулна уу!");
+      return;
+    }
+
     setLoading(true);
     let product = {};
     if (type === "1") product.product_id = id;
@@ -222,7 +231,7 @@ const ProductDetail = () => {
                           <InputNumber
                             placeholder=""
                             addonBefore="Тоо ширхэг"
-                            addonAfter="кг"
+                            addonAfter={productDetail.type === 1 ? "кг" : "ш"}
                           />
                         </Form.Item>
                       </Col>
