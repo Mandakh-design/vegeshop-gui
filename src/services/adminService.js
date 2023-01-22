@@ -11,6 +11,8 @@ const getCategory = (data) => axios.get(`/api/v1/category`, { params: data });
 
 const savePackage = (data) => axios.post(`/api/v1/package`, data);
 const getPackage = (data) => axios.get(`/api/v1/package`, { params: data });
+const getPackageWithDtl = (data) =>
+  axios.get(`/api/v1/getPackageWithDtl`, { params: data });
 const deletePackage = (data) => axios.post(`/api/v1/deletePackage`, data);
 
 const saveProduct = (data) => axios.post(`/api/v1/saveProduct`, data);
@@ -50,6 +52,8 @@ const getOrderDetail = (data) => axios.get(`/api/v1/getOrderDetail`);
 const addProductToScheduleOrder = (data) =>
   axios.post(`/api/v1/addProductToScheduleOrder`, data);
 
+const searchData = (data) => axios.post(`/api/v1/searchData`, data);
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
   // G service
@@ -83,6 +87,8 @@ export default {
   saveScheduleLocationMap,
   getOrderDetail,
   addProductToScheduleOrder,
+  searchData,
+  getPackageWithDtl,
 
   // S service
   getUserList,

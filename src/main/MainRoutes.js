@@ -1,25 +1,18 @@
 import React from "react";
-import {
-  Redirect,
-  Route,
-  Switch,
-  useLocation,
-  useHistory,
-} from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import contextLogin from "./contextLogin";
-import { Row, Col, Breadcrumb, Button } from "antd";
+import { Row, Col, Breadcrumb } from "antd";
 import Landing from "../customer/Landing";
 import UserLogin from "./UserLogin";
 import Admin from "../admin/Admin";
 import Order from "../customer/order/Order";
 import OrderList from "../customer/order/OrderList";
 import Distributor from "../distributor/Distributor";
-import PackageDetail from "../customer/PackageDetail";
 import ProductDetail from "../customer/ProductDetail";
 
 const MainRoutes = () => {
-  const { loggedUser, order } = React.useContext(contextLogin);
+  const { loggedUser } = React.useContext(contextLogin);
   const [currentRoute, setCurrentRoute] = React.useState();
   const [afterUseEffect, setAfterUseEffect] = React.useState(false);
   const location = useLocation();
@@ -54,14 +47,7 @@ const MainRoutes = () => {
           <Route exact path="/orderList">
             <OrderList />
           </Route>
-          <Route exact path="/package/:id">
-            <Row>
-              <Col span={24}>
-                <PackageDetail />
-              </Col>
-            </Row>
-          </Route>
-          <Route exact path="/product/:id">
+          <Route exact path="/product/:id/:type">
             <Row>
               <Col span={24}>
                 <ProductDetail />

@@ -1,5 +1,6 @@
 import React from "react";
 import "./App.less";
+import "./style.css";
 import { ConfigProvider } from "antd";
 import mnMn from "antd/locale/mn_MN";
 import contextLogin from "./main/contextLogin";

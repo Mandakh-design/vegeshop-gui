@@ -10,7 +10,7 @@ import LoadingComponent from "./LoadingComponent";
 import adminService from "../services/adminService";
 
 const AppLogin = () => {
-  const { setLoggedUser, reload} = React.useContext(contextLogin);
+  const { setLoggedUser, reload } = React.useContext(contextLogin);
   const [loading, setLoading] = React.useState(true);
 
   const setToken = React.useCallback((token) => {
@@ -52,7 +52,7 @@ const AppLogin = () => {
               hidden: true,
             },
             onOk() {
-              localStorage.removeItem("token")
+              localStorage.removeItem("token");
             },
           });
           // } else if (error && error.response && error.response.status === 601) {
@@ -63,26 +63,24 @@ const AppLogin = () => {
         }
       }
     );
-    
-    adminService.getLoggedUser()
+
+    adminService
+      .getLoggedUser()
       .then((res) => {
-        if (res?.data?.data) 
-        {
-         setLoggedUser(res.data.data);
-        }else
-            setLoggedUser();
+        if (res?.data?.data) {
+          setLoggedUser(res.data.data);
+        } else setLoggedUser();
       })
       .catch((er) => {
-        
         showErrorMsg(er);
       })
       .finally(() => {
         setLoading(false);
       });
   }, []);
- 
+
   React.useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (token) setToken(token);
     else {
       setLoggedUser();
@@ -94,13 +92,28 @@ const AppLogin = () => {
     <>
       <Layout theme="light" style={{ height: "100%" }}>
         <Router>
-          <Layout.Header style={{ backgroundColor: "white" }}>
-            <MainHeader
-              userLoading={loading}
-            />
+          <Layout.Header
+            style={{
+              backgroundColor: "white",
+              position: "sticky",
+              top: 0,
+              zIndex: 1,
+              width: "100%",
+            }}
+          >
+            <MainHeader userLoading={loading} />
           </Layout.Header>
-          {loading ? <LoadingComponent /> : <MainLayout />}
-          </Router> 
+          <Layout.Content>
+            {loading ? <LoadingComponent /> : <MainLayout />}
+          </Layout.Content>
+        </Router>
+        <Layout.Footer
+          style={{
+            textAlign: "center",
+          }}
+        >
+          SELBA service ©2023
+        </Layout.Footer>
       </Layout>
     </>
   );

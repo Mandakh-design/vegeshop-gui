@@ -348,4 +348,9 @@ const scheduleOrderStatus = {
   SUCCESS: { id: 4, name: "Баталгаажсан", color: "success" },
 };
 
-export { countryList, activeStatus, showErrorMsg, scheduleStatus };
+const moneyFormat = (value) => {
+  if (value == null || value === undefined || value.length === 0) return "";
+  return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + " ₮";
+};
+
+export { countryList, activeStatus, showErrorMsg, scheduleStatus, moneyFormat };
