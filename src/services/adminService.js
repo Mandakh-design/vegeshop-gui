@@ -53,6 +53,7 @@ const addProductToScheduleOrder = (data) =>
   axios.post(`/api/v1/addProductToScheduleOrder`, data);
 
 const searchData = (data) => axios.post(`/api/v1/searchData`, data);
+const deleteOrderDtl = (data) => axios.post(`/api/v1/deleteOrderDtl`, data);
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -89,6 +90,7 @@ export default {
   addProductToScheduleOrder,
   searchData,
   getPackageWithDtl,
+  deleteOrderDtl,
 
   // S service
   getUserList,

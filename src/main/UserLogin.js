@@ -7,6 +7,7 @@ import {
   Input,
   Button,
   Divider,
+  message,
 } from "antd";
 import { PhoneOutlined, KeyOutlined, UserOutlined } from "@ant-design/icons";
 import React from "react";
@@ -23,6 +24,7 @@ const AppLogin = () => {
   let history = useHistory();
 
   React.useEffect(() => {}, []);
+
   const send1Code = () => {
     const phone = form.getFieldsValue().phone;
     if (!phone || phone.toString().length !== 8) {
@@ -40,15 +42,16 @@ const AppLogin = () => {
       })
       .finally(() => setLoading(false));
   };
-  const login = (oneCode) => {
-    const phone = form.getFieldsValue().phone;
-    if (!phone || phone.toString().length !== 8) {
-      return "Утасны дугаар оруулна уу";
+
+  const login = (value) => {
+    if (value.phone.length !== 8) {
+      message.warning("Утасны дугаар буруу бн!");
+      return "";
     }
 
     setLoading(true);
     adminService
-      .login({ phone: form.getFieldsValue().phone, password: oneCode })
+      .login(value)
       .then((res) => {
         if (res) {
           localStorage.setItem("token", res.data.token);
@@ -59,11 +62,12 @@ const AppLogin = () => {
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
   };
+
   return (
     <Spin spinning={loading}>
-      <Row justify="center">
+      <Row justify="center" style={{ marginBottom: "10rem" }}>
         <Col xs={24} sm={24} md={16} lg={12} xl={9} xxl={5}>
-          <Form form={form} onFinish={send1Code} layout="vertical">
+          <Form form={form} onFinish={login} layout="vertical">
             <Row gutter={[16, 0]}>
               <Col span={24}>
                 <Row justify="center">
@@ -75,7 +79,7 @@ const AppLogin = () => {
                   label="Утас"
                   name="phone"
                   disabled={sendCode}
-                  rules={[{ required: false, message: "Заавал оруулна уу" }]}
+                  rules={[{ required: true, message: "Заавал оруулна уу" }]}
                 >
                   <Input
                     style={{ width: "100%" }}
@@ -88,16 +92,16 @@ const AppLogin = () => {
                 <Form.Item
                   label="Нэг удаагийн нууц үг"
                   name="password"
-                  rules={[{ required: false, message: "Заавал оруулна уу" }]}
+                  rules={[{ required: true, message: "Заавал оруулна уу" }]}
                 >
                   <InputNumber
                     placeholder="Нууц код оруулна уу"
                     style={{ width: "100%" }}
                     prefix={<KeyOutlined />}
                     type="password"
-                    onChange={(value) => {
-                      if (value && value.toString().length === 4) login(value);
-                    }}
+                    // onChange={(value) => {
+                    //   if (value && value.toString().length === 4) login(value);
+                    // }}
                   />
                 </Form.Item>
               </Col>
@@ -112,6 +116,15 @@ const AppLogin = () => {
                     Код илгээх
                   </Button>
                 </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Button
+                  type="primary"
+                  onClick={form.submit}
+                  style={{ width: "100%" }}
+                >
+                  НЭВТРЭХ
+                </Button>
               </Col>
             </Row>
           </Form>

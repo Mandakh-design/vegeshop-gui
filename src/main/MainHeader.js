@@ -10,6 +10,9 @@ import {
   Drawer,
   Badge,
   Card,
+  Tooltip,
+  Popconfirm,
+  message,
 } from "antd";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
@@ -36,7 +39,9 @@ const MainHeader = ({ userLoading }) => {
     setOrderDtlCount,
     setLoggedUser,
   } = React.useContext(contextLogin);
+  let history = useHistory();
   const token = localStorage.getItem("token");
+
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
   const [orderDtlList, setOrderDtlList] = useState();
@@ -47,7 +52,6 @@ const MainHeader = ({ userLoading }) => {
   const onClose = () => {
     setOpen(false);
   };
-  let history = useHistory();
 
   const getOrder = (e) => {
     setLoading(true);
@@ -61,6 +65,22 @@ const MainHeader = ({ userLoading }) => {
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
+  };
+
+  const deleteProductFromOrder = (e) => {
+    setLoading(true);
+    adminService
+      .deleteOrderDtl({ id: e })
+      .then((result) => {
+        if (result?.data) {
+          getOrder(1);
+          message.success("Амжилттай устгагдлаа");
+        }
+      })
+      .catch((err) => {
+        showErrorMsg(err);
+        setLoading(false);
+      });
   };
 
   React.useEffect(() => {
@@ -266,45 +286,62 @@ const MainHeader = ({ userLoading }) => {
           onClose={onClose}
           open={open}
         >
-          <Row gutter={[0, 16]}>
-            {orderDtlList?.map((p) => {
-              return (
-                <Col span={24}>
-                  <Card key={p.id}>
-                    <Row justify="space-between">
-                      <Col>Нэр: </Col>
-                      <Col>{p.product}</Col>
-                    </Row>
-                    <Row justify="space-between">
-                      <Col>Үнэ: </Col>
-                      <Col>{p.price}</Col>
-                    </Row>
-                    <Row justify="space-between">
-                      <Col>Тоо: </Col>
-                      <Col>{p.qty}</Col>
-                    </Row>
-                    <Row justify="space-between">
-                      <Col>Нийт үнэ: </Col>
-                      <Col>{p.amount}</Col>
-                    </Row>
-                  </Card>
-                </Col>
-              );
-            })}
-            <Col span={24}>
-              <Row justify="end">
-                <Button
-                  type="primary"
-                  onClick={() => {
-                    history.push("/order");
-                    onClose();
-                  }}
-                >
-                  Баталгаажуулах
-                </Button>
-              </Row>
-            </Col>
-          </Row>
+          <Spin spinning={loading}>
+            <Row gutter={[0, 16]}>
+              {orderDtlList?.map((p) => {
+                return (
+                  <Col span={24}>
+                    <Card key={p.id}>
+                      <Row justify="end">
+                        <Popconfirm
+                          title="Сагснаас устгахдаа итгэлтэй байна уу?"
+                          placement="topRight"
+                          onConfirm={() => deleteProductFromOrder(p.id)}
+                        >
+                          <Button
+                            type="primary"
+                            danger
+                            size="small"
+                            ghost
+                            icon={<CloseOutlined />}
+                          />
+                        </Popconfirm>
+                      </Row>
+                      <Row justify="space-between">
+                        <Col>Нэр: </Col>
+                        <Col>{p.product}</Col>
+                      </Row>
+                      <Row justify="space-between">
+                        <Col>Үнэ: </Col>
+                        <Col>{p.price}</Col>
+                      </Row>
+                      <Row justify="space-between">
+                        <Col>Тоо: </Col>
+                        <Col>{p.qty}</Col>
+                      </Row>
+                      <Row justify="space-between">
+                        <Col>Нийт үнэ: </Col>
+                        <Col>{p.amount}</Col>
+                      </Row>
+                    </Card>
+                  </Col>
+                );
+              })}
+              <Col span={24}>
+                <Row justify="end">
+                  <Button
+                    type="primary"
+                    onClick={() => {
+                      history.push("/order");
+                      onClose();
+                    }}
+                  >
+                    Баталгаажуулах
+                  </Button>
+                </Row>
+              </Col>
+            </Row>
+          </Spin>
         </Drawer>
       </Row>
     </Spin>
