@@ -83,13 +83,13 @@ const Order = () => {
               />
             </Col>
             <Col xs={24} sm={24} md={16} lg={18} xl={18}>
-              <Row>
-                {step === 0 && (
-                  <OrderInvoice order={orderDetail} getOrder={getOrderDetail} />
-                )}
-                {step === 1 && <OrderPayment />}
-                {step === 2 && <OrderShow />}
-              </Row>
+              {step === 0 && (
+                <OrderInvoice order={orderDetail} getOrder={getOrderDetail} />
+              )}
+              {step === 1 && (
+                <OrderPayment order={orderDetail} getOrder={getOrderDetail} />
+              )}
+              {step === 2 && <OrderShow />}
             </Col>
           </Row>
         </Col>

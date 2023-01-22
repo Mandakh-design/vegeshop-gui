@@ -57,6 +57,7 @@ const searchData = (data) => axios.post(`/api/v1/searchData`, data);
 const deleteOrderDtl = (data) => axios.post(`/api/v1/deleteOrderDtl`, data);
 const createInvoice = (data) => axios.post(`/api/v1/createInvoice`, data);
 const submitOrder = (data) => axios.post(`/api/v1/submitOrder`, data);
+const changeOrderStep = (data) => axios.post(`/api/v1/changeOrderStep`, data);
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -96,6 +97,7 @@ export default {
   deleteOrderDtl,
   createInvoice,
   submitOrder,
+  changeOrderStep,
 
   // S service
   getUserList,

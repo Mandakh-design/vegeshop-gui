@@ -10,6 +10,7 @@ import {
   Form,
   Select,
   Alert,
+  Popconfirm,
 } from "antd";
 import React from "react";
 import {
@@ -50,11 +51,12 @@ const OrderInvoice = ({ order, getOrder }) => {
         ghost
         onClick={() => message.success("Хөгжүүлэлт хийгдэж байна!")}
       />,
-      <Button
-        icon={<DeleteOutlined />}
-        danger
-        onClick={() => deleteProductFromOrder(product.id, order.id)}
-      />,
+      <Popconfirm
+        title="Устгахдаа итгэлтэй байна уу?"
+        onConfirm={() => deleteProductFromOrder(product.id, order.id)}
+      >
+        <Button icon={<DeleteOutlined />} danger />
+      </Popconfirm>,
     ];
   };
 
