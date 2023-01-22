@@ -167,8 +167,8 @@ const MainHeader = ({ userLoading }) => {
   ];
   return (
     <Spin spinning={loading}>
-      <Row>
-        <Col xs={2} sm={2} md={2} lg={6} xl={6} xxl={6}>
+      <Row justify="space-between">
+        <Col>
           <Space size="small">
             <img
               role="presentation"
@@ -191,45 +191,22 @@ const MainHeader = ({ userLoading }) => {
             </Typography.Text>
           </Space>
         </Col>
-        <Col xs={2} sm={2} md={2} lg={6} xl={6} xxl={6}>
-          {loggedUser && loggedUser.role === "admin" && (
-            <Menu
-              mode="horizontal"
-              selectedKeys={["admin"]}
-              items={items}
-              onClick={(e) => {
-                if (e?.key === "admin") {
+        <Col style={{ textAlign: "right" }}>
+          {userLoading && (
+            <Spin indicator={<LoadingOutlined />} spinning={userLoading}></Spin>
+          )}
+          {loggedUser?.role && (
+            <Button
+              type="link"
+              style={{ color: "green" }}
+              onClick={() => {
+                if (loggedUser.role === "admin") {
                   history.push("/admin");
                 }
               }}
-            ></Menu>
-          )}
-          {loggedUser &&
-            loggedUser.role &&
-            loggedUser.role.startsWith("dist_") && (
-              <Menu
-                mode="horizontal"
-                selectedKeys={["dist_driver"]}
-                items={itemsDist}
-                onClick={(e) => {
-                  if (e?.key === "dist_driver") {
-                    history.push("/distributor");
-                  }
-                }}
-              ></Menu>
-            )}
-        </Col>
-        <Col
-          xs={20}
-          sm={20}
-          md={20}
-          lg={12}
-          xl={12}
-          xxl={12}
-          style={{ textAlign: "right" }}
-        >
-          {userLoading && (
-            <Spin indicator={<LoadingOutlined />} spinning={userLoading}></Spin>
+            >
+              {loggedUser.role}
+            </Button>
           )}
           {!userLoading && (
             <Space size="small">

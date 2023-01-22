@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Form, message, Row, Select, Spin } from "antd";
 import adminService from "../../services/adminService";
-import { showErrorMsg } from "../../common/utils";
+import { renderDateNoSec, showErrorMsg } from "../../common/utils";
 
 const ScheduleLocationMap = ({ schedule, changeState }) => {
   const [form] = Form.useForm();
@@ -62,7 +62,7 @@ const ScheduleLocationMap = ({ schedule, changeState }) => {
                 {scheduleList?.map((s) => {
                   return (
                     <Select.Option key={s.id} value={s.id}>
-                      {s.order_close_date}
+                      {renderDateNoSec(s.order_close_date)}
                     </Select.Option>
                   );
                 })}
@@ -79,7 +79,7 @@ const ScheduleLocationMap = ({ schedule, changeState }) => {
                 {scheduleList?.map((s) => {
                   return (
                     <Select.Option key={s.id} value={s.id}>
-                      {s.delivery_start_date}
+                      {renderDateNoSec(s.delivery_start_date)}
                     </Select.Option>
                   );
                 })}

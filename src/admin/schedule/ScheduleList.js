@@ -13,7 +13,11 @@ import {
 } from "antd";
 import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import adminService from "../../services/adminService";
-import { scheduleStatus, showErrorMsg } from "../../common/utils";
+import {
+  renderDateNoSec,
+  scheduleStatus,
+  showErrorMsg,
+} from "../../common/utils";
 import ScheduleEdit from "./ScheduleEdit";
 import ScheduleLocationMap from "./ScheduleLocationMap";
 
@@ -36,11 +40,17 @@ const ScheduleList = () => {
       title: "Захиалга хаагдах огноо",
       dataIndex: "order_close_date",
       key: "order_close_date",
+      render: (text) => {
+        return renderDateNoSec(text);
+      },
     },
     {
       title: "Хүргэлт гарах огноо",
       dataIndex: "delivery_start_date",
       key: "delivery_start_date",
+      render: (text) => {
+        return renderDateNoSec(text);
+      },
     },
     {
       title: "Төлөв",
@@ -179,11 +189,12 @@ const ScheduleList = () => {
     adminService
       .deleteSchedule({ id: id })
       .then((result) => {
-        if (result?.data?.message === "order_registered")
+        if (result?.data?.message === "order_registered") {
           message.error(
             "Хуваарь дээр захиалга бүртгэгдсэн байгаа тул устах боломжгүй!"
           );
-        else if (result?.data) {
+          setLoading(false);
+        } else if (result?.data) {
           message.success("Амжилттай");
           getSchedulList();
         }
