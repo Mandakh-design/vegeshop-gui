@@ -222,6 +222,7 @@ const ProductDetail = () => {
                           <InputNumber
                             placeholder=""
                             addonBefore="Тоо ширхэг"
+                            addonAfter="кг"
                           />
                         </Form.Item>
                       </Col>
