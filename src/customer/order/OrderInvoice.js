@@ -141,6 +141,22 @@ const OrderInvoice = ({ order, getOrder }) => {
       .finally(() => setLoading(false));
   };
 
+  const getUserInfo = () => {
+    setLoading(true);
+    adminService
+      .getLoggedUser()
+      .then((result) => {
+        if (result?.data?.data) {
+          form.setFieldsValue(result.data.data);
+          getScheduleList();
+        }
+      })
+      .catch((err) => {
+        showErrorMsg(err);
+        setLoading(false);
+      });
+  };
+
   const getScheduleList = () => {
     setLoading(true);
     adminService
@@ -164,7 +180,7 @@ const OrderInvoice = ({ order, getOrder }) => {
   };
 
   React.useEffect(() => {
-    getScheduleList();
+    getUserInfo();
   }, []);
 
   return (
@@ -195,6 +211,11 @@ const OrderInvoice = ({ order, getOrder }) => {
               label="Утасны дугаар"
               rules={[{ required: true, message: "Заавал оруулна уу" }]}
             >
+              <Input placeholder="Утас оруулна уу" disabled />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Form.Item name="phone2" label="Утасны дугаар 2">
               <Input placeholder="Утас оруулна уу" />
             </Form.Item>
           </Col>
