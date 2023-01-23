@@ -1,8 +1,6 @@
 import { PlusOutlined } from "@ant-design/icons";
-import { Modal, Spin, Upload } from "antd";
+import { Alert, Modal, Spin, Upload } from "antd";
 import { useState } from "react";
-import adminService from "../services/adminService";
-import { showErrorMsg } from "./utils";
 const getBase64 = (file) =>
   new Promise((resolve, reject) => {
     const reader = new FileReader();
@@ -80,6 +78,10 @@ const UploadImage = ({ imageList, setImageList }) => {
       >
         {fileList.length >= 8 ? null : uploadButton}
       </Upload>
+      <Alert
+        type="info"
+        description="Зураг хавсаргах нь хадгалахгүй байгаа шүү. Түрдээ зураггүй бүртгэж байх уу "
+      />
       <Modal
         open={previewOpen}
         title={previewTitle}
