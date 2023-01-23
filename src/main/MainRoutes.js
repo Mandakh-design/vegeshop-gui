@@ -10,6 +10,7 @@ import Order from "../customer/order/Order";
 import OrderList from "../customer/order/OrderList";
 import Distributor from "../distributor/Distributor";
 import ProductDetail from "../customer/ProductDetail";
+import UserProfile from "../customer/UserProfile";
 
 const MainRoutes = () => {
   const { loggedUser } = React.useContext(contextLogin);
@@ -67,13 +68,9 @@ const MainRoutes = () => {
             </Row>
           </Route>
           <Route key={1} path="/userProfile">
-            <Row style={{ padding: "10px 15px 0px 15px" }}>
-              <Col
-                span={24}
-                className="tabBorder"
-                style={{ paddingTop: "1rem", marginBottom: "1rem" }}
-              >
-                UserProfile
+            <Row>
+              <Col span={24}>
+                <UserProfile />
               </Col>
             </Row>
           </Route>

@@ -272,7 +272,7 @@ const OrderInvoice = ({ order, getOrder }) => {
             )}
           </Col>
           <Col span={24} style={{ textAlign: "right" }}>
-            <h3>Нийт дүн: 10230203</h3>
+            <h3>Нийт дүн: {moneyFormat(order.total_amount)}</h3>
             <Button size="large" type="primary" onClick={form.submit}>
               Төлбөр төлөх
             </Button>
