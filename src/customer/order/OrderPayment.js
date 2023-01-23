@@ -78,7 +78,7 @@ const OrderPayment = ({ order, getOrder }) => {
       <Modal
         width="50%"
         open={qpayVisible}
-        title={"Qpay төлбөр төлөлт"}
+        title={"Төлбөр төлөх"}
         footer={null}
         onCancel={() => {
           setQpayVisible(false);
