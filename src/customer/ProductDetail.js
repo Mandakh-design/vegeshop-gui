@@ -104,7 +104,7 @@ const ProductDetail = () => {
       message.warning("Тоо ширхэгт 0 ээс их тоо оруулна уу!");
       return;
     }
-    if (value.count !== 1 && value.count % 2 !== 0) {
+    if ((value.count + "").includes(".")) {
       message.warning("Тоо ширхэгт бүхэл тоо оруулна уу!");
       return;
     }
