@@ -168,8 +168,8 @@ const MainHeader = ({ userLoading }) => {
   return (
     <Spin spinning={loading}>
       <Row justify="space-between">
-        <Col>
-          <Space size="small">
+        <Col xs={0} sm={8} md={6} lg={6} xl={6} xxl={7}>
+          <Space>
             <img
               role="presentation"
               onClick={() => {
@@ -191,50 +191,76 @@ const MainHeader = ({ userLoading }) => {
             </Typography.Text>
           </Space>
         </Col>
+        <Col xs={2} sm={0} md={0} lg={0} xl={0} xxl={0}>
+          <img
+            role="presentation"
+            onClick={() => {
+              history.push("/");
+            }}
+            src="/logos/selba_logo.svg"
+            alt=""
+            height={40}
+            style={{ cursor: "pointer", marginTop: "12px" }}
+          />
+        </Col>
         <Col style={{ textAlign: "right" }}>
           {userLoading && (
             <Spin indicator={<LoadingOutlined />} spinning={userLoading}></Spin>
           )}
-          {loggedUser?.role && (
-            <Button
-              type="link"
-              style={{ color: "green" }}
-              onClick={() => {
-                if (loggedUser.role === "admin") {
-                  history.push("/admin");
-                }
-              }}
-            >
-              {loggedUser.role}
-            </Button>
-          )}
           {!userLoading && (
             <Space size="small">
-              <Badge count={orderDtlCount}>
+              {loggedUser?.role && (
                 <Button
-                  shape="round"
-                  type="primary"
-                  ghost
-                  icon={<ShoppingCartOutlined />}
-                  onClick={showDrawer}
-                >
-                  Сагс
-                </Button>
-              </Badge>
-              {!loggedUser && (
-                <Button
-                  shape="round"
-                  ghost
-                  type="primary"
-                  icon={<UserOutlined />}
+                  type="link"
+                  style={{ color: "green" }}
                   onClick={() => {
-                    history.push("/login");
+                    if (loggedUser.role === "admin") {
+                      history.push("/admin");
+                    }
                   }}
                 >
-                  Нэвтрэх
+                  {loggedUser.role}
                 </Button>
               )}
-
+              <Col xs={0} sm={1} md={1} lg={1} xl={1} xxl={1}>
+                <Badge count={orderDtlCount}>
+                  <Button
+                    shape="round"
+                    type="primary"
+                    ghost
+                    icon={<ShoppingCartOutlined />}
+                    onClick={showDrawer}
+                  >
+                    Сагс
+                  </Button>
+                </Badge>
+              </Col>
+              <Col xs={1} sm={0} md={0} lg={0} xl={0} xxl={0}>
+                <Badge count={orderDtlCount}>
+                  <Button
+                    shape="round"
+                    type="primary"
+                    ghost
+                    icon={<ShoppingCartOutlined />}
+                    onClick={showDrawer}
+                  />
+                </Badge>
+              </Col>
+              {!loggedUser && (
+                <Col>
+                  <Button
+                    shape="round"
+                    ghost
+                    type="primary"
+                    icon={<UserOutlined />}
+                    onClick={() => {
+                      history.push("/login");
+                    }}
+                  >
+                    Нэвтрэх
+                  </Button>
+                </Col>
+              )}
               {loggedUser && (
                 <Dropdown overlay={userMenu} trigger={["click"]}>
                   <span
