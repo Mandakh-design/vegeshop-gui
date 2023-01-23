@@ -11,6 +11,7 @@ import {
   Select,
   Alert,
   Popconfirm,
+  Input,
 } from "antd";
 import React from "react";
 import {
@@ -170,11 +171,50 @@ const OrderInvoice = ({ order, getOrder }) => {
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
       <Form form={form} onFinish={submit} layout="vertical">
         <Row gutter={[16, 0]}>
-          <Col span={24} style={{ marginBottom: "1rem" }}>
-            <Alert
-              type="info"
-              description="Зөвхөн тухайн хуваарь дээрх байршилд хүргэлт хийх ба тэндээс очиж авахыг анхаарна уу!"
-            />
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Form.Item
+              name="firstname"
+              label="Нэр"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+              <Input placeholder="Нэр оруулна уу" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Form.Item
+              name="lastname"
+              label="Овог"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+              <Input placeholder="Овог оруулна уу" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Form.Item
+              name="phone"
+              label="Утасны дугаар"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+              <Input placeholder="Утас оруулна уу" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Form.Item
+              name="email"
+              label="И-Мэйл хаяг"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+              <Input placeholder="ИБаримт авах и-мэйл оруулна уу" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
+            <Form.Item
+              name="address"
+              label="Дэлгэрэнгүй хаяг"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+              <Input.TextArea placeholder="Дэлгэрэнгүй хаяг оруулна уу" />
+            </Form.Item>
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={16}>
             <Form.Item
