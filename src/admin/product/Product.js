@@ -240,6 +240,7 @@ const Product = () => {
           title={selectedProductId ? "Бараа засах" : "Бараа нэмэх"}
           okButtonProps={{ hidden: true }}
           cancelButtonProps={{ hidden: true }}
+          width="50%"
           onCancel={() => {
             setProductVisible(false);
             setSelectedProductId(null);

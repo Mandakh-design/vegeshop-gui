@@ -234,7 +234,7 @@ const Location = () => {
       </Row>
       <Modal
         open={locationVisible}
-        title={selectedLocation ? "Бараа засах" : "Бараа нэмэх"}
+        title={selectedLocation ? "Байршил засах" : "Байршил нэмэх"}
         okButtonProps={{ hidden: true }}
         cancelButtonProps={{ hidden: true }}
         onCancel={() => {

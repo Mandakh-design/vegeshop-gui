@@ -11,12 +11,14 @@ import {
   Spin,
 } from "antd";
 import adminService from "../../services/adminService";
+import UploadImage from "../../common/UploadImage";
 
 const ProductEdit = ({ productId, category, onClose, changeState }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState();
   const [categoryList, setCategoryList] = useState();
+  const [savedFiles, setSavedFiles] = useState();
 
   const saveProduct = (value) => {
     setLoading(true);
@@ -74,7 +76,7 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
     <Spin spinning={loading}>
       <Form form={form} onFinish={saveProduct} layout="vertical">
         <Row justify="end" gutter={[16, 0]}>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item name="category_id" label="Ангилал">
               <Select disabled>
                 {categoryList?.map((c) => {
@@ -87,7 +89,7 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
               </Select>
             </Form.Item>
           </Col>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item
               label="Нэр"
               name="name"
@@ -167,6 +169,11 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
                 style={{ width: "100%" }}
                 addonAfter="₮"
               />
+            </Form.Item>
+          </Col>
+          <Col span={24}>
+            <Form.Item name="images">
+              <UploadImage setSavedFiles={(e) => setSavedFiles(e)} />
             </Form.Item>
           </Col>
           <Col>

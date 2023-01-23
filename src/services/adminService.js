@@ -40,9 +40,7 @@ const deleteLocation = (data) => axios.post(`/api/v1/deleteLocation`, data);
 const deleteSchedule = (data) => axios.post(`/api/v1/deleteSchedule`, data);
 const deleteLocationMap = (data) =>
   axios.post(`/api/v1/deleteLocationMap`, data);
-// S service
-const getUserList = () => axios.get(`api/v1/getUserList`);
-const saveUser = (data) => axios.put(`api/v1/saveUser`, data);
+
 const saveSchedule = (data) => axios.post(`/api/v1/saveSchedule`, data);
 const getScheduleLocationList = (data) =>
   axios.get(`/api/v1/getScheduleLocationList`, { params: data });
@@ -58,6 +56,11 @@ const deleteOrderDtl = (data) => axios.post(`/api/v1/deleteOrderDtl`, data);
 const createInvoice = (data) => axios.post(`/api/v1/createInvoice`, data);
 const submitOrder = (data) => axios.post(`/api/v1/submitOrder`, data);
 const changeOrderStep = (data) => axios.post(`/api/v1/changeOrderStep`, data);
+const uploadImages = (data) => axios.post(`/api/v1/upload`, data);
+
+// S service
+const getUserList = () => axios.get(`api/v1/getUserList`);
+const saveUser = (data) => axios.put(`api/v1/saveUser`, data);
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -98,6 +101,7 @@ export default {
   createInvoice,
   submitOrder,
   changeOrderStep,
+  uploadImages,
 
   // S service
   getUserList,
