@@ -1,7 +1,10 @@
 import React, { useState } from "react";
+import { UploadOutlined } from "@ant-design/icons";
+
 import {
   Button,
   Col,
+  Divider,
   Form,
   Input,
   InputNumber,
@@ -9,16 +12,19 @@ import {
   Row,
   Select,
   Spin,
+  Table,
+  Alert
 } from "antd";
 import adminService from "../../services/adminService";
-import UploadImage from "../../common/UploadImage";
+import FileUpload from "../../controls/FileUpload";
+import FileUploadAndSave from "../../controls/FileUploadAndSave";
 
 const ProductEdit = ({ productId, category, onClose, changeState }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState();
   const [categoryList, setCategoryList] = useState();
-  const [savedFiles, setSavedFiles] = useState();
+  const [savedFile, setSavedFile] = useState();
 
   const saveProduct = (value) => {
     setLoading(true);
@@ -28,49 +34,43 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
       .then((result) => {
         if (result.data) {
           message.success("Амжилттай хадгалагдлаа");
-          onClose();
+            onClose();
         }
       })
-      .catch((err) => message.warning(err))
+      .catch((err) =>{ setLoading(false); message.warning(err) })
       .finally(() => setLoading(false));
-  };
-
-  const setFormInfo = (value) => {
-    form.setFieldsValue({
-      name: value?.name,
-      description: value?.description,
-      discount: value?.discount ? value.discount : 0,
-      price: value?.price,
-      qty: value?.qty,
-      total_amount: value?.total_amount,
-    });
   };
 
   const getProductInfo = () => {
     if (productId) {
       setLoading(true);
       adminService
-        .getProductListByCategory({ category_id: category.id })
+        .getProductById({ id:productId })
         .then((result) => {
-          if (result.data?.data) {
-            let pack = result.data.data.find((d) => d.id === productId);
-            setSelectedProduct(pack);
-            setFormInfo(pack);
+          if (result.data.data) {
+            setSelectedProduct(result.data.data);
+            form.setFieldsValue(
+              result.data.data
+            );
           }
         })
         .catch((err) => message.warning(err))
         .finally(() => setLoading(false));
     } else {
-      setFormInfo(null);
-      setSelectedProduct(null);
+      setSelectedProduct({ category_id: category.id });
+      form.setFieldsValue({ category_id: category.id,
+        description : "",
+        name : "",
+        price : "",
+        qty : "",
+      });
     }
   };
 
   React.useEffect(() => {
-    getProductInfo();
     setCategoryList([category]);
-    form.setFieldsValue({ category_id: category.id });
-  }, [category, productId, changeState, form]);
+    getProductInfo();
+  }, [category, productId, changeState]);
 
   return (
     <Spin spinning={loading}>
@@ -88,7 +88,7 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
                 })}
               </Select>
             </Form.Item>
-          </Col>
+            </Col>
           <Col span={12}>
             <Form.Item
               label="Нэр"
@@ -96,6 +96,32 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
               rules={[{ required: true, message: "Заавал оруулна уу" }]}
             >
               <Input placeholder="Нэр оруулна уу" />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+          <Form.Item
+              label="Үлдэгдэл"
+              name="qty"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+              <InputNumber
+                placeholder="Үлдэгдэл оруулна уу"
+                style={{ width: "100%" }}
+                addonAfter="кг"
+              />
+            </Form.Item>
+            </Col>
+          <Col span={12}>
+            <Form.Item
+              label="Үнийн дүн"
+              name="price"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+              <InputNumber
+                placeholder="Үнийн дүн оруулна уу"
+                style={{ width: "100%" }}
+                addonAfter="₮"
+              />
             </Form.Item>
           </Col>
           <Col span={24}>
@@ -107,7 +133,40 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
               <Input.TextArea placeholder="Тайлбар оруулна уу" />
             </Form.Item>
           </Col>
-          <Col span={12}>
+          {
+            !productId && <>
+            <Col span={24}>
+              <Alert message="Хадгалах дарж нэмээд дараа нь засахаар орж зураг, нэмэлт мэдээлэл оруулна уу" type="info"></Alert>
+            </Col>
+            </>
+}
+          <Col span={24}>
+            <Button style={{float:'right'}} type="primary" onClick={form.submit}>
+              Хадгалах
+            </Button>
+          </Col>
+          
+          {
+            productId && <>
+            <Col span={24}>
+              <Divider>Нүүр зураг оруулах</Divider>
+            </Col>
+            <Col span={24}>
+              <FileUploadAndSave filename={savedFile} setFilename={(file)=>{setSavedFile(file)}} />
+                {/* <FileUpload  files={savedFiles} setFiles={(files)=>{ setSavedFiles(files)}} uploaded={()=>{
+                  console.log("uploaded",savedFiles)
+                }}/> */}
+          </Col>
+          <Col span={24}>
+              <Divider>Дэлгэрэнгүй мэдээлэл оруулах</Divider>
+            </Col>
+            <Col span={24}>
+                <Table  />
+          </Col>
+            </>
+          }
+          
+          {/* <Col span={12}>
             <Form.Item
               label="Хөнгөлөлт"
               name="discount"
@@ -126,38 +185,8 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
                 }}
               />
             </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="Үлдэгдэл"
-              name="qty"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <InputNumber
-                placeholder="Үлдэгдэл оруулна уу"
-                style={{ width: "100%" }}
-                addonAfter="кг"
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="Үнийн дүн"
-              name="price"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <InputNumber
-                placeholder="Үнийн дүн оруулна уу"
-                style={{ width: "100%" }}
-                addonAfter="₮"
-                onChange={(e) => {
-                  let tAmount = e - (e * form.getFieldsValue().discount) / 100;
-                  form.setFieldsValue({ total_amount: tAmount });
-                }}
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
+          </Col> */}
+          {/* <Col span={12}>
             <Form.Item
               label="Хөнгөлөлтийн дараах үнийн дүн"
               name="total_amount"
@@ -170,17 +199,8 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
                 addonAfter="₮"
               />
             </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item name="images">
-              <UploadImage setSavedFiles={(e) => setSavedFiles(e)} />
-            </Form.Item>
-          </Col>
-          <Col>
-            <Button type="primary" onClick={form.submit}>
-              Хадгалах
-            </Button>
-          </Col>
+          </Col> */}
+         
         </Row>
       </Form>
     </Spin>

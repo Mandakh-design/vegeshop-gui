@@ -10,6 +10,7 @@ const FileUpload = ({
   mode,
   disabled,
   tooltipTitle,
+  uploaded
 }) => {
   const handleChange = ({ fileList }) => {
     if (mode === "single") {
@@ -21,6 +22,7 @@ const FileUpload = ({
       return { ...f, status: "done" };
     });
     setFiles(tmpFileList);
+    console.log("handleChange")
   };
 
   const handleRemove = () => {
@@ -44,9 +46,12 @@ const FileUpload = ({
 
   const upload = async (options) => {
     const { onSuccess, onProgress } = options;
-
+    console.log("upload1")
     onProgress({ percent: 100 });
+    console.log("upload2",files)
     onSuccess("ok");
+    uploaded();
+    console.log("upload3")
   };
 
   const beforeUpload = (file) => {
@@ -54,6 +59,7 @@ const FileUpload = ({
     if (!isLt2M) {
       message.warninging("Файл 25mb аас дээш хэмжээтэй байна.");
     }
+    console.log("beforeUpload")
     return isLt2M;
   };
 
@@ -99,6 +105,7 @@ FileUpload.propTypes = {
   isInline: PropTypes.bool,
   mode: PropTypes.string,
   tooltipTitle: PropTypes.string,
+  uploaded: PropTypes.func.isRequired,
 };
 
 export default FileUpload;

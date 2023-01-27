@@ -53,22 +53,22 @@ const Product = () => {
         return moneyFormat(text);
       },
     },
-    {
-      title: "Хөнгөлөлт",
-      dataIndex: "discount",
-      key: "discount",
-      render: (text, record) => {
-        return text + " %";
-      },
-    },
-    {
-      title: "Хөнгөлөлтийн дараах үнэ",
-      dataIndex: "total_amount",
-      key: "total_amount",
-      render: (text, record) => {
-        return moneyFormat(text);
-      },
-    },
+    // {
+    //   title: "Хөнгөлөлт",
+    //   dataIndex: "discount",
+    //   key: "discount",
+    //   render: (text, record) => {
+    //     return text + " %";
+    //   },
+    // },
+    // {
+    //   title: "Хөнгөлөлтийн дараах үнэ",
+    //   dataIndex: "total_amount",
+    //   key: "total_amount",
+    //   render: (text, record) => {
+    //     return moneyFormat(text);
+    //   },
+    // },
     {
       title: "Үлдэгдэл",
       dataIndex: "qty",
@@ -81,13 +81,13 @@ const Product = () => {
       title: "Тайлбар",
       dataIndex: "description",
       key: "description",
-      render: (text, record) => {
-        return (
-          <Tooltip title={text}>
-            <Button icon={<EyeOutlined />} type="primary" ghost />
-          </Tooltip>
-        );
-      },
+      // render: (text, record) => {
+      //   return (
+      //     <Tooltip title={text}>
+      //       <Button icon={<EyeOutlined />} type="primary" ghost />
+      //     </Tooltip>
+      //   );
+      // },
     },
     {
       title: "Идэвхитэй эсэх",
@@ -116,8 +116,8 @@ const Product = () => {
               type="primary"
               ghost
               onClick={() => {
-                setSelectedProductId(record.id);
-                setProductVisible(true);
+                showProductEdit(record.id);
+                
               }}
             />
           </Space>
@@ -176,6 +176,12 @@ const Product = () => {
     getCategoryList();
   }, []);
 
+  const showProductEdit = (id)=>{
+    setChangeState(changeState + 1);
+    setSelectedProductId(id);
+    setProductVisible(true);
+  }
+
   return (
     <Spin spinning={loading}>
       <Row>
@@ -221,8 +227,7 @@ const Product = () => {
                     ghost
                     onClick={() => {
                       if (selectedCategory) {
-                        setProductVisible(true);
-                        setSelectedProductId(null);
+                        showProductEdit(null);
                       } else {
                         message.warning("Ангилал сонгоно уу!");
                       }
@@ -253,10 +258,8 @@ const Product = () => {
               category={selectedCategory}
               changeState={changeState}
               onClose={() => {
-                setSelectedProductId(null);
                 setProductVisible(false);
                 form.submit();
-                setChangeState(changeState + 1);
               }}
             />
           )}

@@ -18,6 +18,8 @@ const deletePackage = (data) => axios.post(`/api/v1/deletePackage`, data);
 const saveProduct = (data) => axios.post(`/api/v1/saveProduct`, data);
 const getProduct = (data) => axios.get(`/api/v1/getProduct`, { params: data });
 const deleteProduct = (data) => axios.post(`/api/v1/deleteProduct`, data);
+const getProductById = (data) =>
+  axios.get(`/api/v1/getProductById`, { params: data });
 
 const getProductListByCategory = (data) =>
   axios.get(`/api/v1/getProductListByCategory`, { params: data });
@@ -56,7 +58,14 @@ const deleteOrderDtl = (data) => axios.post(`/api/v1/deleteOrderDtl`, data);
 const createInvoice = (data) => axios.post(`/api/v1/createInvoice`, data);
 const submitOrder = (data) => axios.post(`/api/v1/submitOrder`, data);
 const changeOrderStep = (data) => axios.post(`/api/v1/changeOrderStep`, data);
-const uploadImages = (data) => axios.post(`/api/v1/upload`, data);
+
+const config = {
+  headers: {
+    "Content-type": "multipart/form-data",
+    Authorization: `Bearer ${localStorage.getItem("token")}`,
+  },
+};
+const uploadImages = (data) => axios.post(`/api/v1/upload`, data, config);
 
 // S service
 const getUserList = () => axios.get(`api/v1/getUserList`);
@@ -78,6 +87,7 @@ export default {
   saveProduct,
   getProduct,
   deleteProduct,
+  getProductById,
   getProductListByCategory,
   getProductListFormPackage,
   savePackageDtl,
