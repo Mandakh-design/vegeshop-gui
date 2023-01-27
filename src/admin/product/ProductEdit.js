@@ -24,21 +24,23 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
   const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState();
   const [categoryList, setCategoryList] = useState();
-  const [savedFile, setSavedFile] = useState();
-
-  const saveProduct = (value) => {
+  
+  const saveProduct = (value, filename) => {
     setLoading(true);
-    const model = { ...selectedProduct, ...value };
+    const model = { ...selectedProduct, ...value, filename };
     adminService
       .saveProduct(model)
       .then((result) => {
+        setLoading(false); 
         if (result.data) {
           message.success("Амжилттай хадгалагдлаа");
+          if(selectedProduct && selectedProduct.id > 0)
             onClose();
+          else
+            getProductInfo();
         }
       })
       .catch((err) =>{ setLoading(false); message.warning(err) })
-      .finally(() => setLoading(false));
   };
 
   const getProductInfo = () => {
@@ -152,10 +154,8 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
               <Divider>Нүүр зураг оруулах</Divider>
             </Col>
             <Col span={24}>
-              <FileUploadAndSave filename={savedFile} setFilename={(file)=>{setSavedFile(file)}} />
-                {/* <FileUpload  files={savedFiles} setFiles={(files)=>{ setSavedFiles(files)}} uploaded={()=>{
-                  console.log("uploaded",savedFiles)
-                }}/> */}
+              <FileUploadAndSave filename={selectedProduct.filename} 
+              setFilename={(file)=>{saveProduct(selectedProduct ,file)}} />
           </Col>
           <Col span={24}>
               <Divider>Дэлгэрэнгүй мэдээлэл оруулах</Divider>
