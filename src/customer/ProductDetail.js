@@ -140,160 +140,173 @@ const ProductDetail = () => {
         {productDetail && (
           <Col span={24}>
             <>
-              <Row justify="space-between" style={{ marginTop: "8px" }}>
-                <Col>
-                  <Col>
-                    <span
-                      style={{
-                        color: "rgb(36, 36, 36)",
-                        fontSize: "20px",
-                        fontWeight: 500,
-                        marginBottom: "2px",
-                      }}
-                    >
-                      {productDetail.description}
-                    </span>
-                  </Col>
-                  <span
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      color: "rgb(109, 113, 117)",
-                      fontSize: "14px",
-                      fontWeight: 400,
-                      marginBottom: "0px",
-                    }}
-                  >
-                    {productDetail.name}
-                  </span>
-                </Col>
-                <Col>
-                  <Button
-                    type="text"
-                    icon={<HeartOutlined />}
-                    onClick={() => message.warning("Хөгжүүлэлт хийгдэж байна")}
-                  >
-                    Хадгалах
-                  </Button>
-                  <Button
-                    type="text"
-                    icon={<FacebookOutlined />}
-                    onClick={() => message.warning("Хөгжүүлэлт хийгдэж байна")}
-                  >
-                    Хуваалцах
-                  </Button>
-                  <Button
-                    type="text"
-                    icon={<CopyOutlined />}
-                    onClick={() => message.warning("Хөгжүүлэлт хийгдэж байна")}
-                  >
-                    Төстэй бараа
-                  </Button>
-                </Col>
-              </Row>
-              <Divider />
               <Row justify="space-between">
                 <Col
                   xs={24}
                   sm={24}
                   md={13}
-                  lg={14}
-                  xl={14}
-                  style={{ padding: "2rem" }}
+                  lg={10}
+                  xl={10}
+                  style={{ padding: "1rem 2rem 2rem 2rem" }}
                 >
                   {productImage(productDetail)}
                 </Col>
-                <Col xs={24} sm={24} md={11} lg={10} xl={10}>
-                  <Form form={form} onFinish={addProductToOrder}>
-                    <Row>
-                      <Col span={24}>
-                        <Space>
-                          <span style={{ fontSize: 15 }}>Үнэ:</span>
-                          <h2>{moneyFormat(productDetail.total_amount)}</h2>
-                        </Space>
-                      </Col>
-                      <Col span={24}>
-                        <Form.Item name="count" initialValue={1}>
-                          <InputNumber
-                            placeholder=""
-                            addonBefore="Тоо ширхэг"
-                            addonAfter={productDetail.type === 1 ? "кг" : "ш"}
-                          />
-                        </Form.Item>
-                      </Col>
-                      <Col span={24}>
-                        <Row gutter={[16, 16]}>
-                          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                            <Button
-                              type="primary"
-                              ghost
-                              size="large"
-                              style={{ width: "100%" }}
-                              onClick={form.submit}
-                            >
-                              САГСАНД НЭМЭХ
-                            </Button>
-                          </Col>
-                          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                            <Button
-                              type="primary"
-                              size="large"
-                              style={{ width: "100%" }}
-                              onClick={() => {
-                                history.push("/order");
+                <Col xs={24} sm={24} md={11} lg={14} xl={14}>
+                  <Row>
+                    <Col span={24}>
+                      <Row justify="space-between">
+                        <Col>
+                          <Col>
+                            <span
+                              style={{
+                                color: "rgb(36, 36, 36)",
+                                fontSize: "20px",
+                                fontWeight: 500,
+                                marginBottom: "2px",
                               }}
                             >
-                              ЗАХИАЛАХ
-                            </Button>
+                              {productDetail.description}
+                            </span>
+                          </Col>
+                          <span
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              color: "rgb(109, 113, 117)",
+                              fontSize: "14px",
+                              fontWeight: 400,
+                              marginBottom: "0px",
+                            }}
+                          >
+                            {productDetail.name}
+                          </span>
+                        </Col>
+                        <Col>
+                          <Button
+                            type="text"
+                            icon={<HeartOutlined />}
+                            onClick={() =>
+                              message.warning("Хөгжүүлэлт хийгдэж байна")
+                            }
+                          >
+                            Хадгалах
+                          </Button>
+                          <Button
+                            type="text"
+                            icon={<FacebookOutlined />}
+                            onClick={() =>
+                              message.warning("Хөгжүүлэлт хийгдэж байна")
+                            }
+                          >
+                            Хуваалцах
+                          </Button>
+                          <Button
+                            type="text"
+                            icon={<CopyOutlined />}
+                            onClick={() =>
+                              message.warning("Хөгжүүлэлт хийгдэж байна")
+                            }
+                          >
+                            Төстэй бараа
+                          </Button>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col span={24}>
+                      <Form form={form} onFinish={addProductToOrder}>
+                        <Row>
+                          <Col span={24}>
+                            <Space>
+                              <span style={{ fontSize: 15 }}>Үнэ:</span>
+                              <h2>{moneyFormat(productDetail.total_amount)}</h2>
+                            </Space>
+                          </Col>
+                          <Col span={24}>
+                            <Form.Item name="count" initialValue={1}>
+                              <InputNumber
+                                placeholder=""
+                                addonBefore="Тоо ширхэг"
+                                addonAfter={
+                                  productDetail.type === 1 ? "кг" : "ш"
+                                }
+                              />
+                            </Form.Item>
+                          </Col>
+                          <Col span={24}>
+                            <Row gutter={[16, 16]}>
+                              <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                                <Button
+                                  type="primary"
+                                  ghost
+                                  size="large"
+                                  style={{ width: "100%" }}
+                                  onClick={form.submit}
+                                >
+                                  САГСАНД НЭМЭХ
+                                </Button>
+                              </Col>
+                              <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                                <Button
+                                  type="primary"
+                                  size="large"
+                                  style={{ width: "100%" }}
+                                  onClick={() => {
+                                    history.push("/order");
+                                  }}
+                                >
+                                  ЗАХИАЛАХ
+                                </Button>
+                              </Col>
+                            </Row>
+                          </Col>
+                          {type === "2" && (
+                            <Col span={24}>
+                              <Row gutter={[0, 16]}>
+                                <Col span={24}>
+                                  <Divider orientation="left">
+                                    Багцын мэдээлэл
+                                  </Divider>
+                                </Col>
+                                <Col span={24}>
+                                  <Timeline>
+                                    {productDetail.details?.map((d) => {
+                                      return (
+                                        <Timeline.Item key={d.id}>
+                                          {d.name +
+                                            " " +
+                                            d.qty +
+                                            "кг " +
+                                            moneyFormat(d.total_amount)}
+                                        </Timeline.Item>
+                                      );
+                                    })}
+                                  </Timeline>
+                                </Col>
+                              </Row>
+                            </Col>
+                          )}
+                          <Col span={24}>
+                            <Divider orientation="left">
+                              Төлбөр төлөх боломж
+                            </Divider>
+                          </Col>
+                          <Col xs={4} sm={4} md={4} lg={3} xl={3}>
+                            <Tooltip title="Та төлбөрөө qpay ашиглан төлөх боломжтой">
+                              <img
+                                style={{
+                                  width: "100%",
+                                  marginTop: "1rem",
+                                  borderStyle: "outset",
+                                }}
+                                src="/images/qpay-icon.png"
+                                alt=""
+                              />
+                            </Tooltip>
                           </Col>
                         </Row>
-                      </Col>
-                      {type === "2" && (
-                        <Col span={24}>
-                          <Row gutter={[0, 16]}>
-                            <Col span={24}>
-                              <Divider orientation="left">
-                                Багцын мэдээлэл
-                              </Divider>
-                            </Col>
-                            <Col span={24}>
-                              <Timeline>
-                                {productDetail.details?.map((d) => {
-                                  return (
-                                    <Timeline.Item key={d.id}>
-                                      {d.name +
-                                        " " +
-                                        d.qty +
-                                        "кг " +
-                                        moneyFormat(d.total_amount)}
-                                    </Timeline.Item>
-                                  );
-                                })}
-                              </Timeline>
-                            </Col>
-                          </Row>
-                        </Col>
-                      )}
-                      <Col span={24}>
-                        <Divider orientation="left">
-                          Төлбөр төлөх боломж
-                        </Divider>
-                      </Col>
-                      <Col xs={4} sm={4} md={4} lg={3} xl={3}>
-                        <Tooltip title="Та төлбөрөө qpay ашиглан төлөх боломжтой">
-                          <img
-                            style={{
-                              width: "100%",
-                              marginTop: "1rem",
-                              borderStyle: "outset",
-                            }}
-                            src="/images/qpay-icon.png"
-                            alt=""
-                          />
-                        </Tooltip>
-                      </Col>
-                    </Row>
-                  </Form>
+                      </Form>
+                    </Col>
+                  </Row>
                 </Col>
               </Row>
             </>
