@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { UploadOutlined } from "@ant-design/icons";
 
 import {
   Button,
@@ -16,7 +15,6 @@ import {
   Alert,
 } from "antd";
 import adminService from "../../services/adminService";
-import FileUpload from "../../controls/FileUpload";
 import FileUploadAndSave from "../../controls/FileUploadAndSave";
 import ProductDetailList from "./ProductDetailList";
 
@@ -35,7 +33,7 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
         setLoading(false);
         if (result.data) {
           message.success("Амжилттай хадгалагдлаа");
-          if (selectedProduct && selectedProduct.id > 0) onClose();
+          if (!productId || productId === 0) onClose();
           else getProductInfo();
         }
       })
@@ -51,13 +49,16 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
       adminService
         .getProductById({ id: productId })
         .then((result) => {
+          setLoading(false);
           if (result.data.data) {
             setSelectedProduct(result.data.data);
             form.setFieldsValue(result.data.data);
           }
         })
-        .catch((err) => message.warning(err))
-        .finally(() => setLoading(false));
+        .catch((err) => {
+          setLoading(false);
+          message.warning(err);
+        });
     } else {
       setSelectedProduct({ category_id: category.id });
       form.setFieldsValue({
@@ -156,14 +157,14 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
             </Button>
           </Col>
 
-          {selectedProduct && (
+          {productId && selectedProduct && (
             <>
               <Col span={24}>
                 <Divider>Нүүр зураг оруулах</Divider>
               </Col>
               <Col span={24}>
                 <FileUploadAndSave
-                  filename={selectedProduct.filename}
+                  filename={selectedProduct?.filename}
                   setFilename={(file) => {
                     saveProduct(selectedProduct, file);
                   }}
