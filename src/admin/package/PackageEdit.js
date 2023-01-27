@@ -76,20 +76,19 @@ const PackageEdit = ({ packageId, onClose, changeState }) => {
               <Input placeholder="Нэр оруулна уу" />
             </Form.Item>
           </Col>
-          <Col span={24}>
+          {/* <Col span={24}>
             <Form.Item label="Хөнгөлөлт" name="discount" initialValue={0}>
               <InputNumber
                 placeholder="Хөнгөлөлт оруулна уу"
                 style={{ width: "100%" }}
                 max={100}
-                prefix={<b>%</b>}
+                suffix={<b>%</b>}
               />
             </Form.Item>
-          </Col>
+          </Col> */}
           <Col span={24}>
             <Form.Item label="Үнийн дүн" name="price">
               <InputNumber
-                disabled
                 placeholder="Үнийн дүн оруулна уу"
                 style={{ width: "100%" }}
                 prefix={<b>₮</b>}
