@@ -33,7 +33,6 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
   const [selectedFileName, setSelectedFileName] = useState();
   const [photoVisible, setPhotoVisible] = useState(false);
   const [selectedDetailId, setSelectedDetailId] = useState();
-  const [fileName, setFileName] = useState();
 
   const columns = [
     {
@@ -61,8 +60,8 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
       dataIndex: "type",
       key: "type",
       render: (text, record) => {
-        if (text === 1) return record.value;
-        if (text === 2) return renderDateNoSec(record.dateValue);
+        if (text === 1) return record.value_str;
+        if (text === 2) return renderDateNoSec(record.value_date);
         return (
           <Button
             type="primary"
@@ -70,11 +69,6 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
             onClick={() => {
               setSelectedFileName(record.filename);
               setPhotoVisible(true);
-              form.setFieldsValue({
-                name: record.name,
-                description: record.description,
-                type: record.type,
-              });
             }}
           >
             Зураг харах
@@ -96,6 +90,14 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
               onClick={() => {
                 setProductDetailVisible(true);
                 setSelectedDetailId(record.id);
+                setSelectedType(record.type);
+                setSelectedFileName(record.filename);
+                form.setFieldsValue({
+                  name: record.name,
+                  description: record.description,
+                  type: record.type,
+                  valueStr: record.value_str,
+                });
               }}
             />
             <Popconfirm
@@ -113,7 +115,6 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
   const saveProductDetail = (value) => {
     setLoading(true);
     const model = { ...value };
-    // model.filename = fileName;
     model.product_id = productId;
     model.id = selectedDetailId;
     adminService
@@ -161,13 +162,6 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
         })
         .catch((err) => message.warning(err))
         .finally(() => setLoading(false));
-    } else {
-      form.setFieldsValue({
-        description: "",
-        name: "",
-        price: "",
-        qty: "",
-      });
     }
   };
 
@@ -177,12 +171,13 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
 
   return (
     <Spin spinning={loading}>
-      <Row>
+      <Row style={{ marginTop: "1rem" }}>
         <Col span={24}>
           <Table
             columns={columns}
             dataSource={detailList}
             rowKey="id"
+            bordered
             title={() => {
               return (
                 <Row justify="end">
@@ -192,7 +187,7 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
                     onClick={() => {
                       setProductDetailVisible(true);
                       setSelectedDetailId(null);
-                      setFileName(null);
+                      setSelectedFileName(null);
                       setSelectedType(null);
                       form.setFieldsValue({
                         name: null,
@@ -200,6 +195,7 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
                         valueStr: null,
                         valueDate: null,
                         type: null,
+                        filename: null,
                       });
                     }}
                   >
@@ -214,7 +210,10 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
       <Modal
         title="Барааны дэлгэрэнгүй"
         open={productDetailVisible}
-        onCancel={() => setProductDetailVisible(false)}
+        onCancel={() => {
+          setProductDetailVisible(false);
+          setSelectedFileName(null);
+        }}
         cancelButtonProps={{ hidden: true }}
         onOk={form.submit}
       >
@@ -287,13 +286,16 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
                 {selectedType === 3 && (
                   <Col span={24}>
                     <Form.Item
-                      label="Төрөл"
-                      name="type"
+                      label="Зураг"
+                      name="filename"
                       rules={[{ required: true, message: "Заавал сонгоно уу" }]}
                     >
                       <FileUploadAndSave
-                        setFilename={setFileName}
                         filename={selectedFileName}
+                        setFilename={(file) => {
+                          form.setFieldsValue({ filename: file });
+                          setSelectedFileName(file);
+                        }}
                       />
                     </Form.Item>
                   </Col>
@@ -306,7 +308,10 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
       <Modal
         title="Зураг"
         open={photoVisible}
-        onCancel={setPhotoVisible}
+        onCancel={() => {
+          setPhotoVisible(false);
+          setSelectedFileName(null);
+        }}
         okButtonProps={{ hidden: true }}
         cancelButtonProps={{ hidden: true }}
       >

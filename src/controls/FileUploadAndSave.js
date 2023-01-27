@@ -5,11 +5,7 @@ import React from "react";
 import { showErrorMsg } from "../common/utils";
 import adminService from "../services/adminService";
 
-const FileUploadAndSave = ({
-  filename,
-  setFilename,
-  title,
-}) => {
+const FileUploadAndSave = ({ filename, setFilename, title }) => {
   const [loading, setLoading] = React.useState(false);
 
   const handleChange = ({ fileList }) => {
@@ -17,15 +13,14 @@ const FileUploadAndSave = ({
     var data = new FormData();
     fileList.map((f) => {
       data.append("image", f.originFileObj, f.name);
-      
     });
-    adminService.uploadImages(data)
-    .then((result) => {
-      setFilename(result.data)
-    })
-    .catch((err) => showErrorMsg(err))
-    .finally(() => setLoading(false));
-    
+    adminService
+      .uploadImages(data)
+      .then((result) => {
+        setFilename(result.data);
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
   };
 
   // const handleRemove = () => {
@@ -48,7 +43,7 @@ const FileUploadAndSave = ({
   // };
 
   // const upload = async (options) => {
-    
+
   //   const { onSuccess, onProgress } = options;
 
   //   onProgress({ percent: 100 });
@@ -64,44 +59,44 @@ const FileUploadAndSave = ({
   //   return isLt2M;
   // };
 
-  React.useEffect(() => {
-  }, [ filename]);
+  React.useEffect(() => {}, [filename]);
 
   return (
     <Spin spinning={loading}>
       <Row>
         <Col span={24}>
-        <Upload
-      listType="picture"
-      accept=".png, .jpeg"
-      fileList={[]}
-      // multiple={mode === "multiple" ? true : false}
-      onChange={handleChange}
-      // onRemove={handleRemove}
-      // beforeUpload={beforeUpload}
-      // customRequest={upload}
-      height="200px"
-    >
-        <Button icon={<UploadOutlined />} >
-         {title ? title : `Файл хавсаргах`} 
-        </Button>
-      
-    </Upload>
+          <Upload
+            listType="picture"
+            accept=".png, .jpeg, .jpg"
+            fileList={[]}
+            // multiple={mode === "multiple" ? true : false}
+            onChange={handleChange}
+            // onRemove={handleRemove}
+            // beforeUpload={beforeUpload}
+            // customRequest={upload}
+            height="200px"
+          >
+            <Button icon={<UploadOutlined />}>
+              {title ? title : `Файл хавсаргах`}
+            </Button>
+          </Upload>
         </Col>
-        {filename &&  
-        <Col span={24}>
-          <img style={{width:'100%'}} src={`${process.env.REACT_APP_SERVICE_URL}/images/${filename}`}/>
-        </Col>}
+        {filename && (
+          <Col span={24}>
+            <img
+              style={{ width: "100%" }}
+              src={`${process.env.REACT_APP_SERVICE_URL}/images/${filename}`}
+            />
+          </Col>
+        )}
       </Row>
-    
-
     </Spin>
   );
 };
 
 FileUploadAndSave.defaultProps = {
   isInline: false,
-  filename: null
+  filename: null,
 };
 
 FileUploadAndSave.propTypes = {
