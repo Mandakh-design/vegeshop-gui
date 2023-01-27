@@ -24,9 +24,9 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
   const [selectedProduct, setSelectedProduct] = useState();
   const [categoryList, setCategoryList] = useState();
 
-  const saveProduct = (value, filename) => {
+  const saveProduct = (value) => {
     setLoading(true);
-    const model = { ...selectedProduct, ...value, filename };
+    const model = { ...selectedProduct, ...value };
     adminService
       .saveProduct(model)
       .then((result) => {
@@ -137,16 +137,21 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
               <Input.TextArea placeholder="Тайлбар оруулна уу" />
             </Form.Item>
           </Col>
-          {!productId && (
-            <>
-              <Col span={24}>
-                <Alert
-                  message="Хадгалах дарж нэмээд дараа нь засахаар орж зураг, нэмэлт мэдээлэл оруулна уу"
-                  type="info"
-                ></Alert>
-              </Col>
-            </>
-          )}
+          <Col span={24}>
+            <Form.Item
+              label="Нүүр зураг оруулах"
+              name="filename"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+                <FileUploadAndSave
+                  filename={selectedProduct?.filename}
+                  setFilename={(file) => {
+                    form.setFieldsValue({filename: file});
+                    setSelectedProduct({...selectedProduct, filename: file});
+                  }}
+                />
+            </Form.Item>
+          </Col>
           <Col span={24}>
             <Button
               style={{ float: "right" }}
@@ -157,26 +162,10 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
             </Button>
           </Col>
 
-          {productId && selectedProduct && (
-            <>
-              <Col span={24}>
-                <Divider>Нүүр зураг оруулах</Divider>
-              </Col>
-              <Col span={24}>
-                <FileUploadAndSave
-                  filename={selectedProduct?.filename}
-                  setFilename={(file) => {
-                    saveProduct(selectedProduct, file);
-                  }}
-                />
-              </Col>
-              <Col span={24}>
-                <Divider>Дэлгэрэнгүй мэдээлэл оруулах</Divider>
-              </Col>
-              <Col span={24}>
-                {productId > 0 && <ProductDetailList productId={productId} />}
-              </Col>
-            </>
+          {productId && (
+             <Col span={24}>
+             <ProductDetailList productId={productId} />
+           </Col>
           )}
 
           {/* <Col span={12}>
