@@ -150,7 +150,10 @@ const ProductDetail = () => {
                   style={{ padding: "1rem 2rem 2rem 2rem" }}
                 >
                   {/* {productImage(productDetail)} */}
-                  <img style={{width:'100%'}} src={`${process.env.REACT_APP_SERVICE_URL}/images/${productDetail.filename}`}/>
+                  <img
+                    style={{ width: "100%" }}
+                    src={`${process.env.REACT_APP_SERVICE_URL}/images/${productDetail.filename}`}
+                  />
                 </Col>
                 <Col xs={24} sm={24} md={11} lg={8} xl={8}>
                   <Row>
@@ -182,7 +185,6 @@ const ProductDetail = () => {
                             {productDetail.name}
                           </span>
                         </Col>
-                       
                       </Row>
                     </Col>
                     <Col span={24}>
@@ -232,7 +234,7 @@ const ProductDetail = () => {
                               </Col>
                             </Row>
                           </Col>
-                          
+
                           <Col span={24}>
                             <Divider orientation="left">
                               Төлбөр төлөх боломж
@@ -252,76 +254,72 @@ const ProductDetail = () => {
                             </Tooltip>
                           </Col>
                           <Col span={24}>
-                          <Button
-                            type="text"
-                            icon={<HeartOutlined />}
-                            onClick={() =>
-                              message.warning("Хөгжүүлэлт хийгдэж байна")
-                            }
-                          >
-                            Хадгалах
-                          </Button>
-                          <Button
-                            type="text"
-                            icon={<FacebookOutlined />}
-                            onClick={() =>
-                              message.warning("Хөгжүүлэлт хийгдэж байна")
-                            }
-                          >
-                            Хуваалцах
-                          </Button>
-                          <Button
-                            type="text"
-                            icon={<CopyOutlined />}
-                            onClick={() =>
-                              message.warning("Хөгжүүлэлт хийгдэж байна")
-                            }
-                          >
-                            Төстэй бараа
-                          </Button>
-                        </Col>
+                            <Button
+                              type="text"
+                              icon={<HeartOutlined />}
+                              onClick={() =>
+                                message.warning("Хөгжүүлэлт хийгдэж байна")
+                              }
+                            >
+                              Хадгалах
+                            </Button>
+                            <Button
+                              type="text"
+                              icon={<FacebookOutlined />}
+                              onClick={() =>
+                                message.warning("Хөгжүүлэлт хийгдэж байна")
+                              }
+                            >
+                              Хуваалцах
+                            </Button>
+                            <Button
+                              type="text"
+                              icon={<CopyOutlined />}
+                              onClick={() =>
+                                message.warning("Хөгжүүлэлт хийгдэж байна")
+                              }
+                            >
+                              Төстэй бараа
+                            </Button>
+                          </Col>
                         </Row>
                       </Form>
                     </Col>
                   </Row>
                 </Col>
                 <Col xs={24} sm={24} md={24} lg={8} xl={8}>
-                {type === "2" && (
-                              <Row gutter={[0, 16]}>
-                                <Col span={24}>
-                                  <Divider orientation="left">
-                                    Багцын мэдээлэл
-                                  </Divider>
-                                </Col>
-                                <Col span={24}>
-                                  <Timeline>
-                                    {productDetail.details?.map((d) => {
-                                      return (
-                                        <Timeline.Item key={d.id}>
-                                          {d.name +
-                                            " " +
-                                            d.qty +
-                                            "кг " +
-                                            moneyFormat(d.total_amount)}
-                                        </Timeline.Item>
-                                      );
-                                    })}
-                                  </Timeline>
-                                </Col>
-                              </Row>
-                          )}
-                          {type === "1" && (
-                              <Row gutter={[0, 16]}>
-                                <Col span={24}>
-                                  <Divider orientation="left">
-                                    Барааны дэлгэрэнгүй
-                                  </Divider>
-                                </Col>
-                                <Col span={24}>
-                                  млйлйыбойыолб
-                                </Col>
-                              </Row>
-                          )}
+                  {type === "2" && (
+                    <Row gutter={[0, 16]}>
+                      <Col span={24}>
+                        <Divider orientation="left">Багцын мэдээлэл</Divider>
+                      </Col>
+                      <Col span={24}>
+                        <Timeline>
+                          {productDetail.details?.map((d) => {
+                            return (
+                              <Timeline.Item key={d.id}>
+                                {d.name +
+                                  " " +
+                                  d.qty +
+                                  "кг " +
+                                  moneyFormat(d.total_amount)}
+                              </Timeline.Item>
+                            );
+                          })}
+                        </Timeline>
+                      </Col>
+                    </Row>
+                  )}
+                  {type === "1" && (
+                    <Row gutter={[0, 16]}>
+                      <Col span={24}>
+                        <Divider orientation="left">
+                          Барааны дэлгэрэнгүй
+                        </Divider>
+                      </Col>
+                      <Col span={24}>млйлйыбойыолб</Col>
+                    </Row>
+                  )}
                 </Col>
               </Row>
             </>
