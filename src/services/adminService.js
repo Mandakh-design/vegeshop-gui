@@ -20,6 +20,10 @@ const getProduct = (data) => axios.get(`/api/v1/getProduct`, { params: data });
 const deleteProduct = (data) => axios.post(`/api/v1/deleteProduct`, data);
 const getProductById = (data) =>
   axios.get(`/api/v1/getProductById`, { params: data });
+const getProductDetailListById = (data) =>
+  axios.get(`/api/v1/getProductDetailListById`, { params: data });
+const saveProductDetail = (data) =>
+  axios.post(`/api/v1/saveProductDetail`, data);
 
 const getProductListByCategory = (data) =>
   axios.get(`/api/v1/getProductListByCategory`, { params: data });
@@ -52,6 +56,8 @@ const getOrderDetail = (data) =>
   axios.get(`/api/v1/getOrderDetail`, { params: data });
 const addProductToScheduleOrder = (data) =>
   axios.post(`/api/v1/addProductToScheduleOrder`, data);
+const deleteProductDetail = (data) =>
+  axios.post(`/api/v1/deleteProductDetail`, data);
 
 const searchData = (data) => axios.post(`/api/v1/searchData`, data);
 const deleteOrderDtl = (data) => axios.post(`/api/v1/deleteOrderDtl`, data);
@@ -112,6 +118,9 @@ export default {
   submitOrder,
   changeOrderStep,
   uploadImages,
+  saveProductDetail,
+  deleteProductDetail,
+  getProductDetailListById,
 
   // S service
   getUserList,

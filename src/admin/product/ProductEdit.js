@@ -173,7 +173,7 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
                 <Divider>Дэлгэрэнгүй мэдээлэл оруулах</Divider>
               </Col>
               <Col span={24}>
-                {productId > 0 && <ProductDetailList productId={productId} />}
+                {productId && <ProductDetailList productId={productId} />}
               </Col>
             </>
           )}
