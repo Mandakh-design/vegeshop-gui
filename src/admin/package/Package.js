@@ -45,14 +45,14 @@ const Package = () => {
       dataIndex: "name",
       key: "name",
     },
-    {
-      title: "Хөнгөлөлт",
-      dataIndex: "discount",
-      key: "discount",
-      render: (text, record) => {
-        return text + " %";
-      },
-    },
+    // {
+    //   title: "Хөнгөлөлт",
+    //   dataIndex: "discount",
+    //   key: "discount",
+    //   render: (text, record) => {
+    //     return text + " %";
+    //   },
+    // },
     {
       title: "Анхны үнийн дүн",
       dataIndex: "price",
