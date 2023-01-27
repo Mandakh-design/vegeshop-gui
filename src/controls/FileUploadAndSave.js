@@ -85,6 +85,7 @@ const FileUploadAndSave = ({
         <Button icon={<UploadOutlined />} >
          {title ? title : `Файл хавсаргах`} 
         </Button>
+      
     </Upload>
         </Col>
         {filename &&  

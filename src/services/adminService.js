@@ -59,6 +59,8 @@ const addProductToScheduleOrder = (data) =>
 const deleteProductDetail = (data) =>
   axios.post(`/api/v1/deleteProductDetail`, data);
 
+  
+  const getLandingProduct = () => axios.post(`/api/v1/getLandingProduct`);
 const searchData = (data) => axios.post(`/api/v1/searchData`, data);
 const deleteOrderDtl = (data) => axios.post(`/api/v1/deleteOrderDtl`, data);
 const createInvoice = (data) => axios.post(`/api/v1/createInvoice`, data);
@@ -111,6 +113,7 @@ export default {
   saveScheduleLocationMap,
   getOrderDetail,
   addProductToScheduleOrder,
+  getLandingProduct,
   searchData,
   getPackageWithDtl,
   deleteOrderDtl,
