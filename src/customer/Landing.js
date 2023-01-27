@@ -8,6 +8,7 @@ import {
   message,
   Checkbox,
   Form,
+  Divider,
 } from "antd";
 import {
   ShoppingCartOutlined,
@@ -17,7 +18,7 @@ import {
 } from "@ant-design/icons";
 import React from "react";
 import adminService from "../services/adminService";
-import { showErrorMsg } from "../common/utils";
+import { moneyFormat, showErrorMsg } from "../common/utils";
 import { useHistory } from "react-router-dom";
 import contextLogin from "../main/contextLogin";
 
@@ -30,24 +31,28 @@ const Landing = () => {
   const [loading, setLoading] = React.useState(false);
 
   const [productList, setProductList] = React.useState();
+  const [packageList, setPackageList] = React.useState();
 
   const searchData = (value) => {
-    if (value.productType.length === 0) {
-      message.warning("Бүтээгдэхүүний төрөл сонгоно уу");
-      return;
-    }
+    // if (value.productType.length === 0) {
+    //   message.warning("Бүтээгдэхүүний төрөл сонгоно уу");
+    //   return;
+    // }
     setLoading(true);
     adminService
-      .searchData({ productType: value.productType })
+      .getLandingProduct()
       .then((result) => {
-        if (result?.data?.data) setProductList(result.data.data);
+        if (result?.data?.data) {
+          setPackageList(result.data.data.packageList);
+          setProductList(result.data.data.productList);
+        }
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
   };
 
   React.useEffect(() => {
-    form.submit();
+    searchData();
   }, []);
 
   const loadMoreData = () => {
@@ -70,52 +75,41 @@ const Landing = () => {
   return (
     <Spin spinning={loading}>
       <Row justify="center">
-        <Col xs={23} sm={23} md={23} lg={22} xl={22}>
-          <List
+      <Col span={24}>
+      <h3 style={{  color: "green" }}>
+              Багцалж савалсан бүтээгдэхүүнүүд
+            </h3>
+      </Col>
+      <Col span={24}>
+        <List
             size="small"
-            dataSource={productList}
+            dataSource={packageList}
             itemLayout="horizontal"
-            header={
-              <Form form={form} onFinish={searchData}>
-                <Row>
-                  <Col span={24}>
-                    <span style={{ fontSize: 35, color: "green" }}>
-                      Бүтээгдэхүүний жагсаалт
-                    </span>
-                  </Col>
-                  <Col span={24}>
-                    <Form.Item initialValue={[1, 2]} name="productType">
-                      <Checkbox.Group
-                        options={[
-                          { label: "Бүтээгдэхүүн", value: 1 },
-                          { label: "Багц", value: 2 },
-                        ]}
-                        // style={{ paddingLeft: "1rem" }}
-                        onChange={form.submit}
-                      />
-                    </Form.Item>
-                  </Col>
-                </Row>
-              </Form>
-            }
             grid={{
               gutter: 0,
               xs: 1,
               sm: 2,
-              md: 4,
-              lg: 4,
+              md: 3,
+              lg: 3,
               xl: 4,
-              xxl: 5,
+              xxl: 4,
             }}
             renderItem={(item) => (
               <List.Item key={item.id}>
                   <Card
-                    style={{ marginTop: "1rem" }}
+                  size="small"
                     cover={
+                      item.filename ?
                       <img
+                      style={{width:"100%", height:"15rem"}}
                         alt="example"
-                        src="https://blog-images-1.pharmeasy.in/blog/production/wp-content/uploads/2021/04/23175719/shutterstock_440493100-1.jpg"
+                        src={`${process.env.REACT_APP_SERVICE_URL}/images/${item.filename}`}
                       />
+                      :<img
+                      style={{width:"100%", height:"15rem"}}
+                      alt="example"
+                      src={`/images/emptyPic.jpeg`}
+                    />
                     }
                     
                     actions={[
@@ -159,12 +153,96 @@ const Landing = () => {
                         </div>
                       }
                     />
-                    {<b>{item.price} ₮</b>}
+                    {<b>Нэгж үнэ: {moneyFormat( item.price)}</b>}
                   </Card>
               </List.Item>
             )}
           />
-        </Col>
+      </Col>
+      <Col span={24}>
+      <h3 style={{  color: "green" }}>
+      Бүтээгдэхүүнүүд
+            </h3>
+      </Col>
+      <Col span={24}>
+        <List
+            size="small"
+            dataSource={productList}
+            itemLayout="horizontal"
+            grid={{
+              gutter: 0,
+              xs: 1,
+              sm: 2,
+              md: 3,
+              lg: 3,
+              xl: 4,
+              xxl: 4,
+            }}
+            renderItem={(item) => (
+              <List.Item key={item.id}>
+                  <Card
+                  size="small"
+                    cover={
+                      item.filename ?
+                      <img
+                      style={{width:"100%", height:"15rem"}}
+                        alt="example"
+                        src={`${process.env.REACT_APP_SERVICE_URL}/images/${item.filename}`}
+                      />
+                      :<img
+                      style={{width:"100%", height:"15rem"}}
+                      alt="example"
+                      src={`/images/emptyPic.jpeg`}
+                    />
+                    }
+                    
+                    actions={[
+                      <Button
+                        key="order"
+                        type="primary"
+                        icon={<ShoppingCartOutlined />}
+                        ghost
+                      >
+                        Захиалах
+                      </Button>,
+                      <Button
+                      key="order"
+                      type="primary"
+                      ghost
+                      onClick={() => {
+                        if (loggedUser && token)
+                          history.push(`/product/${item.id}/${item.type}`);
+                        else history.push(`/login`);
+                      }}
+                    >
+                      Дэлгэрэнгүй
+                    </Button>,
+                    ]}
+                  >
+                    <Card.Meta
+                      title={item.name}
+                      description={
+                        <div style={{ marginBottom: "1rem" }}>
+                          {item.type === 1 ? (
+                            <span>
+                              <InboxOutlined />
+                              {" " + item.description}
+                            </span>
+                          ) : (
+                            <span>
+                              <FolderOpenOutlined />
+                              {" Багц бүтээгдэхүүн"}
+                            </span>
+                          )}
+                        </div>
+                      }
+                    />
+                    {<b>Нэгж үнэ: {moneyFormat( item.price)}</b>}
+                  </Card>
+              </List.Item>
+            )}
+          />
+      </Col>
       </Row>
     </Spin>
   );

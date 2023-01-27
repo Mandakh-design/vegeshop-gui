@@ -351,7 +351,7 @@ const scheduleOrderStatus = {
 
 const moneyFormat = (value) => {
   if (value == null || value === undefined || value.length === 0) return "";
-  return value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,") + " ₮";
+  return value.toFixed(1).replace(/\d(?=(\d{3})+\.)/g, "$&,") + "₮";
 };
 
 const renderDate = (date) => {

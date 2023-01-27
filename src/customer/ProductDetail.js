@@ -145,13 +145,14 @@ const ProductDetail = () => {
                   xs={24}
                   sm={24}
                   md={13}
-                  lg={10}
-                  xl={10}
+                  lg={8}
+                  xl={8}
                   style={{ padding: "1rem 2rem 2rem 2rem" }}
                 >
-                  {productImage(productDetail)}
+                  {/* {productImage(productDetail)} */}
+                  <img style={{width:'100%'}} src={`${process.env.REACT_APP_SERVICE_URL}/images/${productDetail.filename}`}/>
                 </Col>
-                <Col xs={24} sm={24} md={11} lg={14} xl={14}>
+                <Col xs={24} sm={24} md={11} lg={8} xl={8}>
                   <Row>
                     <Col span={24}>
                       <Row justify="space-between">
@@ -181,7 +182,76 @@ const ProductDetail = () => {
                             {productDetail.name}
                           </span>
                         </Col>
-                        <Col>
+                       
+                      </Row>
+                    </Col>
+                    <Col span={24}>
+                      <Form form={form} onFinish={addProductToOrder}>
+                        <Row>
+                          <Col span={24}>
+                            <Space>
+                              <span style={{ fontSize: 15 }}>Нэгж үнэ:</span>
+                              <h2>{moneyFormat(productDetail.price)}</h2>
+                            </Space>
+                          </Col>
+                          {/* <Col span={24}>
+                            <Form.Item name="count" initialValue={1}>
+                              <InputNumber
+                                placeholder=""
+                                addonBefore="Тоо ширхэг"
+                                addonAfter={
+                                  productDetail.type === 1 ? "кг" : "ш"
+                                }
+                              />
+                            </Form.Item>
+                          </Col> */}
+                          <Col span={24}>
+                            <Row gutter={[16, 16]}>
+                              <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                                <Button
+                                  type="primary"
+                                  ghost
+                                  size="large"
+                                  style={{ width: "100%" }}
+                                  onClick={form.submit}
+                                >
+                                  САГСАНД НЭМЭХ
+                                </Button>
+                              </Col>
+                              <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                                <Button
+                                  type="primary"
+                                  size="large"
+                                  style={{ width: "100%" }}
+                                  onClick={() => {
+                                    history.push("/order");
+                                  }}
+                                >
+                                  ЗАХИАЛАХ
+                                </Button>
+                              </Col>
+                            </Row>
+                          </Col>
+                          
+                          <Col span={24}>
+                            <Divider orientation="left">
+                              Төлбөр төлөх боломж
+                            </Divider>
+                          </Col>
+                          <Col xs={4} sm={4} md={4} lg={3} xl={3}>
+                            <Tooltip title="Та төлбөрөө qpay ашиглан төлөх боломжтой">
+                              <img
+                                style={{
+                                  width: "100%",
+                                  marginTop: "1rem",
+                                  borderStyle: "outset",
+                                }}
+                                src="/images/qpay-icon.png"
+                                alt=""
+                              />
+                            </Tooltip>
+                          </Col>
+                          <Col span={24}>
                           <Button
                             type="text"
                             icon={<HeartOutlined />}
@@ -210,57 +280,13 @@ const ProductDetail = () => {
                             Төстэй бараа
                           </Button>
                         </Col>
-                      </Row>
+                        </Row>
+                      </Form>
                     </Col>
-                    <Col span={24}>
-                      <Form form={form} onFinish={addProductToOrder}>
-                        <Row>
-                          <Col span={24}>
-                            <Space>
-                              <span style={{ fontSize: 15 }}>Үнэ:</span>
-                              <h2>{moneyFormat(productDetail.total_amount)}</h2>
-                            </Space>
-                          </Col>
-                          <Col span={24}>
-                            <Form.Item name="count" initialValue={1}>
-                              <InputNumber
-                                placeholder=""
-                                addonBefore="Тоо ширхэг"
-                                addonAfter={
-                                  productDetail.type === 1 ? "кг" : "ш"
-                                }
-                              />
-                            </Form.Item>
-                          </Col>
-                          <Col span={24}>
-                            <Row gutter={[16, 16]}>
-                              <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                                <Button
-                                  type="primary"
-                                  ghost
-                                  size="large"
-                                  style={{ width: "100%" }}
-                                  onClick={form.submit}
-                                >
-                                  САГСАНД НЭМЭХ
-                                </Button>
-                              </Col>
-                              <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                                <Button
-                                  type="primary"
-                                  size="large"
-                                  style={{ width: "100%" }}
-                                  onClick={() => {
-                                    history.push("/order");
-                                  }}
-                                >
-                                  ЗАХИАЛАХ
-                                </Button>
-                              </Col>
-                            </Row>
-                          </Col>
-                          {type === "2" && (
-                            <Col span={24}>
+                  </Row>
+                </Col>
+                <Col xs={24} sm={24} md={24} lg={8} xl={8}>
+                {type === "2" && (
                               <Row gutter={[0, 16]}>
                                 <Col span={24}>
                                   <Divider orientation="left">
@@ -283,30 +309,19 @@ const ProductDetail = () => {
                                   </Timeline>
                                 </Col>
                               </Row>
-                            </Col>
                           )}
-                          <Col span={24}>
-                            <Divider orientation="left">
-                              Төлбөр төлөх боломж
-                            </Divider>
-                          </Col>
-                          <Col xs={4} sm={4} md={4} lg={3} xl={3}>
-                            <Tooltip title="Та төлбөрөө qpay ашиглан төлөх боломжтой">
-                              <img
-                                style={{
-                                  width: "100%",
-                                  marginTop: "1rem",
-                                  borderStyle: "outset",
-                                }}
-                                src="/images/qpay-icon.png"
-                                alt=""
-                              />
-                            </Tooltip>
-                          </Col>
-                        </Row>
-                      </Form>
-                    </Col>
-                  </Row>
+                          {type === "1" && (
+                              <Row gutter={[0, 16]}>
+                                <Col span={24}>
+                                  <Divider orientation="left">
+                                    Барааны дэлгэрэнгүй
+                                  </Divider>
+                                </Col>
+                                <Col span={24}>
+                                  млйлйыбойыолб
+                                </Col>
+                              </Row>
+                          )}
                 </Col>
               </Row>
             </>
