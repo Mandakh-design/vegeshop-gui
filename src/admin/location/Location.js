@@ -45,7 +45,7 @@ const Location = () => {
       key: "khoroo",
     },
     {
-      title: "Нэр",
+      title: "Хотхоны нэр",
       dataIndex: "name",
       key: "name",
     },
