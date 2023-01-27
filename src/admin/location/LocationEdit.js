@@ -73,7 +73,10 @@ const LocationEdit = ({
             >
               <Select
                 placeholder="Дүүрэг сонгох"
-                onChange={(e) => getKhorooList(e)}
+                onChange={(e) => {
+                  form.setFieldsValue({ khoroo_id: null });
+                  getKhorooList(e);
+                }}
               >
                 {districtList?.map((c) => {
                   return (
@@ -104,7 +107,7 @@ const LocationEdit = ({
           </Col>
           <Col span={24}>
             <Form.Item
-              label="Нэр"
+              label="Хотхоны нэр"
               name="name"
               rules={[{ required: true, message: "Заавал оруулна уу" }]}
             >
