@@ -13,6 +13,7 @@ import {
   ShoppingCartOutlined,
   FolderOpenOutlined,
   InboxOutlined,
+  ArrowRightOutlined
 } from "@ant-design/icons";
 import React from "react";
 import adminService from "../services/adminService";
@@ -103,12 +104,11 @@ const Landing = () => {
               sm: 2,
               md: 4,
               lg: 4,
-              xl: 5,
-              xxl: 6,
+              xl: 4,
+              xxl: 5,
             }}
             renderItem={(item) => (
               <List.Item key={item.id}>
-                <Col span={20}>
                   <Card
                     style={{ marginTop: "1rem" }}
                     cover={
@@ -117,11 +117,7 @@ const Landing = () => {
                         src="https://blog-images-1.pharmeasy.in/blog/production/wp-content/uploads/2021/04/23175719/shutterstock_440493100-1.jpg"
                       />
                     }
-                    onClick={() => {
-                      if (loggedUser && token)
-                        history.push(`/product/${item.id}/${item.type}`);
-                      else history.push(`/login`);
-                    }}
+                    
                     actions={[
                       <Button
                         key="order"
@@ -131,6 +127,18 @@ const Landing = () => {
                       >
                         Захиалах
                       </Button>,
+                      <Button
+                      key="order"
+                      type="primary"
+                      ghost
+                      onClick={() => {
+                        if (loggedUser && token)
+                          history.push(`/product/${item.id}/${item.type}`);
+                        else history.push(`/login`);
+                      }}
+                    >
+                      Дэлгэрэнгүй
+                    </Button>,
                     ]}
                   >
                     <Card.Meta
@@ -151,9 +159,8 @@ const Landing = () => {
                         </div>
                       }
                     />
-                    {<b>{item.total_amount} ₮</b>}
+                    {<b>{item.price} ₮</b>}
                   </Card>
-                </Col>
               </List.Item>
             )}
           />
