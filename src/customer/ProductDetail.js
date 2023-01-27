@@ -1,11 +1,9 @@
 import {
   Button,
-  Card,
   Col,
   Divider,
   Form,
   Image,
-  InputNumber,
   message,
   Row,
   Space,
@@ -20,10 +18,11 @@ import {
 } from "@ant-design/icons";
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { moneyFormat, showErrorMsg } from "../common/utils";
+import { moneyFormat, renderDateNoSec, showErrorMsg } from "../common/utils";
 import adminService from "../services/adminService";
 import contextLogin from "../main/contextLogin";
 import { useHistory } from "react-router-dom";
+import FileUploadAndSave from "../controls/FileUploadAndSave";
 
 const ProductDetail = () => {
   const { id, type } = useParams();
@@ -33,6 +32,7 @@ const ProductDetail = () => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState();
   const [productDetail, setProductDetail] = useState();
+  const [productDetailList, setProductDetailList] = useState();
   const [visible, setVisible] = useState(false);
 
   const getOrder = () => {
@@ -47,15 +47,31 @@ const ProductDetail = () => {
       .finally(() => setLoading(false));
   };
 
+  const getProductDtlList = () => {
+    setLoading(true);
+    adminService
+      .getProductDetailListById({ id: id })
+      .then((result) => {
+        if (result?.data?.data) setProductDetailList(result.data.data);
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
   const getProductInfo = () => {
     setLoading(true);
     adminService
       .getProduct({ id: id })
       .then((result) => {
-        if (result?.data?.data) setProductDetail(result.data.data[0]);
+        if (result?.data?.data) {
+          setProductDetail(result.data.data[0]);
+          getProductDtlList();
+        }
       })
-      .catch((err) => showErrorMsg(err))
-      .finally(() => setLoading(false));
+      .catch((err) => {
+        showErrorMsg(err);
+        setLoading(false);
+      });
   };
 
   const getPackageInfo = () => {
@@ -152,6 +168,7 @@ const ProductDetail = () => {
                   {/* {productImage(productDetail)} */}
                   <img
                     style={{ width: "100%" }}
+                    alt=""
                     src={`${process.env.REACT_APP_SERVICE_URL}/images/${productDetail.filename}`}
                   />
                 </Col>
@@ -317,7 +334,34 @@ const ProductDetail = () => {
                           Барааны дэлгэрэнгүй
                         </Divider>
                       </Col>
-                      <Col span={24}>млйлйыбойыолб</Col>
+                      <Col span={24}>
+                        {productDetailList?.map((d) => {
+                          return (
+                            <Row justify="space-between">
+                              <Col>
+                                <b>{d.name}</b>
+                              </Col>
+                              <Col>{d.description}</Col>
+                              {d.type === 1 && (
+                                <Col span={24}>{d.value_str}</Col>
+                              )}
+                              {d.type === 2 && (
+                                <Col span={24}>
+                                  {renderDateNoSec(d.value_date)}
+                                </Col>
+                              )}
+                              {d.type === 3 && (
+                                <Col span={24}>
+                                  <FileUploadAndSave
+                                    filename={d.filename}
+                                    type={2}
+                                  />
+                                </Col>
+                              )}
+                            </Row>
+                          );
+                        })}
+                      </Col>
                     </Row>
                   )}
                 </Col>

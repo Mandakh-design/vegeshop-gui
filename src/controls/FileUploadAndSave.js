@@ -5,7 +5,7 @@ import React from "react";
 import { showErrorMsg } from "../common/utils";
 import adminService from "../services/adminService";
 
-const FileUploadAndSave = ({ filename, setFilename, title }) => {
+const FileUploadAndSave = ({ filename, setFilename, title, type }) => {
   const [loading, setLoading] = React.useState(false);
 
   const handleChange = ({ fileList }) => {
@@ -64,23 +64,25 @@ const FileUploadAndSave = ({ filename, setFilename, title }) => {
   return (
     <Spin spinning={loading}>
       <Row>
-        <Col span={24}>
-          <Upload
-            listType="picture"
-            accept=".png, .jpeg, .jpg"
-            fileList={[]}
-            // multiple={mode === "multiple" ? true : false}
-            onChange={handleChange}
-            // onRemove={handleRemove}
-            // beforeUpload={beforeUpload}
-            // customRequest={upload}
-            height="200px"
-          >
-            <Button icon={<UploadOutlined />}>
-              {title ? title : `Файл хавсаргах`}
-            </Button>
-          </Upload>
-        </Col>
+        {type === 1 && (
+          <Col span={24}>
+            <Upload
+              listType="picture"
+              accept=".png, .jpeg, .jpg"
+              fileList={[]}
+              // multiple={mode === "multiple" ? true : false}
+              onChange={handleChange}
+              // onRemove={handleRemove}
+              // beforeUpload={beforeUpload}
+              // customRequest={upload}
+              height="200px"
+            >
+              <Button icon={<UploadOutlined />}>
+                {title ? title : `Файл хавсаргах`}
+              </Button>
+            </Upload>
+          </Col>
+        )}
         {filename && (
           <Col span={24}>
             <img
@@ -97,12 +99,14 @@ const FileUploadAndSave = ({ filename, setFilename, title }) => {
 FileUploadAndSave.defaultProps = {
   isInline: false,
   filename: null,
+  type: 1,
 };
 
 FileUploadAndSave.propTypes = {
   filename: PropTypes.string,
   setFilename: PropTypes.func.isRequired,
   title: PropTypes.string,
+  type: PropTypes.number,
 };
 
 export default FileUploadAndSave;
