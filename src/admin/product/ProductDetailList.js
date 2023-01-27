@@ -4,23 +4,19 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
-  Divider,
   Form,
   Input,
-  InputNumber,
   message,
   Row,
   Select,
   Spin,
   Table,
-  Alert,
   Modal,
   Space,
   Popconfirm,
   DatePicker,
 } from "antd";
 import adminService from "../../services/adminService";
-import FileUpload from "../../controls/FileUpload";
 import FileUploadAndSave from "../../controls/FileUploadAndSave";
 import { renderDateNoSec, showErrorMsg } from "../../common/utils";
 
