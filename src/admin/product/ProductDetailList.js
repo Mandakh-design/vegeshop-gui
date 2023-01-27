@@ -18,9 +18,8 @@ import {
 import adminService from "../../services/adminService";
 import FileUpload from "../../controls/FileUpload";
 import FileUploadAndSave from "../../controls/FileUploadAndSave";
-import ProductDetailList from "./ProductDetailList";
 
-const ProductEdit = ({ productId, category, onClose, changeState }) => {
+const ProductDetailList = ({ productId, category, onClose, changeState }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState();
@@ -71,13 +70,12 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
   };
 
   React.useEffect(() => {
-    setCategoryList([category]);
-    getProductInfo();
+    console.log(productId);
   }, [category, productId, changeState]);
 
   return (
     <Spin spinning={loading}>
-      <Form form={form} onFinish={saveProduct} layout="vertical">
+      {/* <Form form={form} onFinish={saveProduct} layout="vertical">
         <Row justify="end" gutter={[16, 0]}>
           <Col span={12}>
             <Form.Item name="category_id" label="Ангилал">
@@ -156,7 +154,7 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
             </Button>
           </Col>
 
-          {selectedProduct && (
+          {productId && (
             <>
               <Col span={24}>
                 <Divider>Нүүр зураг оруулах</Divider>
@@ -173,48 +171,13 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
                 <Divider>Дэлгэрэнгүй мэдээлэл оруулах</Divider>
               </Col>
               <Col span={24}>
-                {productId > 0 && <ProductDetailList productId={productId} />}
+                <Table />
               </Col>
             </>
           )}
-
-          {/* <Col span={12}>
-            <Form.Item
-              label="Хөнгөлөлт"
-              name="discount"
-              initialValue={0}
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <InputNumber
-                placeholder="Хөнгөлөлт оруулна уу"
-                style={{ width: "100%" }}
-                addonAfter="%"
-                onChange={(e) => {
-                  let tAmount =
-                    form.getFieldsValue().price -
-                    (form.getFieldsValue().price * e) / 100;
-                  form.setFieldsValue({ total_amount: tAmount });
-                }}
-              />
-            </Form.Item>
-          </Col> */}
-          {/* <Col span={12}>
-            <Form.Item
-              label="Хөнгөлөлтийн дараах үнийн дүн"
-              name="total_amount"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <InputNumber
-                placeholder="Хөнгөлөлтийн дараах үнийн дүн"
-                disabled
-                style={{ width: "100%" }}
-                addonAfter="₮"
-              />
-            </Form.Item>
-          </Col> */}
         </Row>
-      </Form>
+      </Form> */}
     </Spin>
   );
 };
-export default ProductEdit;
+export default ProductDetailList;
