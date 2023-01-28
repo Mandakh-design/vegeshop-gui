@@ -1,5 +1,5 @@
-import { ExclamationCircleOutlined, UploadOutlined } from "@ant-design/icons";
-import { Button, Modal, Upload, Spin, Row, Col } from "antd";
+import { UploadOutlined } from "@ant-design/icons";
+import { Button, Upload, Spin, Row, Col } from "antd";
 import PropTypes from "prop-types";
 import React from "react";
 import { showErrorMsg } from "../common/utils";
@@ -87,6 +87,7 @@ const FileUploadAndSave = ({ filename, setFilename, title, type }) => {
           <Col span={24}>
             <img
               style={{ width: "100%" }}
+              alt=""
               src={`${process.env.REACT_APP_SERVICE_URL}/images/${filename}`}
             />
           </Col>
