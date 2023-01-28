@@ -165,6 +165,23 @@ const MainHeader = ({ userLoading }) => {
       icon: <CarOutlined />,
     },
   ];
+
+  const getDrawerAvatar = (item) => {
+    if (item.type === 1 && item.productFilename)
+      return (
+        <Avatar
+          src={`${process.env.REACT_APP_SERVICE_URL}/images/${item.productFilename}`}
+        />
+      );
+    if (item.packageFilename)
+      return (
+        <Avatar
+          src={`${process.env.REACT_APP_SERVICE_URL}/images/${item.packageFilename}`}
+        />
+      );
+
+    return <Avatar src={`/images/emptyPic.jpeg`} />;
+  };
   return (
     <Spin spinning={loading}>
       <Row justify="space-between">
@@ -294,7 +311,7 @@ const MainHeader = ({ userLoading }) => {
             <Spin spinning={loading}>
               {scheduleOrder?.detailList ? (
                 <Row gutter={[0, 16]}>
-                  {scheduleOrder?.detailList?.map((p) => {
+                  {scheduleOrder.detailList.map((p) => {
                     return (
                       <Col span={24} key={p.id}>
                         <Card key={p.id}>
@@ -302,13 +319,7 @@ const MainHeader = ({ userLoading }) => {
                             justify="space-between"
                             style={{ marginBottom: "2px" }}
                           >
-                            <Col>
-                              {p.type === 1 ? (
-                                <Avatar src="https://blog-images-1.pharmeasy.in/blog/production/wp-content/uploads/2021/04/23175719/shutterstock_440493100-1.jpg" />
-                              ) : (
-                                <Avatar src="/images/vegetablePack.jpg" />
-                              )}
-                            </Col>
+                            <Col>{getDrawerAvatar(p)}</Col>
                             <Col>
                               <Popconfirm
                                 title="Сагснаас устгахдаа итгэлтэй байна уу?"
