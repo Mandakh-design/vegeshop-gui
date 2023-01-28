@@ -117,6 +117,7 @@ const ProductDetail = () => {
   };
 
   const addProductToOrder = (value) => {
+    if (value.count === null || value.count === undefined) value.count = 1;
     if (value.count === 0) {
       message.warning("Тоо ширхэгт 0 ээс их тоо оруулна уу!");
       return;
