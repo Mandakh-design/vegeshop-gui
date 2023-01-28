@@ -69,7 +69,11 @@ const OrderInvoice = ({ order, getOrder }) => {
             avatar={
               <Avatar
                 style={{ width: "5rem", height: "5rem" }}
-                src="https://blog-images-1.pharmeasy.in/blog/production/wp-content/uploads/2021/04/23175719/shutterstock_440493100-1.jpg"
+                src={
+                  prod.productFilename
+                    ? `${process.env.REACT_APP_SERVICE_URL}/images/${prod.productFilename}`
+                    : `/images/emptyPic.jpeg`
+                }
               />
             }
             title={
@@ -102,7 +106,11 @@ const OrderInvoice = ({ order, getOrder }) => {
             avatar={
               <Avatar
                 style={{ width: "5rem", height: "5rem" }}
-                src="/images/vegetablePack.jpg"
+                src={
+                  pack.packageFilename
+                    ? `${process.env.REACT_APP_SERVICE_URL}/images/${pack.packageFilename}`
+                    : `/images/emptyPic.jpeg`
+                }
               />
             }
             title={
