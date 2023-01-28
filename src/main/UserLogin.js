@@ -120,7 +120,7 @@ const AppLogin = () => {
               <Col span={24}>
                 <Button
                   type="primary"
-                  onClick={form.submit}
+                  htmlType="submit"
                   style={{ width: "100%" }}
                 >
                   НЭВТРЭХ
