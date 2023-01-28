@@ -43,6 +43,17 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
       key: "description",
     },
     {
+      title: "Харагдах хэмжээ",
+      dataIndex: "span",
+      key: "span",
+      render: (text, record) => {
+        if (text === 24) return "100%";
+        if (text === 18) return "75%";
+        if (text === 12) return "50%";
+        return "25%";
+      },
+    },
+    {
       title: "Төрөл",
       dataIndex: "type",
       key: "type",
@@ -94,6 +105,8 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
                   description: record.description,
                   type: record.type,
                   valueStr: record.value_str,
+                  filename: record.filename,
+                  span: record.span,
                 });
               }}
             />
@@ -211,6 +224,7 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
                           valueDate: null,
                           type: null,
                           filename: null,
+                          span: null,
                         });
                       }}
                     >
@@ -232,11 +246,12 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
         }}
         cancelButtonProps={{ hidden: true }}
         onOk={form.submit}
+        width="60%"
       >
         {productDetailVisible && (
           <Spin spinning={loading}>
             <Form form={form} onFinish={saveProductDetail} layout="vertical">
-              <Row>
+              <Row gutter={[16, 0]}>
                 <Col span={24}>
                   <Form.Item
                     label="Нэр"
@@ -255,7 +270,29 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
                     <Input.TextArea placeholder="Тайлбар оруулна уу" />
                   </Form.Item>
                 </Col>
-                <Col span={24}>
+                <Col span={12}>
+                  <Form.Item
+                    label="Харагдах хэмжээ"
+                    name="span"
+                    rules={[{ required: true, message: "Заавал сонгоно уу" }]}
+                  >
+                    <Select placeholder="Хэмжээ сонгоно уу">
+                      <Select.Option value={24} key={1}>
+                        100%
+                      </Select.Option>
+                      <Select.Option value={18} key={2}>
+                        75%
+                      </Select.Option>
+                      <Select.Option value={12} key={3}>
+                        50%
+                      </Select.Option>
+                      <Select.Option value={6} key={4}>
+                        25%
+                      </Select.Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
                   <Form.Item
                     label="Төрөл"
                     name="type"
@@ -300,7 +337,7 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
                   </Col>
                 )}
                 {selectedType === 3 && (
-                  <Col span={24}>
+                  <Col span={14}>
                     <Form.Item
                       label="Зураг"
                       name="filename"
