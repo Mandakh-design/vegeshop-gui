@@ -48,7 +48,6 @@ const ChangeOrderTable = ({
         newIndex
       ).filter((el) => !!el);
       newData.forEach((element, index) => (element.view_order = index + 1));
-      console.log(newData);
       setData(newData);
     }
   };

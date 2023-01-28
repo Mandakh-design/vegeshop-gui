@@ -104,7 +104,7 @@ FileUploadAndSave.defaultProps = {
 
 FileUploadAndSave.propTypes = {
   filename: PropTypes.string,
-  setFilename: PropTypes.func.isRequired,
+  setFilename: PropTypes.func,
   title: PropTypes.string,
   type: PropTypes.number,
 };

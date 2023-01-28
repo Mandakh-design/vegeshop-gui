@@ -337,7 +337,7 @@ const ProductDetail = () => {
                       <Col span={24}>
                         {productDetailList?.map((d) => {
                           return (
-                            <Row justify="space-between">
+                            <Row justify="space-between" key={d.id}>
                               <Col>
                                 <b>{d.name}</b>
                               </Col>
