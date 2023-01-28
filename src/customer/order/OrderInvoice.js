@@ -236,6 +236,30 @@ const OrderInvoice = ({ order, getOrder }) => {
               <Input placeholder="ИБаримт авах и-мэйл оруулна уу" />
             </Form.Item>
           </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Form.Item name="street" label="Гудамж">
+              <Input placeholder="Гудамж оруулна уу" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Form.Item name="town" label="Хотхон">
+              <Input placeholder="Хотхон оруулна уу" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Form.Item name="apartment" label="Байр">
+              <Input placeholder="Байр оруулна уу" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+            <Form.Item
+              name="door_number"
+              label="Тоот"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+              <Input placeholder="Тоот оруулна уу" />
+            </Form.Item>
+          </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={24}>
             <Form.Item
               name="address"
