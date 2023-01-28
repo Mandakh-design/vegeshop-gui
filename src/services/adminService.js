@@ -59,13 +59,14 @@ const addProductToScheduleOrder = (data) =>
 const deleteProductDetail = (data) =>
   axios.post(`/api/v1/deleteProductDetail`, data);
 
-  
-  const getLandingProduct = () => axios.post(`/api/v1/getLandingProduct`);
+const getLandingProduct = () => axios.post(`/api/v1/getLandingProduct`);
 const searchData = (data) => axios.post(`/api/v1/searchData`, data);
 const deleteOrderDtl = (data) => axios.post(`/api/v1/deleteOrderDtl`, data);
 const createInvoice = (data) => axios.post(`/api/v1/createInvoice`, data);
 const submitOrder = (data) => axios.post(`/api/v1/submitOrder`, data);
 const changeOrderStep = (data) => axios.post(`/api/v1/changeOrderStep`, data);
+const saveProductDetailOrder = (data) =>
+  axios.post(`/api/v1/saveProductDetailOrder`, data);
 
 const config = {
   headers: {
@@ -124,6 +125,7 @@ export default {
   saveProductDetail,
   deleteProductDetail,
   getProductDetailListById,
+  saveProductDetailOrder,
 
   // S service
   getUserList,

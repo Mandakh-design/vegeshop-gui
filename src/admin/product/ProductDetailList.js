@@ -19,6 +19,7 @@ import {
 import adminService from "../../services/adminService";
 import FileUploadAndSave from "../../controls/FileUploadAndSave";
 import { renderDateNoSec, showErrorMsg } from "../../common/utils";
+import ChangeOrderTable from "../../common/ChangeOrderTable";
 
 const ProductDetailList = ({ productId, onClose, changeState }) => {
   const [form] = Form.useForm();
@@ -145,6 +146,19 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
       .finally(() => setLoading(false));
   };
 
+  const saveProductDetailOrder = (data) => {
+    setLoading(true);
+    adminService
+      .saveProductDetailOrder(data)
+      .then((result) => {
+        if (result?.data) {
+          message.success("Амжилттай хадгалагдлаа");
+        }
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
   const getProductDetailList = () => {
     if (productId) {
       setLoading(true);
@@ -169,38 +183,44 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
     <Spin spinning={loading}>
       <Row style={{ marginTop: "1rem" }}>
         <Col span={24}>
-          <Table
-            columns={columns}
-            dataSource={detailList}
-            rowKey="id"
-            bordered
-            title={() => {
-              return (
-                <Row justify="end">
-                  <Button
-                    type="primary"
-                    ghost
-                    onClick={() => {
-                      setProductDetailVisible(true);
-                      setSelectedDetailId(null);
-                      setSelectedFileName(null);
-                      setSelectedType(null);
-                      form.setFieldsValue({
-                        name: null,
-                        description: null,
-                        valueStr: null,
-                        valueDate: null,
-                        type: null,
-                        filename: null,
-                      });
-                    }}
-                  >
-                    Мэдээлэл нэмэх
-                  </Button>
-                </Row>
-              );
-            }}
-          />
+          {detailList && (
+            <ChangeOrderTable
+              data={detailList}
+              column={columns}
+              orderKey="viewOrder"
+              setData={(data) => {
+                saveProductDetailOrder(data);
+                setDetailList(data);
+              }}
+              isBorder={true}
+              customTitle={() => {
+                return (
+                  <Row justify="end">
+                    <Button
+                      type="primary"
+                      ghost
+                      onClick={() => {
+                        setProductDetailVisible(true);
+                        setSelectedDetailId(null);
+                        setSelectedFileName(null);
+                        setSelectedType(null);
+                        form.setFieldsValue({
+                          name: null,
+                          description: null,
+                          valueStr: null,
+                          valueDate: null,
+                          type: null,
+                          filename: null,
+                        });
+                      }}
+                    >
+                      Мэдээлэл нэмэх
+                    </Button>
+                  </Row>
+                );
+              }}
+            />
+          )}
         </Col>
       </Row>
       <Modal

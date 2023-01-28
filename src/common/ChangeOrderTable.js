@@ -6,7 +6,7 @@ import * as PropTypes from "prop-types";
 import {
   SortableContainer,
   SortableElement,
-  SortableHandle
+  SortableHandle,
 } from "react-sortable-hoc";
 
 const SortableItem = SortableElement((props) => <tr {...props} />);
@@ -19,9 +19,8 @@ const ChangeOrderTable = ({
   orderKey,
   customTitle,
   tableSize,
-  isBorder
+  isBorder,
 }) => {
-
   const DragHandle = SortableHandle(() => (
     <MenuOutlined
       style={{
@@ -48,13 +47,16 @@ const ChangeOrderTable = ({
         oldIndex,
         newIndex
       ).filter((el) => !!el);
-      newData.forEach((element, index) => element.formOrder = (index + 1));
+      newData.forEach((element, index) => (element.view_order = index + 1));
+      console.log(newData);
       setData(newData);
     }
   };
 
   const DraggableBodyRow = ({ className, style, ...restProps }) => {
-    const index = data?.findIndex((x) => x.formOrder === restProps["data-row-key"]);
+    const index = data?.findIndex(
+      (x) => x.view_order === restProps["data-row-key"]
+    );
     return <SortableItem index={index} {...restProps} />;
   };
 
@@ -69,20 +71,17 @@ const ChangeOrderTable = ({
   React.useEffect(() => {
     column.unshift(defCol);
     setDrawColumn(column);
-  }, [data])
+  }, [data]);
   return (
     <Row>
       <Col span={24}>
-        {
-          drawColumn &&
+        {drawColumn && (
           <Table
-            rowKey={(row) => row.formOrder}
+            rowKey={(row) => row.view_order}
             dataSource={data}
             size={tableSize}
             bordered={isBorder}
-            title={() => {
-              return customTitle;
-            }}
+            title={customTitle}
             columns={drawColumn}
             components={{
               body: {
@@ -91,24 +90,24 @@ const ChangeOrderTable = ({
               },
             }}
           />
-        }
-
+        )}
       </Col>
-    </Row >)
-}
+    </Row>
+  );
+};
 ChangeOrderTable.defaultProps = {
   column: [],
   tableSize: "small",
   isBorder: true,
-}
+};
 
 ChangeOrderTable.propTypes = {
   column: PropTypes.array.isRequired,
   data: PropTypes.array.isRequired,
   setData: PropTypes.func.isRequired,
   orderKey: PropTypes.string.isRequired,
-  customTitle: PropTypes.object,
+  customTitle: PropTypes.func,
   tableSize: PropTypes.string,
   isBorder: PropTypes.bool,
-}
+};
 export default ChangeOrderTable;
