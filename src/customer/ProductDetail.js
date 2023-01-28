@@ -4,6 +4,7 @@ import {
   Divider,
   Form,
   Image,
+  List,
   message,
   Row,
   Space,
@@ -156,7 +157,7 @@ const ProductDetail = () => {
         {productDetail && (
           <Col span={24}>
             <>
-              <Row justify="space-between">
+              <Row justify="space-between" gutter={[16, 0]}>
                 <Col
                   xs={24}
                   sm={24}
@@ -335,32 +336,47 @@ const ProductDetail = () => {
                         </Divider>
                       </Col>
                       <Col span={24}>
-                        {productDetailList?.map((d) => {
-                          return (
-                            <Row justify="space-between" key={d.id}>
-                              <Col>
-                                <b>{d.name}</b>
+                        <List
+                          dataSource={productDetailList}
+                          renderItem={(d) => (
+                            <List.Item key={d.id}>
+                              <Col span={24}>
+                                <Row justify="space-between">
+                                  <Col>
+                                    <b>{d.name}</b> <br />
+                                    <span style={{ color: "gray" }}>
+                                      {d.description}
+                                    </span>
+                                  </Col>
+                                  {d.type === 1 && (
+                                    <Col
+                                      span={d.span}
+                                      style={{ textAlign: "right" }}
+                                    >
+                                      {d.value_str}
+                                    </Col>
+                                  )}
+                                  {d.type === 2 && (
+                                    <Col
+                                      span={d.span}
+                                      style={{ textAlign: "right" }}
+                                    >
+                                      {renderDateNoSec(d.value_date)}
+                                    </Col>
+                                  )}
+                                  {d.type === 3 && (
+                                    <Col span={d.span}>
+                                      <FileUploadAndSave
+                                        filename={d.filename}
+                                        type={2}
+                                      />
+                                    </Col>
+                                  )}
+                                </Row>
                               </Col>
-                              <Col>{d.description}</Col>
-                              {d.type === 1 && (
-                                <Col span={24}>{d.value_str}</Col>
-                              )}
-                              {d.type === 2 && (
-                                <Col span={24}>
-                                  {renderDateNoSec(d.value_date)}
-                                </Col>
-                              )}
-                              {d.type === 3 && (
-                                <Col span={24}>
-                                  <FileUploadAndSave
-                                    filename={d.filename}
-                                    type={2}
-                                  />
-                                </Col>
-                              )}
-                            </Row>
-                          );
-                        })}
+                            </List.Item>
+                          )}
+                        />
                       </Col>
                     </Row>
                   )}
