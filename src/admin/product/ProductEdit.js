@@ -79,7 +79,7 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
   return (
     <Spin spinning={loading}>
       <Form form={form} onFinish={saveProduct} layout="vertical">
-        <Row justify="end" gutter={[16, 0]}>
+        <Row justify="space-between" gutter={[16, 0]}>
           <Col span={12}>
             <Form.Item name="category_id" label="Ангилал">
               <Select disabled>
@@ -137,7 +137,7 @@ const ProductEdit = ({ productId, category, onClose, changeState }) => {
               <Input.TextArea placeholder="Тайлбар оруулна уу" />
             </Form.Item>
           </Col>
-          <Col span={24}>
+          <Col span={12}>
             <Form.Item
               label="Нүүр зураг оруулах"
               name="filename"

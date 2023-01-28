@@ -10,11 +10,13 @@ import {
   Spin,
 } from "antd";
 import adminService from "../../services/adminService";
+import FileUploadAndSave from "../../controls/FileUploadAndSave";
 
 const PackageEdit = ({ packageId, onClose, changeState }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState();
+  const [selectedFileName, setSelectedFileName] = useState();
 
   const savePackage = (value) => {
     setLoading(true);
@@ -48,6 +50,7 @@ const PackageEdit = ({ packageId, onClose, changeState }) => {
           if (result.data) {
             let pack = result.data.data.find((d) => d.id === packageId);
             setSelectedPackage(pack);
+            setSelectedFileName(pack.filename);
             setFormInfo(pack);
           }
         })
@@ -66,7 +69,7 @@ const PackageEdit = ({ packageId, onClose, changeState }) => {
   return (
     <Spin spinning={loading}>
       <Form form={form} onFinish={savePackage} layout="vertical">
-        <Row justify="end">
+        <Row justify="space-between">
           <Col span={24}>
             <Form.Item
               label="Нэр"
@@ -92,6 +95,21 @@ const PackageEdit = ({ packageId, onClose, changeState }) => {
                 placeholder="Үнийн дүн оруулна уу"
                 style={{ width: "100%" }}
                 prefix={<b>₮</b>}
+              />
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              label="Нүүр зураг оруулах"
+              name="filename"
+              rules={[{ required: true, message: "Заавал сонгоно уу" }]}
+            >
+              <FileUploadAndSave
+                filename={selectedFileName}
+                setFilename={(file) => {
+                  form.setFieldsValue({ filename: file });
+                  setSelectedFileName(file);
+                }}
               />
             </Form.Item>
           </Col>
