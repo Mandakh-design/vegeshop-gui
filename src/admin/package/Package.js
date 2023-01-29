@@ -61,14 +61,14 @@ const Package = () => {
         return moneyFormat(text);
       },
     },
-    {
-      title: "Нийт үнийн дүн",
-      dataIndex: "total_amount",
-      key: "total_amount",
-      render: (text, record) => {
-        return moneyFormat(text);
-      },
-    },
+    // {
+    //   title: "Нийт үнийн дүн",
+    //   dataIndex: "total_amount",
+    //   key: "total_amount",
+    //   render: (text, record) => {
+    //     return moneyFormat(text);
+    //   },
+    // },
     {
       title: "Идэвхитэй эсэх",
       dataIndex: "active_flag",
@@ -123,11 +123,11 @@ const Package = () => {
         dataIndex: "qty",
         key: "qty",
       },
-      {
-        title: "Нийт дүн",
-        dataIndex: "total_amount",
-        key: "total_amount",
-      },
+      // {
+      //   title: "Нийт дүн",
+      //   dataIndex: "total_amount",
+      //   key: "total_amount",
+      // },
       {
         title: "Төрөл",
         dataIndex: "category_name",
