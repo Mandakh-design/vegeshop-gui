@@ -8,6 +8,7 @@ import OrderShow from "./OrderShow";
 import adminService from "../../services/adminService";
 import { useHistory } from "react-router-dom";
 import { showErrorMsg } from "../../common/utils";
+import UserInfo from "./UserInfo";
 
 const Order = () => {
   const { loggedUser, setOrderDtlCount } = React.useContext(contextLogin);
@@ -68,6 +69,10 @@ const Order = () => {
                 current={step}
                 items={[
                   {
+                    title: "Хаяг, мэдээлэл",
+                    description: "2022-01-01 18:40:33",
+                  },
+                  {
                     title: "Захиалах",
                     description: "2022-01-01 18:40:33",
                   },
@@ -84,12 +89,15 @@ const Order = () => {
             </Col>
             <Col xs={24} sm={24} md={16} lg={18} xl={18}>
               {step === 0 && (
-                <OrderInvoice order={orderDetail} getOrder={getOrderDetail} />
+                <UserInfo order={orderDetail} getOrder={getOrderDetail} />
               )}
               {step === 1 && (
+                <OrderInvoice order={orderDetail} getOrder={getOrderDetail} />
+              )}
+              {step === 2 && (
                 <OrderPayment order={orderDetail} getOrder={getOrderDetail} />
               )}
-              {step === 2 && <OrderShow />}
+              {step === 3 && <OrderShow />}
             </Col>
           </Row>
         </Col>

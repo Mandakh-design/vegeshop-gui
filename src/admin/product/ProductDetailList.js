@@ -224,7 +224,7 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
                           valueDate: null,
                           type: null,
                           filename: null,
-                          span: null,
+                          span: 24,
                         });
                       }}
                     >
@@ -270,28 +270,7 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
                     <Input.TextArea placeholder="Тайлбар оруулна уу" />
                   </Form.Item>
                 </Col>
-                <Col span={12}>
-                  <Form.Item
-                    label="Харагдах хэмжээ"
-                    name="span"
-                    rules={[{ required: true, message: "Заавал сонгоно уу" }]}
-                  >
-                    <Select placeholder="Хэмжээ сонгоно уу">
-                      <Select.Option value={24} key={1}>
-                        100%
-                      </Select.Option>
-                      <Select.Option value={18} key={2}>
-                        75%
-                      </Select.Option>
-                      <Select.Option value={12} key={3}>
-                        50%
-                      </Select.Option>
-                      <Select.Option value={6} key={4}>
-                        25%
-                      </Select.Option>
-                    </Select>
-                  </Form.Item>
-                </Col>
+                
                 <Col span={12}>
                   <Form.Item
                     label="Төрөл"
@@ -310,6 +289,28 @@ const ProductDetailList = ({ productId, onClose, changeState }) => {
                       </Select.Option>
                       <Select.Option value={3} key={3}>
                         Зураг
+                      </Select.Option>
+                    </Select>
+                  </Form.Item>
+                </Col>
+                <Col span={12}>
+                  <Form.Item
+                    label="Харагдах хэмжээ"
+                    name="span"
+                    rules={[{ required: true, message: "Заавал сонгоно уу" }]}
+                  >
+                    <Select placeholder="Хэмжээ сонгоно уу">
+                      <Select.Option value={24} key={1}>
+                        100%
+                      </Select.Option>
+                      <Select.Option value={18} key={2}>
+                        75%
+                      </Select.Option>
+                      <Select.Option value={12} key={3}>
+                        50%
+                      </Select.Option>
+                      <Select.Option value={6} key={4}>
+                        25%
                       </Select.Option>
                     </Select>
                   </Form.Item>
