@@ -12,6 +12,7 @@ import {
   Popconfirm,
   Input,
   Space,
+  InputNumber,
 } from "antd";
 import React from "react";
 import {
@@ -23,9 +24,11 @@ import {
 import adminService from "../../services/adminService";
 import { moneyFormat, renderDateNoSec, showErrorMsg } from "../../common/utils";
 import { useHistory } from "react-router-dom";
+import contextLogin from "../../main/contextLogin";
 
 const OrderInvoice = ({ order, getOrder }) => {
   let history = useHistory();
+  const { loggedUser } = React.useContext(contextLogin);
   const [form] = Form.useForm();
   const [loading, setLoading] = React.useState(false);
   const [locationMapList, setLocationMapList] = React.useState();
@@ -45,26 +48,9 @@ const OrderInvoice = ({ order, getOrder }) => {
       .finally(() => setLoading(false));
   };
 
-  const compAction = (product) => {
-    return [
-      <Button
-        icon={<EditOutlined />}
-        type="primary"
-        ghost
-        onClick={() => message.success("Хөгжүүлэлт хийгдэж байна!")}
-      />,
-      <Popconfirm
-        title="Устгахдаа итгэлтэй байна уу?"
-        onConfirm={() => deleteProductFromOrder(product.id, order.id)}
-      >
-        <Button icon={<DeleteOutlined />} danger />
-      </Popconfirm>,
-    ];
-  };
-
   const productComp = (prod) => {
     return (
-      <List.Item key={prod.id} actions={compAction(prod)}>
+      <List.Item key={`prod${prod.id}`} >
         <Skeleton avatar title={false} loading={false} active>
           <List.Item.Meta
             avatar={
@@ -77,19 +63,55 @@ const OrderInvoice = ({ order, getOrder }) => {
                 }
               />
             }
-            title={
-              <Button
+            // title={
+            //  null
+            // }
+            description={
+              <Row justify="space-between">
+                <Col span={14}>
+                  <Row>
+                    <Col span={24}>
+                    <Button
                 type="link"
                 onClick={() => history.push(`/product/${prod.product_id}/${1}`)}
               >
-                {prod.prodDesc}
+                {prod.product}
               </Button>
-            }
-            description={
-              <Row justify="space-between" style={{ marginLeft: "1rem" }}>
-                <Col>{prod.product}</Col>
-                <Col style={{ color: "black" }}>
-                  <b>{prod.qty + "кг " + moneyFormat(prod.amount)}</b>
+                    </Col>
+                    <Col span={24}>
+                    {prod.prodDesc}
+                    </Col>
+                  </Row>
+                  
+                  </Col>
+                <Col span={10}>
+                <Row style={{width:"100%"}}>
+        <Col span={20} justify="right">
+          <Row justify="end">
+          <Col span={24}>
+          {`Нэгж үнэ :${prod.productPrice}`}
+        </Col>
+        <Col span={24}>
+          <InputNumber  value={prod.qty}/>
+        </Col>
+        <Col span={24}>
+        <b>{"Нийт :" + moneyFormat(prod.amount)}</b>
+        </Col>
+          </Row>
+        </Col>
+        <Col span={4}> <Row style={{height:"100%"}} align="middle">
+          <Popconfirm
+        style={{
+          marginTop:'1rem',
+          verticalAlign: 'middle',
+        }}
+        title="Устгахдаа итгэлтэй байна уу?"
+        onConfirm={() => deleteProductFromOrder(prod.id, order.id)}
+      >
+        <Button icon={<DeleteOutlined />} danger />
+      </Popconfirm></Row></Col>
+       
+      </Row>
                 </Col>
               </Row>
             }
@@ -101,7 +123,7 @@ const OrderInvoice = ({ order, getOrder }) => {
 
   const packageComp = (pack) => {
     return (
-      <List.Item key={pack.id} actions={compAction(pack)}>
+      <List.Item key={pack.id} >
         <Skeleton avatar title={false} loading={false} active>
           <List.Item.Meta
             avatar={
@@ -114,20 +136,54 @@ const OrderInvoice = ({ order, getOrder }) => {
                 }
               />
             }
-            title={
-              <Button
+          
+            description={
+              <Row justify="space-between">
+                <Col span={14}>
+                  <Row>
+                    <Col span={24}>
+                    <Button
                 type="link"
                 onClick={() => history.push(`/product/${pack.package_id}/${2}`)}
               >
-                {pack.packageDesc}
+                {pack.package}
               </Button>
-            }
-            description={
-              <Row justify="space-between" style={{ marginLeft: "1rem" }}>
-                <Col>{pack.package}</Col>
-                <Col style={{ color: "black" }}>
-                  <b>{pack.qty + "ш " + moneyFormat(pack.amount)}</b>
-                </Col>
+                    </Col>
+                    <Col span={24}>
+                    {pack.packageDesc}
+                    </Col>
+                  </Row>
+                  
+                  </Col>
+               <Col span={10}>
+               <Row style={{width:"100%"}}>
+        <Col span={20} justify="right">
+          <Row justify="end">
+          <Col span={24}>
+          {`Нэгж үнэ :${pack.packagePrice}`}
+        </Col>
+        <Col span={24}>
+          <InputNumber  value={pack.qty}/>
+        </Col>
+        <Col span={24}>
+        <b>{"Нийт :" + moneyFormat(pack.amount)}</b>
+        </Col>
+          </Row>
+        </Col>
+        <Col span={4}> <Row style={{height:"100%"}} align="middle">
+          <Popconfirm
+        style={{
+          marginTop:'1rem',
+          verticalAlign: 'middle',
+        }}
+        title="Устгахдаа итгэлтэй байна уу?"
+        onConfirm={() => deleteProductFromOrder(pack.id, order.id)}
+      >
+        <Button icon={<DeleteOutlined />} danger />
+      </Popconfirm></Row></Col>
+       
+      </Row>
+               </Col>
               </Row>
             }
           />
@@ -143,21 +199,23 @@ const OrderInvoice = ({ order, getOrder }) => {
       .then((result) => {
         if (result?.data?.data) {
           setLocationMapList(result.data.data);
-          form.setFieldsValue({ location_map_id: null });
+          form.setFieldsValue({ location_map_id: result.data.data.find(m=>m.location_id === loggedUser.location_id).id });
         }
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
   };
 
-  const getUserInfo = () => {
+  const getOrderInvoiceInfo = () => {
     setLoading(true);
     adminService
-      .getLoggedUser()
+      .getOrderInvoiceInfo({location_id : loggedUser.location_id})
       .then((result) => {
+        setLoading(false);
         if (result?.data?.data) {
-          form.setFieldsValue(result.data.data);
-          getScheduleList();
+          if (result?.data?.data) {
+            setScheduleList(result.data.data);
+          }
         }
       })
       .catch((err) => {
@@ -166,16 +224,6 @@ const OrderInvoice = ({ order, getOrder }) => {
       });
   };
 
-  const getScheduleList = () => {
-    setLoading(true);
-    adminService
-      .getScheduleList()
-      .then((result) => {
-        if (result?.data?.data) setScheduleList(result.data.data);
-      })
-      .catch((err) => showErrorMsg(err))
-      .finally(() => setLoading(false));
-  };
 
   const submit = (value) => {
     setLoading(true);
@@ -200,87 +248,13 @@ const OrderInvoice = ({ order, getOrder }) => {
   };
 
   React.useEffect(() => {
-    getUserInfo();
+    getOrderInvoiceInfo();
   }, []);
 
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
       <Form form={form} onFinish={submit} layout="vertical">
         <Row gutter={[16, 0]}>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item
-              name="firstname"
-              label="Нэр"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <Input placeholder="Нэр оруулна уу" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item
-              name="lastname"
-              label="Овог"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <Input placeholder="Овог оруулна уу" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item
-              name="phone"
-              label="Утасны дугаар"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <Input placeholder="Утас оруулна уу" disabled />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item name="phone2" label="Утасны дугаар 2">
-              <Input placeholder="Утас оруулна уу" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item
-              name="email"
-              label="И-Мэйл хаяг"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <Input placeholder="ИБаримт авах и-мэйл оруулна уу" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item name="street" label="Гудамж">
-              <Input placeholder="Гудамж оруулна уу" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item name="town" label="Хотхон">
-              <Input placeholder="Хотхон оруулна уу" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item name="apartment" label="Байр">
-              <Input placeholder="Байр оруулна уу" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={12} lg={12} xl={12}>
-            <Form.Item
-              name="door_number"
-              label="Тоот"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <Input placeholder="Тоот оруулна уу" />
-            </Form.Item>
-          </Col>
-          <Col xs={24} sm={24} md={24} lg={24} xl={24}>
-            <Form.Item
-              name="address"
-              label="Дэлгэрэнгүй хаяг"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <Input.TextArea placeholder="Дэлгэрэнгүй хаяг оруулна уу" />
-            </Form.Item>
-          </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={16}>
             <Form.Item
               name="schedule_id"
@@ -307,17 +281,18 @@ const OrderInvoice = ({ order, getOrder }) => {
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={8}>
             <Form.Item
-              name="location_id"
+              name="location_map_id"
               label="Байршил сонгох"
               rules={[{ required: true, message: "Заавал сонгоно уу" }]}
             >
               <Select
+              disabled
                 placeholder="Байршил сонгоно уу"
                 style={{ width: "100%" }}
               >
                 {locationMapList?.map((s) => {
                   return (
-                    <Select.Option key={s.id} value={s.location_id}>
+                    <Select.Option key={s.id} value={s.id}>
                       {s.district + " " + s.khoroo + " " + s.name}
                     </Select.Option>
                   );

@@ -212,6 +212,7 @@ const Location = () => {
             columns={column}
             dataSource={locationList}
             bordered
+            rowKey="id"
             size="small"
             title={() => {
               return (

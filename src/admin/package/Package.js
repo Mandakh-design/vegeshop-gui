@@ -54,7 +54,7 @@ const Package = () => {
     //   },
     // },
     {
-      title: "Анхны үнийн дүн",
+      title: "Нэгж үнэ",
       dataIndex: "price",
       key: "price",
       render: (text, record) => {

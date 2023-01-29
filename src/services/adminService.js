@@ -47,7 +47,10 @@ const deleteSchedule = (data) => axios.post(`/api/v1/deleteSchedule`, data);
 const deleteLocationMap = (data) =>
   axios.post(`/api/v1/deleteLocationMap`, data);
 
-const saveSchedule = (data) => axios.post(`/api/v1/saveSchedule`, data);
+  const getOrderInvoiceInfo = (data) =>
+  axios.get(`/api/v1/getOrderInvoiceInfo`, { params: data });
+
+  const saveSchedule = (data) => axios.post(`/api/v1/saveSchedule`, data);
 const getScheduleLocationList = (data) =>
   axios.get(`/api/v1/getScheduleLocationList`, { params: data });
 const saveScheduleLocationMap = (data) =>
@@ -114,6 +117,7 @@ export default {
   submitLocation,
   getScheduleLocationList,
   saveScheduleLocationMap,
+  getOrderInvoiceInfo,
   getOrderDetail,
   addProductToScheduleOrder,
   getLandingProduct,
