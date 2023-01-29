@@ -9,15 +9,16 @@ import {
   message,
   Form,
   Select,
-  Alert,
   Popconfirm,
   Input,
+  Space,
 } from "antd";
 import React from "react";
 import {
   LoadingOutlined,
   EditOutlined,
   DeleteOutlined,
+  LeftOutlined,
 } from "@ant-design/icons";
 import adminService from "../../services/adminService";
 import { moneyFormat, renderDateNoSec, showErrorMsg } from "../../common/utils";
@@ -187,6 +188,17 @@ const OrderInvoice = ({ order, getOrder }) => {
       .finally(() => setLoading(false));
   };
 
+  const returnOrderStep = (status) => {
+    setLoading(true);
+    adminService
+      .changeOrderStep({ status: status })
+      .then((result) => {
+        if (result?.data) getOrder();
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
   React.useEffect(() => {
     getUserInfo();
   }, []);
@@ -324,11 +336,26 @@ const OrderInvoice = ({ order, getOrder }) => {
               />
             )}
           </Col>
-          <Col span={24} style={{ textAlign: "right" }}>
-            <h3>Нийт дүн: {moneyFormat(order.total_amount)}</h3>
-            <Button size="large" type="primary" onClick={form.submit}>
-              Төлбөр төлөх
-            </Button>
+          <Col span={24}>
+            <Row justify="space-between">
+              <Button
+                size="large"
+                type="primary"
+                ghost
+                icon={<LeftOutlined />}
+                onClick={() => {
+                  returnOrderStep(0);
+                }}
+              >
+                Буцах
+              </Button>
+              <Space>
+                <h3>Нийт дүн: {moneyFormat(order.total_amount)}</h3>
+                <Button size="large" type="primary" onClick={form.submit}>
+                  Төлбөр төлөх
+                </Button>
+              </Space>
+            </Row>
           </Col>
         </Row>
       </Form>

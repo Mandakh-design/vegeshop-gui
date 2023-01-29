@@ -59,7 +59,7 @@ const OrderPayment = ({ order, getOrder }) => {
               size="large"
               type="primary"
               ghost
-              onClick={() => returnOrderStep(0)}
+              onClick={() => returnOrderStep(1)}
             >
               Буцах
             </Button>
