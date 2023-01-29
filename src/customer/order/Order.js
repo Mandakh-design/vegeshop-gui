@@ -18,13 +18,50 @@ const Order = () => {
   const [orderDetail, setOrderDetail] = React.useState();
   const [step, setStep] = React.useState();
 
-  const setOrderStep = (status) => {
-    if (status === 0) setStep(0);
-    if (status === 1) setStep(1);
-    if (status === 2) setStep(2);
-    if (status === 3) setStep(3);
-    if (status === 4) setStep(4);
-    if (status === 5) setStep(5);
+  const setOrderStep = (status, location_status) => {
+    if (status === 0 && location_status === false) {
+      setStep(0);
+      return;
+    }
+    if (status === 0 && location_status === true) {
+      setStep(1);
+      return;
+    }
+    if (status === 1) {
+      setStep(1);
+      return;
+    }
+    if (status === 2) {
+      setStep(2);
+      return;
+    }
+    if (status === 3) {
+      setStep(3);
+      return;
+    }
+    if (status === 4) {
+      setStep(4);
+      return;
+    }
+    if (status === 5) {
+      setStep(5);
+      return;
+    }
+  };
+
+  const getUserInfo = (status) => {
+    setLoading(true);
+    adminService
+      .getLoggedUser()
+      .then((result) => {
+        if (result?.data?.data) {
+          setOrderStep(status, result.data.data.location_status);
+        }
+      })
+      .catch((err) => {
+        showErrorMsg(err);
+      })
+      .finally(() => setLoading(false));
   };
 
   const getOrderDetail = () => {
@@ -34,7 +71,7 @@ const Order = () => {
       .then((result) => {
         if (result.data.data) {
           setOrderDetail(result.data.data[0]);
-          setOrderStep(result.data.data[0].status);
+          getUserInfo(result.data.data[0].status);
 
           let length = 0;
           if (result.data.data[0].detailList?.length > 0)
@@ -47,8 +84,10 @@ const Order = () => {
           }
         }
       })
-      .catch((err) => showErrorMsg(err))
-      .finally(() => setLoading(false));
+      .catch((err) => {
+        showErrorMsg(err);
+        setLoading(false);
+      });
   };
 
   React.useEffect(() => {

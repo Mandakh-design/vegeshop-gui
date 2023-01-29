@@ -119,11 +119,18 @@ const UserInfo = ({ order, getOrder }) => {
               label="Байршил сонгох"
               rules={[{ required: true, message: "Заавал сонгоно уу" }]}
             >
-              <Select placeholder="Байршил сонгоно уу">
+              <Select
+                placeholder="Байршил сонгоно уу"
+                showSearch
+                filterOption={(input, option) =>
+                  option.children.toLowerCase().indexOf(input.toLowerCase()) >=
+                  0
+                }
+              >
                 {locationList?.map((l) => {
                   return (
                     <Select.Option key={l.id} value={l.id}>
-                      {l.id}
+                      {l.district + " " + l.khoroo + " " + l.name}
                     </Select.Option>
                   );
                 })}
