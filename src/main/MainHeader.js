@@ -15,6 +15,7 @@ import {
   Empty,
   Avatar,
 } from "antd";
+import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { Link, useHistory } from "react-router-dom";
@@ -349,7 +350,19 @@ const MainHeader = ({ userLoading }) => {
                           <Row justify="space-between">
                             <Col>Тоо: </Col>
                             <Col>
-                              {p.type === 1 ? p.qty + "кг" : p.qty + "ш"}
+                              <Space>
+                                <Button
+                                  icon={<MinusOutlined />}
+                                  onClick={() => {}}
+                                  size="small"
+                                />
+                                {p.type === 1 ? p.qty + "кг" : p.qty + "ш"}
+                                <Button
+                                  icon={<PlusOutlined />}
+                                  onClick={() => {}}
+                                  size="small"
+                                />
+                              </Space>
                             </Col>
                           </Row>
                           <Row justify="space-between">
