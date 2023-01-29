@@ -64,6 +64,7 @@ const searchData = (data) => axios.post(`/api/v1/searchData`, data);
 const deleteOrderDtl = (data) => axios.post(`/api/v1/deleteOrderDtl`, data);
 const createInvoice = (data) => axios.post(`/api/v1/createInvoice`, data);
 const submitOrder = (data) => axios.post(`/api/v1/submitOrder`, data);
+const submitLocation = (data) => axios.post(`/api/v1/submitLocation`, data);
 const changeOrderStep = (data) => axios.post(`/api/v1/changeOrderStep`, data);
 const saveProductDetailOrder = (data) =>
   axios.post(`/api/v1/saveProductDetailOrder`, data);
@@ -110,6 +111,7 @@ export default {
   deleteLocation,
   deleteLocationMap,
   saveSchedule,
+  submitLocation,
   getScheduleLocationList,
   saveScheduleLocationMap,
   getOrderDetail,
