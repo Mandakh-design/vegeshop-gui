@@ -42,7 +42,7 @@ const PackageEdit = ({ packageId, onClose, changeState }) => {
   };
 
   const getPackageInfo = () => {
-    if (packageId !== null || packageId !== undefined) {
+    if (packageId != null || packageId != undefined) {
       setLoading(true);
       adminService
         .getPackage()
