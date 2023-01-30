@@ -1,6 +1,6 @@
-import { Col, Row, Spin, Button, Radio, Modal, Space, message } from "antd";
+import { Col, Row, Spin, Button, Radio, Modal, message } from "antd";
 import React from "react";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, LeftOutlined } from "@ant-design/icons";
 import QpayInvoice from "./QpayInvoice";
 import adminService from "../../services/adminService";
 import { moneyFormat, showErrorMsg } from "../../common/utils";
@@ -70,7 +70,10 @@ const OrderPayment = ({ order, getOrder }) => {
               size="large"
               type="primary"
               ghost
-              onClick={() => returnOrderStep(1)}
+              icon={<LeftOutlined />}
+              onClick={() => {
+                returnOrderStep(1);
+              }}
             >
               Буцах
             </Button>
@@ -83,7 +86,7 @@ const OrderPayment = ({ order, getOrder }) => {
                 // setQpayVisible(true);
               }}
             >
-              Төлбөр төлөх
+              Нэхэмжлэх үүсгэх
             </Button>
           </Row>
         </Col>

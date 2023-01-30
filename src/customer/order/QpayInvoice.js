@@ -1,4 +1,4 @@
-import { Spin, Col, Row, QRCode, Button, Popconfirm } from "antd";
+import { Spin, Col, Row, QRCode, Button, Popconfirm, message } from "antd";
 import React from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import adminService from "../../services/adminService";
@@ -53,7 +53,12 @@ const QpayInvoice = ({ order, getOrder }) => {
               </Popconfirm>
             </Col>
             <Col>
-              <Button type="primary" ghost size="large">
+              <Button
+                type="primary"
+                ghost
+                size="large"
+                onClick={() => message.warning("Төлбөр төлөгдөөгүй байна!")}
+              >
                 Төлөл шалгах
               </Button>
             </Col>
