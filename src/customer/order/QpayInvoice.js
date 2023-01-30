@@ -6,11 +6,23 @@ import { moneyFormat, showErrorMsg } from "../../common/utils";
 
 const QpayInvoice = ({ order, getOrder }) => {
   const [loading, setLoading] = React.useState(false);
+  const [qpayInvoice, setQpayInvoice] = React.useState();
 
   const cancelScheduleOrder = () => {
     setLoading(true);
     adminService
       .cancelScheduleOrder()
+      .then((result) => {
+        if (result?.data) getOrder();
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
+  const getQpayInvoice = (status) => {
+    setLoading(true);
+    adminService
+      .changeOrderStep({ order_id: order.id })
       .then((result) => {
         if (result?.data) getOrder();
       })
@@ -28,6 +40,8 @@ const QpayInvoice = ({ order, getOrder }) => {
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
   };
+
+  React.useEffect(() => {}, []);
 
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>

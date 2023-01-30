@@ -100,7 +100,7 @@ const OrderPayment = ({ order, getOrder }) => {
           setQpayVisible(false);
         }}
       >
-        {qpayVisible && placement === "Qpay" && <QpayInvoice />}
+        {qpayVisible && placement === "Qpay" && <QpayInvoice order={order} />}
         {qpayVisible && placement !== "Qpay" && <>Not configed Payment</>}
       </Modal>
     </Spin>
