@@ -55,6 +55,18 @@ const OrderDrawer = ({ getOrder, scheduleOrder, onClose }) => {
     return <Avatar src={`/images/emptyPic.jpeg`} />;
   };
 
+  const changeScheduleDetail = (id, type) => {
+    // type: 1-plus, 2-minus
+    setLoading(true);
+    adminService
+      .changeScheduleDetail({ id: id, type: type })
+      .then((result) => {
+        if (result?.data) getOrder();
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
   return (
     <Spin spinning={loading}>
       {scheduleOrder?.detailList ? (
@@ -97,8 +109,9 @@ const OrderDrawer = ({ getOrder, scheduleOrder, onClose }) => {
                       <Space>
                         <Button
                           icon={<MinusOutlined />}
-                          onClick={() => {}}
+                          onClick={() => changeScheduleDetail(p.id, 2)}
                           size="small"
+                          disabled={p.qty === 1}
                           type="link"
                           ghost
                         />
@@ -106,7 +119,7 @@ const OrderDrawer = ({ getOrder, scheduleOrder, onClose }) => {
                         <Button
                           icon={<PlusOutlined />}
                           type="link"
-                          onClick={() => {}}
+                          onClick={() => changeScheduleDetail(p.id, 1)}
                           size="small"
                         />
                       </Space>
