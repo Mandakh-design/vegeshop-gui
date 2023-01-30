@@ -1,4 +1,4 @@
-import { Col, Row, Spin, Button, Radio, Modal, Space } from "antd";
+import { Col, Row, Spin, Button, Radio, Modal, Space, message } from "antd";
 import React from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import QpayInvoice from "./QpayInvoice";
@@ -19,6 +19,17 @@ const OrderPayment = ({ order, getOrder }) => {
     setLoading(true);
     adminService
       .changeOrderStep({ status: status })
+      .then((result) => {
+        if (result?.data) getOrder();
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
+  const createInvoice = () => {
+    setLoading(true);
+    adminService
+      .createInvoice()
       .then((result) => {
         if (result?.data) getOrder();
       })
@@ -67,7 +78,9 @@ const OrderPayment = ({ order, getOrder }) => {
               type="primary"
               size="large"
               onClick={() => {
-                setQpayVisible(true);
+                createInvoice();
+                message.warning("createInvoice function");
+                // setQpayVisible(true);
               }}
             >
               Төлбөр төлөх

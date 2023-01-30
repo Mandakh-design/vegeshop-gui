@@ -73,6 +73,8 @@ const saveProductDetailOrder = (data) =>
   axios.post(`/api/v1/saveProductDetailOrder`, data);
 const changeScheduleDetail = (data) =>
   axios.post(`/api/v1/changeScheduleDetail`, data);
+const cancelScheduleOrder = (data) =>
+  axios.post(`/api/v1/cancelScheduleOrder`, data);
 
 const config = {
   headers: {
@@ -135,6 +137,7 @@ export default {
   getProductDetailListById,
   saveProductDetailOrder,
   changeScheduleDetail,
+  cancelScheduleOrder,
 
   // S service
   getUserList,

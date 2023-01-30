@@ -7,22 +7,25 @@ import {
   List,
   Avatar,
   Skeleton,
-  Button,
-  message,
-  Radio,
-  Modal,
+  Alert,
 } from "antd";
 import React from "react";
 import { LoadingOutlined } from "@ant-design/icons";
+import { moneyFormat } from "../../common/utils";
 
-const OrderShow = () => {
+const OrderShow = ({ order, getOrder }) => {
   const [loading, setLoading] = React.useState(false);
 
   React.useEffect(() => {}, []);
 
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
-      <Row>
+      <Row gutter={[0, 16]}>
+        <Alert
+          type="info"
+          description="Өмнөх step ний төлбөр төлөх дээр create invoice дуудсан байгаа. 
+        Бусад газрууд бол нэхэмжлэх үүсгэсэн сагсыг буцахгүйгээр шууд цуцалдаг юм байна лээ. Дунд нь нэг step нэмээд нэ"
+        />
         <Col span={24}>
           <Divider orientation="left">
             Захиалга харах <Tag color="green">Баталгаажсан</Tag>
@@ -53,8 +56,12 @@ const OrderShow = () => {
             )}
           />
         </Col>
-        <Col span={24} style={{ textAlign: "right" }}>
-          <h3>Нийт дүн: 10230203</h3>
+        <Col span={24}>
+          <Row justify="end">
+            <Col>
+              <h3>Нийт дүн: {moneyFormat(order.total_amount)}</h3>
+            </Col>
+          </Row>
         </Col>
       </Row>
     </Spin>

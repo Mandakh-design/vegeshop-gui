@@ -1,26 +1,62 @@
-import { Spin, Col, Row, Divider, QRCode, Button, Alert } from "antd";
+import { Spin, Col, Row, QRCode, Button, Popconfirm } from "antd";
 import React from "react";
 import { LoadingOutlined } from "@ant-design/icons";
+import adminService from "../../services/adminService";
+import { moneyFormat, showErrorMsg } from "../../common/utils";
 
-const QpayInvoice = () => {
+const QpayInvoice = ({ order, getOrder }) => {
   const [loading, setLoading] = React.useState(false);
-  React.useEffect(() => {}, []);
+
+  const cancelScheduleOrder = () => {
+    setLoading(true);
+    adminService
+      .cancelScheduleOrder()
+      .then((result) => {
+        if (result?.data) getOrder();
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
+  const returnOrderStep = (status) => {
+    setLoading(true);
+    adminService
+      .changeOrderStep({ status: status })
+      .then((result) => {
+        if (result?.data) getOrder();
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
 
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
       <Row justify="center">
-        <Col span={24}>
-          <Alert type="info" message="Тун удахгүй ..." />
-          <h2>Энэ бол жишээ QR code</h2>
+        <Col span={24} style={{ textAlign: "center" }}>
+          <h3>Нийт дүн: {moneyFormat(order.total_amount)}</h3>
         </Col>
         <Col span={24}>
-          <QRCode value="https://ant.design/" />
+          <Row justify="center">
+            <QRCode value="https://ant.design/" />
+          </Row>
         </Col>
         <Col span={24}>
-          <Row justify="end">
-            <Button type="primary" ghost>
-              Төлөлт шалгах
-            </Button>
+          <Row justify="space-between">
+            <Col>
+              <Popconfirm
+                onConfirm={() => returnOrderStep(2)}
+                title="Цуцлахдаа итгэлтэй байна уу!"
+              >
+                <Button type="primary" danger ghost size="large">
+                  Цуцлах
+                </Button>
+              </Popconfirm>
+            </Col>
+            <Col>
+              <Button type="primary" ghost size="large">
+                Төлөл шалгах
+              </Button>
+            </Col>
           </Row>
         </Col>
       </Row>

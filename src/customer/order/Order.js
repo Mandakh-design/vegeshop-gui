@@ -9,6 +9,7 @@ import adminService from "../../services/adminService";
 import { useHistory } from "react-router-dom";
 import { showErrorMsg } from "../../common/utils";
 import UserInfo from "./UserInfo";
+import QpayInvoice from "./QpayInvoice";
 
 const Order = () => {
   const { loggedUser, setOrderDtlCount } = React.useContext(contextLogin);
@@ -116,6 +117,10 @@ const Order = () => {
                     description: "2022-01-01 18:40:33",
                   },
                   {
+                    title: "Нэхэмжлэх үүсгэх",
+                    description: "2022-01-01 18:40:33",
+                  },
+                  {
                     title: "Төлбөр төлөх",
                     description: "2022-01-01 18:40:33",
                   },
@@ -136,7 +141,12 @@ const Order = () => {
               {step === 2 && (
                 <OrderPayment order={orderDetail} getOrder={getOrderDetail} />
               )}
-              {step === 3 && <OrderShow />}
+              {step === 3 && (
+                <QpayInvoice order={orderDetail} getOrder={getOrderDetail} />
+              )}
+              {step === 4 && (
+                <OrderShow order={orderDetail} getOrder={getOrderDetail} />
+              )}
             </Col>
           </Row>
         </Col>
