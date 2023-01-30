@@ -46,6 +46,18 @@ const OrderInvoice = ({ order, getOrder }) => {
       .finally(() => setLoading(false));
   };
 
+  const changeScheduleDetail = (id, type, count) => {
+    // type: 1-plus, 2-minus
+    setLoading(true);
+    adminService
+      .changeScheduleDetail({ id: id, type: type, count: count })
+      .then((result) => {
+        if (result?.data) getOrder();
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
   const productComp = (prod) => {
     return (
       <List.Item key={`prod${prod.id}`}>
@@ -87,7 +99,14 @@ const OrderInvoice = ({ order, getOrder }) => {
                       <Row justify="end">
                         <Col span={24}>{`Нэгж үнэ :${prod.productPrice}`}</Col>
                         <Col span={24}>
-                          <InputNumber value={prod.qty} />
+                          {/* prod has id: orderDtlId, product_id: product_id, package_id: package_id */}
+                          <InputNumber
+                            value={prod.qty}
+                            min={1}
+                            onChange={(e) =>
+                              changeScheduleDetail(prod.id, 1, e)
+                            }
+                          />
                         </Col>
                         <Col span={24}>
                           <b>{"Нийт :" + moneyFormat(prod.amount)}</b>
@@ -159,7 +178,13 @@ const OrderInvoice = ({ order, getOrder }) => {
                       <Row justify="end">
                         <Col span={24}>{`Нэгж үнэ :${pack.packagePrice}`}</Col>
                         <Col span={24}>
-                          <InputNumber value={pack.qty} />
+                          <InputNumber
+                            value={pack.qty}
+                            min={1}
+                            onChange={(e) =>
+                              changeScheduleDetail(pack.id, 1, e)
+                            }
+                          />
                         </Col>
                         <Col span={24}>
                           <b>{"Нийт :" + moneyFormat(pack.amount)}</b>
