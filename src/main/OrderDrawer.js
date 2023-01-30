@@ -11,7 +11,6 @@ import {
   Avatar,
 } from "antd";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
-import PropTypes from "prop-types";
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { CloseOutlined } from "@ant-design/icons";
@@ -147,6 +146,4 @@ const OrderDrawer = ({ getOrder, scheduleOrder, onClose }) => {
   );
 };
 
-OrderDrawer.propTypes = {};
-// export default withRouter(MainHeader);
 export default OrderDrawer;

@@ -271,5 +271,4 @@ const MainHeader = ({ userLoading }) => {
 MainHeader.propTypes = {
   userLoading: PropTypes.bool.isRequired,
 };
-// export default withRouter(MainHeader);
 export default MainHeader;
