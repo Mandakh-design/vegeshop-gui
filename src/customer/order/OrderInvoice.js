@@ -10,14 +10,12 @@ import {
   Form,
   Select,
   Popconfirm,
-  Input,
   Space,
   InputNumber,
 } from "antd";
 import React from "react";
 import {
   LoadingOutlined,
-  EditOutlined,
   DeleteOutlined,
   LeftOutlined,
 } from "@ant-design/icons";
@@ -50,7 +48,7 @@ const OrderInvoice = ({ order, getOrder }) => {
 
   const productComp = (prod) => {
     return (
-      <List.Item key={`prod${prod.id}`} >
+      <List.Item key={`prod${prod.id}`}>
         <Skeleton avatar title={false} loading={false} active>
           <List.Item.Meta
             avatar={
@@ -71,47 +69,49 @@ const OrderInvoice = ({ order, getOrder }) => {
                 <Col span={14}>
                   <Row>
                     <Col span={24}>
-                    <Button
-                type="link"
-                onClick={() => history.push(`/product/${prod.product_id}/${1}`)}
-              >
-                {prod.product}
-              </Button>
+                      <Button
+                        type="link"
+                        onClick={() =>
+                          history.push(`/product/${prod.product_id}/${1}`)
+                        }
+                      >
+                        {prod.product}
+                      </Button>
                     </Col>
-                    <Col span={24}>
-                    {prod.prodDesc}
+                    <Col span={24}>{prod.prodDesc}</Col>
+                  </Row>
+                </Col>
+                <Col span={10}>
+                  <Row style={{ width: "100%" }}>
+                    <Col span={20} justify="right">
+                      <Row justify="end">
+                        <Col span={24}>{`Нэгж үнэ :${prod.productPrice}`}</Col>
+                        <Col span={24}>
+                          <InputNumber value={prod.qty} />
+                        </Col>
+                        <Col span={24}>
+                          <b>{"Нийт :" + moneyFormat(prod.amount)}</b>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col span={4}>
+                      {" "}
+                      <Row style={{ height: "100%" }} align="middle">
+                        <Popconfirm
+                          style={{
+                            marginTop: "1rem",
+                            verticalAlign: "middle",
+                          }}
+                          title="Устгахдаа итгэлтэй байна уу?"
+                          onConfirm={() =>
+                            deleteProductFromOrder(prod.id, order.id)
+                          }
+                        >
+                          <Button icon={<DeleteOutlined />} danger />
+                        </Popconfirm>
+                      </Row>
                     </Col>
                   </Row>
-                  
-                  </Col>
-                <Col span={10}>
-                <Row style={{width:"100%"}}>
-        <Col span={20} justify="right">
-          <Row justify="end">
-          <Col span={24}>
-          {`Нэгж үнэ :${prod.productPrice}`}
-        </Col>
-        <Col span={24}>
-          <InputNumber  value={prod.qty}/>
-        </Col>
-        <Col span={24}>
-        <b>{"Нийт :" + moneyFormat(prod.amount)}</b>
-        </Col>
-          </Row>
-        </Col>
-        <Col span={4}> <Row style={{height:"100%"}} align="middle">
-          <Popconfirm
-        style={{
-          marginTop:'1rem',
-          verticalAlign: 'middle',
-        }}
-        title="Устгахдаа итгэлтэй байна уу?"
-        onConfirm={() => deleteProductFromOrder(prod.id, order.id)}
-      >
-        <Button icon={<DeleteOutlined />} danger />
-      </Popconfirm></Row></Col>
-       
-      </Row>
                 </Col>
               </Row>
             }
@@ -123,7 +123,7 @@ const OrderInvoice = ({ order, getOrder }) => {
 
   const packageComp = (pack) => {
     return (
-      <List.Item key={pack.id} >
+      <List.Item key={pack.id}>
         <Skeleton avatar title={false} loading={false} active>
           <List.Item.Meta
             avatar={
@@ -136,54 +136,55 @@ const OrderInvoice = ({ order, getOrder }) => {
                 }
               />
             }
-          
             description={
               <Row justify="space-between">
                 <Col span={14}>
                   <Row>
                     <Col span={24}>
-                    <Button
-                type="link"
-                onClick={() => history.push(`/product/${pack.package_id}/${2}`)}
-              >
-                {pack.package}
-              </Button>
+                      <Button
+                        type="link"
+                        onClick={() =>
+                          history.push(`/product/${pack.package_id}/${2}`)
+                        }
+                      >
+                        {pack.package}
+                      </Button>
                     </Col>
-                    <Col span={24}>
-                    {pack.packageDesc}
+                    <Col span={24}>{pack.packageDesc}</Col>
+                  </Row>
+                </Col>
+                <Col span={10}>
+                  <Row style={{ width: "100%" }}>
+                    <Col span={20} justify="right">
+                      <Row justify="end">
+                        <Col span={24}>{`Нэгж үнэ :${pack.packagePrice}`}</Col>
+                        <Col span={24}>
+                          <InputNumber value={pack.qty} />
+                        </Col>
+                        <Col span={24}>
+                          <b>{"Нийт :" + moneyFormat(pack.amount)}</b>
+                        </Col>
+                      </Row>
+                    </Col>
+                    <Col span={4}>
+                      {" "}
+                      <Row style={{ height: "100%" }} align="middle">
+                        <Popconfirm
+                          style={{
+                            marginTop: "1rem",
+                            verticalAlign: "middle",
+                          }}
+                          title="Устгахдаа итгэлтэй байна уу?"
+                          onConfirm={() =>
+                            deleteProductFromOrder(pack.id, order.id)
+                          }
+                        >
+                          <Button icon={<DeleteOutlined />} danger />
+                        </Popconfirm>
+                      </Row>
                     </Col>
                   </Row>
-                  
-                  </Col>
-               <Col span={10}>
-               <Row style={{width:"100%"}}>
-        <Col span={20} justify="right">
-          <Row justify="end">
-          <Col span={24}>
-          {`Нэгж үнэ :${pack.packagePrice}`}
-        </Col>
-        <Col span={24}>
-          <InputNumber  value={pack.qty}/>
-        </Col>
-        <Col span={24}>
-        <b>{"Нийт :" + moneyFormat(pack.amount)}</b>
-        </Col>
-          </Row>
-        </Col>
-        <Col span={4}> <Row style={{height:"100%"}} align="middle">
-          <Popconfirm
-        style={{
-          marginTop:'1rem',
-          verticalAlign: 'middle',
-        }}
-        title="Устгахдаа итгэлтэй байна уу?"
-        onConfirm={() => deleteProductFromOrder(pack.id, order.id)}
-      >
-        <Button icon={<DeleteOutlined />} danger />
-      </Popconfirm></Row></Col>
-       
-      </Row>
-               </Col>
+                </Col>
               </Row>
             }
           />
@@ -199,7 +200,11 @@ const OrderInvoice = ({ order, getOrder }) => {
       .then((result) => {
         if (result?.data?.data) {
           setLocationMapList(result.data.data);
-          form.setFieldsValue({ location_map_id: result.data.data.find(m=>m.location_id === loggedUser.location_id).id });
+          form.setFieldsValue({
+            location_map_id: result.data.data.find(
+              (m) => m.location_id === loggedUser.location_id
+            ).id,
+          });
         }
       })
       .catch((err) => showErrorMsg(err))
@@ -209,7 +214,7 @@ const OrderInvoice = ({ order, getOrder }) => {
   const getOrderInvoiceInfo = () => {
     setLoading(true);
     adminService
-      .getOrderInvoiceInfo({location_id : loggedUser.location_id})
+      .getOrderInvoiceInfo({ location_id: loggedUser.location_id })
       .then((result) => {
         setLoading(false);
         if (result?.data?.data) {
@@ -223,7 +228,6 @@ const OrderInvoice = ({ order, getOrder }) => {
         setLoading(false);
       });
   };
-
 
   const submit = (value) => {
     setLoading(true);
@@ -286,7 +290,7 @@ const OrderInvoice = ({ order, getOrder }) => {
               rules={[{ required: true, message: "Заавал сонгоно уу" }]}
             >
               <Select
-              disabled
+                disabled
                 placeholder="Байршил сонгоно уу"
                 style={{ width: "100%" }}
               >
