@@ -1,35 +1,37 @@
 import { Spin, Col, Row, QRCode, Button, Popconfirm, message } from "antd";
 import React from "react";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
 import adminService from "../../services/adminService";
 import { moneyFormat, showErrorMsg } from "../../common/utils";
 
 const QpayInvoice = ({ order, getOrder }) => {
   const [loading, setLoading] = React.useState(false);
-  const [qpayInvoice, setQpayInvoice] = React.useState();
 
-  const cancelScheduleOrder = () => {
+  const checkInvoiceQpay = () => {
     setLoading(true);
     adminService
-      .cancelScheduleOrder()
+      .checkInvoiceQpay({ qpayInvoiceId: order.invoice_id })
       .then((result) => {
-        if (result?.data) getOrder();
+        if(result.data.message === "success")
+          getOrder();
+        else if(result.data.message === "notPaid")
+          message.warning("Нэхэмжлэх төлөгдөөгүй байна.")
+          else 
+          message.error(result)
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
   };
-
-  const getQpayInvoice = (status) => {
+  const getInvoiceQpay = () => {
     setLoading(true);
     adminService
-      .changeOrderStep({ order_id: order.id })
+      .getInvoiceQpay(order.invoice_id )
       .then((result) => {
-        if (result?.data) getOrder();
+        console.log(result)
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
   };
-
   const returnOrderStep = (status) => {
     setLoading(true);
     adminService
@@ -41,7 +43,7 @@ const QpayInvoice = ({ order, getOrder }) => {
       .finally(() => setLoading(false));
   };
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => { console.log(order)}, []);
 
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
@@ -51,7 +53,7 @@ const QpayInvoice = ({ order, getOrder }) => {
         </Col>
         <Col span={24}>
           <Row justify="center">
-            <QRCode value="https://ant.design/" />
+            <QRCode value={order?.qr_text} />
           </Row>
         </Col>
         <Col span={24}>
@@ -68,10 +70,11 @@ const QpayInvoice = ({ order, getOrder }) => {
             </Col>
             <Col>
               <Button
+              icon={<ReloadOutlined />}
                 type="primary"
                 ghost
                 size="large"
-                onClick={() => message.warning("Төлбөр төлөгдөөгүй байна!")}
+                onClick={() => checkInvoiceQpay()}
               >
                 Төлөл шалгах
               </Button>

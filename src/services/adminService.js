@@ -76,6 +76,10 @@ const changeScheduleDetail = (data) =>
 const cancelScheduleOrder = (data) =>
   axios.post(`/api/v1/cancelScheduleOrder`, data);
 
+  const createInvoiceQpay = (data) => axios.post(`/api/v1/createInvoiceQpay`, data);
+  const checkInvoiceQpay = (data) => axios.post(`/api/v1/checkInvoiceQpay`, data);
+  const getInvoiceQpay = (inv_id) => axios.get(`/api/v1/getInvoiceQpay?qpayInvoiceId=${inv_id}`);
+  
 const config = {
   headers: {
     "Content-type": "multipart/form-data",
@@ -138,6 +142,10 @@ export default {
   saveProductDetailOrder,
   changeScheduleDetail,
   cancelScheduleOrder,
+
+  createInvoiceQpay,
+  checkInvoiceQpay,
+  getInvoiceQpay,
 
   // S service
   getUserList,

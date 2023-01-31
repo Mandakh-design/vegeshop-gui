@@ -4,8 +4,9 @@ import { LoadingOutlined, LeftOutlined } from "@ant-design/icons";
 import QpayInvoice from "./QpayInvoice";
 import adminService from "../../services/adminService";
 import { moneyFormat, showErrorMsg } from "../../common/utils";
-
+import contextLogin from "../../main/contextLogin";
 const OrderPayment = ({ order, getOrder }) => {
+  const { loggedUser } = React.useContext(contextLogin);
   const [loading, setLoading] = React.useState(false);
 
   const [placement, setPlacement] = React.useState("Qpay");
@@ -29,9 +30,15 @@ const OrderPayment = ({ order, getOrder }) => {
   const createInvoice = () => {
     setLoading(true);
     adminService
-      .createInvoice()
+      .createInvoiceQpay({ order_id: order.id, amount : order.total_amount, 
+        description : `selba: ${loggedUser.phone}, ${order.total_amount}`, phone : loggedUser.phone
+      , nextStatus : 3})
       .then((result) => {
-        if (result?.data) getOrder();
+       if(result?.data?.message == "success")
+       {
+        message.success("Нэхэмжлэх амжилттай үүслээ.")
+          getOrder();
+       }
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));

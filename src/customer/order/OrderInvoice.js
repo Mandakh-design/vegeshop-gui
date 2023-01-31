@@ -227,9 +227,7 @@ const OrderInvoice = ({ order, getOrder }) => {
         if (result?.data?.data) {
           setLocationMapList(result.data.data);
           form.setFieldsValue({
-            location_map_id: result.data.data.find(
-              (m) => m.location_id === loggedUser.location_id
-            ).id,
+            location_id: loggedUser.location_id,
           });
         }
       })
@@ -243,7 +241,6 @@ const OrderInvoice = ({ order, getOrder }) => {
       .getOrderInvoiceInfo()
       .then((result) => {
         setLoading(false);
-        if (result?.data?.data) {
           if (result?.data?.data) {
             setScheduleList(result.data.data.scheduleList);
             setLocationMapList([result.data.data.location]);
@@ -252,7 +249,9 @@ const OrderInvoice = ({ order, getOrder }) => {
               schedule_id: order.schedule_id,
             });
           }
-        }
+          form.setFieldsValue(order);
+          if(order.schedule_id)
+            getLocationMap(order.schedule_id);
       })
       .catch((err) => {
         showErrorMsg(err);
@@ -261,6 +260,7 @@ const OrderInvoice = ({ order, getOrder }) => {
   };
 
   const submit = (value) => {
+    console.log("submitOrder",value)
     setLoading(true);
     adminService
       .submitOrder(value)
@@ -284,6 +284,7 @@ const OrderInvoice = ({ order, getOrder }) => {
 
   React.useEffect(() => {
     getOrderInvoiceInfo();
+    
   }, []);
 
   return (
@@ -298,6 +299,30 @@ const OrderInvoice = ({ order, getOrder }) => {
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={16}>
             <Form.Item
+              name="schedule_id"
+              label="Хуваарь сонгох"
+              rules={[{ required: true, message: "Заавал сонгоно уу" }]}
+            >
+              <Select
+                placeholder="Хуваарь сонгоно уу"
+                onChange={(e) => getLocationMap(e)}
+                style={{ width: "100%" }}
+              >
+                {scheduleList?.map((s) => {
+                  return (
+                    <Select.Option key={s.id} value={s.id}>
+                      {"Захиалга хаагдах огноо: " +
+                        renderDateNoSec(s.order_close_date) +
+                        " Хүргэлт гарах огноо: " +
+                        renderDateNoSec(s.delivery_start_date)}
+                    </Select.Option>
+                  );
+                })}
+              </Select>
+            </Form.Item>
+          </Col>
+          <Col xs={24} sm={24} md={24} lg={24} xl={8}>
+            <Form.Item
               name="location_id"
               label="Байршил сонгох"
               rules={[{ required: true, message: "Заавал сонгоно уу" }]}
@@ -309,7 +334,7 @@ const OrderInvoice = ({ order, getOrder }) => {
               >
                 {locationMapList?.map((s) => {
                   return (
-                    <Select.Option key={s.id} value={s.id}>
+                    <Select.Option key={s.id} value={s.location_id}>
                       {s.district + " " + s.khoroo + " " + s.name}
                     </Select.Option>
                   );
