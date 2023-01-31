@@ -50,11 +50,6 @@ const Location = () => {
       key: "name",
     },
     {
-      title: "Бүс",
-      dataIndex: "area",
-      key: "area",
-    },
-    {
       title: "",
       dataIndex: "action",
       key: "action",

@@ -114,15 +114,6 @@ const LocationEdit = ({
               <Input placeholder="Нэр оруулна уу" />
             </Form.Item>
           </Col>
-          <Col span={24}>
-            <Form.Item
-              label="Бүс"
-              name="area"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <Input placeholder="Бүс оруулна уу" />
-            </Form.Item>
-          </Col>
           <Col>
             <Button type="primary" onClick={form.submit}>
               Хадгалах

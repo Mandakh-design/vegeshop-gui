@@ -197,6 +197,12 @@ const Landing = () => {
               <List.Item key={item.id}>
                 <Card
                   size="small"
+                  onClick={() => {
+                    if (loggedUser && token)
+                      history.push(`/product/${item.id}/${item.type}`);
+                    else history.push(`/login`);
+                  }}
+                  hoverable
                   cover={
                     item.filename ? (
                       <img
@@ -212,32 +218,6 @@ const Landing = () => {
                       />
                     )
                   }
-                  actions={[
-                    <Button
-                      key="order"
-                      type="primary"
-                      icon={<ShoppingCartOutlined />}
-                      ghost
-                      onClick={() => {
-                        if (loggedUser && token) addProductToOrder(item.id, 1);
-                        else history.push(`/login`);
-                      }}
-                    >
-                      Захиалах
-                    </Button>,
-                    <Button
-                      key="order"
-                      type="primary"
-                      ghost
-                      onClick={() => {
-                        if (loggedUser && token)
-                          history.push(`/product/${item.id}/${item.type}`);
-                        else history.push(`/login`);
-                      }}
-                    >
-                      Дэлгэрэнгүй
-                    </Button>,
-                  ]}
                 >
                   <Card.Meta
                     title={item.name}

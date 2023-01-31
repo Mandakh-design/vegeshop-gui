@@ -24,7 +24,7 @@ function getItem(label, key, icon, children) {
 const items = [
   getItem("Багц", "1", <FolderOpenOutlined />),
   getItem("Бараа", "6", <PieChartOutlined />),
-  getItem("Ажилтан", "3", <TeamOutlined />),
+  getItem("Хэрэглэгч", "3", <TeamOutlined />),
   getItem("Хуваарь", "5", <EnvironmentOutlined />),
   getItem("Захиалга", "2", <UnorderedListOutlined />),
 ];

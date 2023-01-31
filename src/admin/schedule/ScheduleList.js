@@ -121,11 +121,6 @@ const ScheduleList = () => {
         key: "name",
       },
       {
-        title: "Бүс",
-        dataIndex: "area",
-        key: "area",
-      },
-      {
         title: "",
         dataIndex: "action",
         key: "action",

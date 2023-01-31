@@ -103,13 +103,7 @@ const ScheduleLocationMap = ({ schedule, changeState }) => {
                 {locationList?.map((p) => {
                   return (
                     <Select.Option key={p.id} value={p.id}>
-                      {p.district +
-                        " " +
-                        p.khoroo +
-                        " " +
-                        p.name +
-                        " " +
-                        p.area}
+                      {p.district + " " + p.khoroo + " " + p.name}
                     </Select.Option>
                   );
                 })}
