@@ -36,8 +36,8 @@ const PackageEdit = ({ packageId, onClose, changeState }) => {
   const setFormInfo = (value) => {
     form.setFieldsValue({
       name: value?.name,
-      discount: value?.discount,
       price: value?.price,
+      filename: value?.filename,
     });
   };
 
