@@ -94,15 +94,6 @@ const UserProfile = () => {
                 <Input placeholder="ИБаримтын сугалааны дугаар очих тул зөв код оруулна уу" />
               </Form.Item>
             </Col>
-            <Col span={24}>
-              <Form.Item
-                name="address"
-                label="Хаяг"
-                rules={[{ required: true, message: "Заавал оруулна уу" }]}
-              >
-                <Input.TextArea placeholder="Бүтэн хаяг оруулна уу" />
-              </Form.Item>
-            </Col>
             <Col>
               <Row justify="end">
                 <Button type="primary" ghost onClick={form.submit}>

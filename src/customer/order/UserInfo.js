@@ -172,15 +172,6 @@ const UserInfo = ({ order, getOrder }) => {
               <Input placeholder="Хаалганы тоот оруулна уу" />
             </Form.Item>
           </Col>
-          <Col span={24}>
-            <Form.Item
-              name="address"
-              label="Дэлгэрэнгүй хаяг"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <Input.TextArea placeholder="Дэлгэрэнгүй хаяг оруулна уу" />
-            </Form.Item>
-          </Col>
           <Col span={24} style={{ textAlign: "right" }}>
             <Button type="primary" onClick={form.submit}>
               Хуваарь сонгох
