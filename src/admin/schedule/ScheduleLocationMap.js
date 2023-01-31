@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Button, Col, Form, message, Row, Select, Spin } from "antd";
 import adminService from "../../services/adminService";
-import { renderDateNoSec, showErrorMsg } from "../../common/utils";
+import { showErrorMsg } from "../../common/utils";
 
 const ScheduleLocationMap = ({ schedule, changeState }) => {
   const [form] = Form.useForm();
@@ -54,7 +54,7 @@ const ScheduleLocationMap = ({ schedule, changeState }) => {
         <Row justify="space-between">
           <Col span={24}>
             <Form.Item
-              label="Захиалга хаагдах огноо"
+              label="Хүргэлт эхлэх өдөр"
               name="schedule_id"
               rules={[{ required: true, message: "Заавал сонгоно уу" }]}
             >
@@ -62,24 +62,7 @@ const ScheduleLocationMap = ({ schedule, changeState }) => {
                 {scheduleList?.map((s) => {
                   return (
                     <Select.Option key={s.id} value={s.id}>
-                      {renderDateNoSec(s.order_close_date)}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={24}>
-            <Form.Item
-              label="Хүргэлт эхлэх огноо"
-              name="onlyShow"
-              rules={[{ required: true, message: "Заавал сонгоно уу" }]}
-            >
-              <Select placeholder="Заавал сонгоно уу" disabled>
-                {scheduleList?.map((s) => {
-                  return (
-                    <Select.Option key={s.id} value={s.id}>
-                      {renderDateNoSec(s.delivery_start_date)}
+                      {s.delivery_start_day}
                     </Select.Option>
                   );
                 })}
