@@ -3,13 +3,7 @@ import { Button, Col, Form, Input, message, Row, Select, Spin } from "antd";
 import adminService from "../../services/adminService";
 import { showErrorMsg } from "../../common/utils";
 
-const LocationEdit = ({
-  districtList,
-  khorooList,
-  location,
-  onClose,
-  changeState,
-}) => {
+const LocationEdit = ({ districtList, location, onClose, changeState }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
@@ -33,20 +27,19 @@ const LocationEdit = ({
   const setFormInfo = (value) => {
     form.setFieldsValue({
       name: value?.name,
-      description: value?.description,
-      discount: value?.discount,
-      price: value?.price,
-      qty: value?.qty,
+      district_id: value?.district_id,
+      khoroo_id: value?.khoroo_id,
     });
   };
 
-  const getKhorooList = (district_id) => {
+  const getKhorooList = (district_id, type) => {
     setLoading(true);
     adminService
       .getKhorooList({ district_id: district_id })
       .then((result) => {
         if (result?.data?.data) {
           setMainKhorooList(result.data.data);
+          if (type === 2) setFormInfo(location);
         }
       })
       .catch((err) => {
@@ -57,8 +50,8 @@ const LocationEdit = ({
   };
 
   React.useEffect(() => {
-    if (location) setFormInfo(location);
-    setMainKhorooList(khorooList);
+    if (location) getKhorooList(location.district_id, 2);
+    else setFormInfo(null);
   }, [location, changeState]);
 
   return (

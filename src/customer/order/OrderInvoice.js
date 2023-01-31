@@ -239,7 +239,7 @@ const OrderInvoice = ({ order, getOrder }) => {
   const getOrderInvoiceInfo = () => {
     setLoading(true);
     adminService
-      .getOrderInvoiceInfo({ location_id: loggedUser.location_id })
+      .getOrderInvoiceInfo()
       .then((result) => {
         setLoading(false);
         if (result?.data?.data) {
@@ -247,7 +247,7 @@ const OrderInvoice = ({ order, getOrder }) => {
             setScheduleList(result.data.data.scheduleList);
             setLocationMapList([result.data.data.location]);
             form.setFieldsValue({
-              location_id: loggedUser.location_id,
+              location_id: result.data.data.location.id,
               schedule_id: order.schedule_id,
             });
           }

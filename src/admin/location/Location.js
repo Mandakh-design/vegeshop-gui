@@ -243,7 +243,6 @@ const Location = () => {
           <LocationEdit
             location={selectedLocation}
             districtList={districtList}
-            khorooList={khorooList}
             changeState={changeState}
             onClose={() => {
               setSelectedLocation(null);
