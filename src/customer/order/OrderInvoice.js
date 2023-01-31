@@ -20,7 +20,7 @@ import {
   LeftOutlined,
 } from "@ant-design/icons";
 import adminService from "../../services/adminService";
-import { moneyFormat, renderDateNoSec, showErrorMsg } from "../../common/utils";
+import { moneyFormat, showErrorMsg } from "../../common/utils";
 import { useHistory } from "react-router-dom";
 import contextLogin from "../../main/contextLogin";
 
@@ -244,7 +244,12 @@ const OrderInvoice = ({ order, getOrder }) => {
         setLoading(false);
         if (result?.data?.data) {
           if (result?.data?.data) {
-            setScheduleList(result.data.data);
+            setScheduleList(result.data.data.scheduleList);
+            setLocationMapList([result.data.data.location]);
+            form.setFieldsValue({
+              location_id: loggedUser.location_id,
+              schedule_id: order.schedule_id,
+            });
           }
         }
       })
@@ -286,7 +291,7 @@ const OrderInvoice = ({ order, getOrder }) => {
         <Row gutter={[16, 0]}>
           <Col xs={24} sm={24} md={24} lg={24} xl={16}>
             <Form.Item
-              name="location_map_id"
+              name="location_id"
               label="Байршил сонгох"
               rules={[{ required: true, message: "Заавал сонгоно уу" }]}
             >
@@ -313,7 +318,6 @@ const OrderInvoice = ({ order, getOrder }) => {
             >
               <Select
                 placeholder="Хуваарь сонгоно уу"
-                onChange={(e) => getLocationMap(e)}
                 style={{ width: "100%" }}
               >
                 {scheduleList?.map((s) => {
