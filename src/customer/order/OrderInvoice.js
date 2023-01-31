@@ -12,6 +12,7 @@ import {
   Popconfirm,
   Space,
   InputNumber,
+  Alert,
 } from "antd";
 import React from "react";
 import {
@@ -288,7 +289,13 @@ const OrderInvoice = ({ order, getOrder }) => {
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
       <Form form={form} onFinish={submit} layout="vertical">
-        <Row gutter={[16, 0]}>
+        <Row gutter={[16, 16]}>
+          <Col span={24}>
+            <Alert
+              type="info"
+              description="Зөвхөн долоо хоногийн захиалгыг авах ба хуваарь дээрх захиалга хоёр хоногийн өмнө хаагдахыг анхаарна уу."
+            />
+          </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={16}>
             <Form.Item
               name="location_id"
