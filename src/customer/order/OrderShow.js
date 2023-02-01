@@ -17,7 +17,7 @@ import React from "react";
 import { LoadingOutlined } from "@ant-design/icons";
 import { moneyFormat, showErrorMsg } from "../../common/utils";
 import { useHistory } from "react-router-dom";
-import moment from "moment";
+
 import adminService from "../../services/adminService";
 
 const OrderShow = ({ order, getOrder }) => {
@@ -207,7 +207,7 @@ const OrderShow = ({ order, getOrder }) => {
         {schedule &&
         <Col span={24}>
           <Descriptions bordered>
-            <Descriptions.Item label="Захиалга хүргэх огноо">{moment(schedule.delivery_start_date).format('yyyy-MM-DD')}</Descriptions.Item>
+            <Descriptions.Item label="Захиалга хүргэх огноо">{schedule.delivery_start_day}</Descriptions.Item>
             <Descriptions.Item label="Захиалга хүлээн авах">
             <Popconfirm
               title="Захиалга хүлээн авсанаа баталгаажуулахдаа итгэлтэй байна уу?"
