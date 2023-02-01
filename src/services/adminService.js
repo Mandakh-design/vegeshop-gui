@@ -53,7 +53,7 @@ const getOrderInvoiceInfo = (data) =>
 const saveSchedule = (data) => axios.post(`/api/v1/saveSchedule`, data);
 const getScheduleLocationList = (data) =>
   axios.get(`/api/v1/getScheduleLocationList`, { params: data });
-  const getScheduleById = (data) =>
+const getScheduleById = (data) =>
   axios.get(`/api/v1/getScheduleById`, { params: data });
 const saveScheduleLocationMap = (data) =>
   axios.post(`/api/v1/saveScheduleLocationMap`, data);
@@ -85,6 +85,8 @@ const createInvoiceQpay = (data) =>
 const checkInvoiceQpay = (data) => axios.post(`/api/v1/checkInvoiceQpay`, data);
 const getInvoiceQpay = (inv_id) =>
   axios.get(`/api/v1/getInvoiceQpay?qpayInvoiceId=${inv_id}`);
+const orderConfirmation = (data) =>
+  axios.post(`/api/v1/orderConfirmation`, data);
 
 const config = {
   headers: {
@@ -150,6 +152,7 @@ export default {
   changeScheduleDetail,
   cancelScheduleOrder,
   getScheduleOrderList,
+  orderConfirmation,
 
   createInvoiceQpay,
   checkInvoiceQpay,

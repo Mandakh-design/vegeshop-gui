@@ -1,5 +1,16 @@
-import { Button, Col, Form, message, Row, Select, Spin, Table } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import {
+  Button,
+  Col,
+  Form,
+  message,
+  Popconfirm,
+  Row,
+  Select,
+  Spin,
+  Table,
+  Tooltip,
+} from "antd";
+import { SearchOutlined, CheckOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { showErrorMsg } from "../../common/utils";
 import { Excel } from "antd-table-saveas-excel";
@@ -63,8 +74,95 @@ const AdminOrderList = () => {
         return orderDtl;
       },
     },
+    {
+      title: "",
+      dataIndex: "action",
+      key: "action",
+      render: (text, record) => {
+        if (record.status === 4)
+          return (
+            <Popconfirm
+              title="Баталгаажуулахдаа итгэлтэй байна уу"
+              placement="topRight"
+              onConfirm={() => orderConfirmation(record.id)}
+            >
+              <Tooltip title="Баталгаажуулах">
+                <Button icon={<CheckOutlined />} type="primary" ghost />
+              </Tooltip>
+            </Popconfirm>
+          );
+        return "";
+      },
+    },
   ];
 
+  const exportColumn = [
+    {
+      title: "Нэр",
+      dataIndex: "firstname",
+      key: "firstname",
+    },
+    {
+      title: "Утасны дугаар",
+      dataIndex: "phone",
+      key: "phone",
+    },
+    {
+      title: "Нэмэлт утасны дугаар",
+      dataIndex: "phone2",
+      key: "phone2",
+    },
+    {
+      title: "Хаяг",
+      dataIndex: "mainLocation",
+      key: "mainLocation",
+      render: (text, record) => {
+        return (
+          record.district +
+          " дүүрэг " +
+          record.khoroo +
+          " хороо " +
+          record.areaName +
+          " хотхон " +
+          record.apartment +
+          " байр/гудамж " +
+          record.entrance +
+          " орц " +
+          record.floor +
+          " давхар " +
+          record.door_number +
+          " тоот"
+        );
+      },
+    },
+    {
+      title: "Захиалгын мэдээлэл",
+      dataIndex: "orderDtList",
+      key: "orderDtList",
+      render: (text, record) => {
+        let orderDtl = "";
+        record.orderDtlList?.map((d) => {
+          orderDtl += d.name + " " + d.qty + "ш; ";
+          return "";
+        });
+        return orderDtl;
+      },
+    },
+  ];
+
+  const orderConfirmation = (id) => {
+    setLoading(true);
+    adminService
+      .orderConfirmation({ order_id: id })
+      .then((result) => {
+        if (result?.data) {
+          message.success("Амжилттай");
+          form.submit();
+        }
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
   const exportOrder = () => {
     let newDate = new Date();
     let date = newDate.getDate();
@@ -73,7 +171,7 @@ const AdminOrderList = () => {
     const excel = new Excel();
     excel
       .addSheet("Захиалгын жагсаалт")
-      .addColumns(columns)
+      .addColumns(exportColumn)
       .addDataSource(orderList, {
         str2Percent: true,
       })
@@ -140,7 +238,7 @@ const AdminOrderList = () => {
                     <Select.Option key={1} value={4}>
                       Хүргэлтэнд гарах захиалга
                     </Select.Option>
-                    <Select.Option key={2} value={5}>
+                    <Select.Option key={2} value={6}>
                       Баталгаажсан захиалга
                     </Select.Option>
                   </Select>
