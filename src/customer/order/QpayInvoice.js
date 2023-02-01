@@ -10,9 +10,9 @@ const QpayInvoice = ({ order, getOrder }) => {
   const checkInvoiceQpay = () => {
     setLoading(true);
     adminService
-      .checkInvoiceQpay({ qpayInvoiceId: order.invoice_id })
+      .checkInvoiceQpay({ qpayInvoiceId: order.invoice_id, order_id: order.id })
       .then((result) => {
-        if (result.data.message === "success") getOrder();
+        if (result.data.message === "success") getOrder(order.id);
         else if (result.data.message === "notPaid")
           message.warning("Нэхэмжлэх төлөгдөөгүй байна.");
         else message.error(result);

@@ -65,10 +65,10 @@ const Order = () => {
       .finally(() => setLoading(false));
   };
 
-  const getOrderDetail = () => {
+  const getOrderDetail = (order_id) => {
     setLoading(true);
     adminService
-      .getOrderDetail()
+      .getOrderDetail({order_id})
       .then((result) => {
         if (result.data.data) {
           setOrderDetail(result.data.data[0]);
@@ -142,7 +142,7 @@ const Order = () => {
                 <OrderPayment order={orderDetail} getOrder={getOrderDetail} />
               )}
               {step === 3 && (
-                <QpayInvoice order={orderDetail} getOrder={getOrderDetail} />
+                <QpayInvoice order={orderDetail} getOrder={(oId=>getOrderDetail(oId))} />
               )}
               {step === 4 && (
                 <OrderShow order={orderDetail} getOrder={getOrderDetail} />
