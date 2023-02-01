@@ -44,7 +44,7 @@ const OrderShow = ({ order, getOrder }) => {
       .getScheduleById({ schedule_id: order.schedule_id })
       .then((result) => {
         if (result?.data) {
-          setSchedule(result.data)
+          setSchedule(result.data.data)
         }
       })
       .catch((err) => showErrorMsg(err))
