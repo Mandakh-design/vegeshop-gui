@@ -2,6 +2,7 @@ import { Button, Col, Form, message, Row, Select, Spin, Table } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { useEffect, useState } from "react";
 import { showErrorMsg } from "../../common/utils";
+import { Excel } from "antd-table-saveas-excel";
 import adminService from "../../services/adminService";
 
 const AdminOrderList = () => {
@@ -40,7 +41,7 @@ const AdminOrderList = () => {
           " хотхон " +
           record.apartment +
           " байр/гудамж " +
-          record.entrace +
+          record.entrance +
           " орц " +
           record.floor +
           " давхар " +
@@ -53,15 +54,30 @@ const AdminOrderList = () => {
       title: "Захиалгын мэдээлэл",
       dataIndex: "orderDtList",
       key: "orderDtList",
-      // render: (text, record) =>{
-      //   let orderDtl ="";
-      //   record.orderDtlList?.map(d => )
-      //   return ();
-      // }
+      render: (text, record) => {
+        let orderDtl = "";
+        record.orderDtlList?.map((d) => {
+          orderDtl += d.name + " " + d.qty + "ш; ";
+          return "";
+        });
+        return orderDtl;
+      },
     },
   ];
+
   const exportOrder = () => {
-    message.warning("Хөрвүүлэх");
+    let newDate = new Date();
+    let date = newDate.getDate();
+    let month = newDate.getMonth() + 1;
+    let year = newDate.getFullYear();
+    const excel = new Excel();
+    excel
+      .addSheet("Захиалгын жагсаалт")
+      .addColumns(columns)
+      .addDataSource(orderList, {
+        str2Percent: true,
+      })
+      .saveAs(`${year}-${month}-${date}.xlsx`);
   };
 
   const getOrderList = (value) => {
@@ -117,7 +133,7 @@ const AdminOrderList = () => {
                 <Form.Item
                   label="Төлөв"
                   name="status"
-                  initialValue={5}
+                  initialValue={4}
                   rules={[{ required: true, message: "Заавал сонгоно уу" }]}
                 >
                   <Select placeholder="Төлөв сонгоно уу" onChange={form.submit}>
