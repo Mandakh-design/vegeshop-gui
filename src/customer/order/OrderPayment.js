@@ -30,15 +30,18 @@ const OrderPayment = ({ order, getOrder }) => {
   const createInvoice = () => {
     setLoading(true);
     adminService
-      .createInvoiceQpay({ order_id: order.id, amount : order.total_amount, 
-        description : `selba: ${loggedUser.phone}, ${order.total_amount}`, phone : loggedUser.phone
-      , nextStatus : 3})
+      .createInvoiceQpay({
+        order_id: order.id,
+        amount: order.total_amount,
+        description: `selba: ${loggedUser.phone}, ${order.total_amount}`,
+        phone: loggedUser.phone,
+        nextStatus: 3,
+      })
       .then((result) => {
-       if(result?.data?.message == "success")
-       {
-        message.success("Нэхэмжлэх амжилттай үүслээ.")
+        if (result?.data?.message == "success") {
+          message.success("Нэхэмжлэх амжилттай үүслээ.");
           getOrder();
-       }
+        }
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
@@ -84,15 +87,7 @@ const OrderPayment = ({ order, getOrder }) => {
             >
               Буцах
             </Button>
-            <Button
-              type="primary"
-              size="large"
-              onClick={() => {
-                createInvoice();
-                message.warning("createInvoice function");
-                // setQpayVisible(true);
-              }}
-            >
+            <Button type="primary" size="large" onClick={() => createInvoice()}>
               Нэхэмжлэх үүсгэх
             </Button>
           </Row>

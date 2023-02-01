@@ -11,7 +11,7 @@ import {
   InputNumber,
   Popconfirm,
   Descriptions,
-
+  message,
 } from "antd";
 import React from "react";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -26,16 +26,21 @@ const OrderShow = ({ order, getOrder }) => {
   const [schedule, setSchedule] = React.useState();
 
   const confirmOrder = () => {
-    // setLoading(true);
-    // adminService
-    //   .getScheduleById({ schedule_id: order.schedule_id })
-    //   .then((result) => {
-    //     if (result?.data) {
-    //       setSchedule(result.data)
-    //     }
-    //   })
-    //   .catch((err) => showErrorMsg(err))
-    //   .finally(() => setLoading(false));
+    setLoading(true);
+    adminService
+      .orderConfirmation({ order_id: order.id })
+      .then((result) => {
+        if (result?.data) {
+          message.success(
+            "Амжилттай баталгаажлаа. Нүүр хуудас руу шилжүүлж байна."
+          );
+          setTimeout(() => {
+            getOrder();
+          }, 2000);
+        }
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
   };
 
   const getScheduleById = () => {
@@ -44,14 +49,16 @@ const OrderShow = ({ order, getOrder }) => {
       .getScheduleById({ schedule_id: order.schedule_id })
       .then((result) => {
         if (result?.data) {
-          setSchedule(result.data.data)
+          setSchedule(result.data.data);
         }
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
   };
 
-  React.useEffect(() => {getScheduleById()}, []);
+  React.useEffect(() => {
+    getScheduleById();
+  }, []);
 
   const productComp = (prod) => {
     return (
@@ -95,18 +102,13 @@ const OrderShow = ({ order, getOrder }) => {
                         <Col span={24}>{`Нэгж үнэ :${prod.productPrice}`}</Col>
                         <Col span={24}>
                           {/* prod has id: orderDtlId, product_id: product_id, package_id: package_id */}
-                          <InputNumber
-                            value={prod.qty}
-                            min={1}
-                           disabled
-                          />
+                          <InputNumber value={prod.qty} min={1} disabled />
                         </Col>
                         <Col span={24}>
                           <b>{"Нийт :" + moneyFormat(prod.amount)}</b>
                         </Col>
                       </Row>
                     </Col>
-                   
                   </Row>
                 </Col>
               </Row>
@@ -155,18 +157,13 @@ const OrderShow = ({ order, getOrder }) => {
                       <Row justify="end">
                         <Col span={24}>{`Нэгж үнэ :${pack.packagePrice}`}</Col>
                         <Col span={24}>
-                          <InputNumber
-                            value={pack.qty}
-                            min={1}
-                           disabled
-                          />
+                          <InputNumber value={pack.qty} min={1} disabled />
                         </Col>
                         <Col span={24}>
                           <b>{"Нийт :" + moneyFormat(pack.amount)}</b>
                         </Col>
                       </Row>
                     </Col>
-                    
                   </Row>
                 </Col>
               </Row>
@@ -180,12 +177,10 @@ const OrderShow = ({ order, getOrder }) => {
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
       <Row gutter={[0, 16]}>
         <Col span={24}>
-          <Divider orientation="left">
-            Захиалга харах 
-          </Divider>
+          <Divider orientation="left">Захиалга харах</Divider>
         </Col>
         <Col span={24}>
-        <Col span={24}>
+          <Col span={24}>
             {order && (
               <List
                 dataSource={order.detailList}
@@ -204,22 +199,23 @@ const OrderShow = ({ order, getOrder }) => {
             </Col>
           </Row>
         </Col>
-        {schedule &&
-        <Col span={24}>
-          <Descriptions bordered>
-            <Descriptions.Item label="Захиалга хүргэх огноо">{schedule.delivery_start_day}</Descriptions.Item>
-            <Descriptions.Item label="Захиалга хүлээн авах">
-            <Popconfirm
-              title="Захиалга хүлээн авсанаа баталгаажуулахдаа итгэлтэй байна уу?"
-              onConfirm={() => confirmOrder()}
-            >
-             <Button type="primary" >Баталгаажуулах</Button>
-            </Popconfirm>
-              
+        {schedule && (
+          <Col span={24}>
+            <Descriptions bordered>
+              <Descriptions.Item label="Захиалга хүргэх огноо">
+                {schedule.delivery_start_day}
               </Descriptions.Item>
-          </Descriptions>
-        </Col>
-}
+              <Descriptions.Item label="Захиалга хүлээн авах">
+                <Popconfirm
+                  title="Захиалга хүлээн авсанаа баталгаажуулахдаа итгэлтэй байна уу?"
+                  onConfirm={() => confirmOrder()}
+                >
+                  <Button type="primary">Баталгаажуулах</Button>
+                </Popconfirm>
+              </Descriptions.Item>
+            </Descriptions>
+          </Col>
+        )}
       </Row>
     </Spin>
   );

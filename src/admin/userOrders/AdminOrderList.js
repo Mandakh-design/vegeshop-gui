@@ -82,7 +82,7 @@ const AdminOrderList = () => {
         if (record.status === 4)
           return (
             <Popconfirm
-              title="Баталгаажуулахдаа итгэлтэй байна уу"
+              title="Захиалга баталгаажуулахдаа итгэлтэй байна уу"
               placement="topRight"
               onConfirm={() => orderConfirmation(record.id)}
             >
