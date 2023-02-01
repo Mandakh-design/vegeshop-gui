@@ -12,12 +12,10 @@ const QpayInvoice = ({ order, getOrder }) => {
     adminService
       .checkInvoiceQpay({ qpayInvoiceId: order.invoice_id })
       .then((result) => {
-        if(result.data.message === "success")
-          getOrder();
-        else if(result.data.message === "notPaid")
-          message.warning("Нэхэмжлэх төлөгдөөгүй байна.")
-          else 
-          message.error(result)
+        if (result.data.message === "success") getOrder();
+        else if (result.data.message === "notPaid")
+          message.warning("Нэхэмжлэх төлөгдөөгүй байна.");
+        else message.error(result);
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
@@ -25,9 +23,9 @@ const QpayInvoice = ({ order, getOrder }) => {
   const getInvoiceQpay = () => {
     setLoading(true);
     adminService
-      .getInvoiceQpay(order.invoice_id )
+      .getInvoiceQpay(order.invoice_id)
       .then((result) => {
-        console.log(result)
+        console.log(result);
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
@@ -43,7 +41,7 @@ const QpayInvoice = ({ order, getOrder }) => {
       .finally(() => setLoading(false));
   };
 
-  React.useEffect(() => { console.log(order)}, []);
+  React.useEffect(() => {}, []);
 
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
@@ -70,13 +68,13 @@ const QpayInvoice = ({ order, getOrder }) => {
             </Col>
             <Col>
               <Button
-              icon={<ReloadOutlined />}
+                icon={<ReloadOutlined />}
                 type="primary"
                 ghost
                 size="large"
                 onClick={() => checkInvoiceQpay()}
               >
-                Төлөл шалгах
+                Төлөлт шалгах
               </Button>
             </Col>
           </Row>
