@@ -53,6 +53,8 @@ const getOrderInvoiceInfo = (data) =>
 const saveSchedule = (data) => axios.post(`/api/v1/saveSchedule`, data);
 const getScheduleLocationList = (data) =>
   axios.get(`/api/v1/getScheduleLocationList`, { params: data });
+  const getScheduleById = (data) =>
+  axios.get(`/api/v1/getScheduleById`, { params: data });
 const saveScheduleLocationMap = (data) =>
   axios.post(`/api/v1/saveScheduleLocationMap`, data);
 const getOrderDetail = (data) =>
@@ -128,6 +130,7 @@ export default {
   saveSchedule,
   submitLocation,
   getScheduleLocationList,
+  getScheduleById,
   saveScheduleLocationMap,
   getOrderInvoiceInfo,
   getOrderDetail,

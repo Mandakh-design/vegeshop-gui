@@ -7,54 +7,195 @@ import {
   List,
   Avatar,
   Skeleton,
-  Alert,
+  Button,
+  InputNumber,
+  Popconfirm,
+  Descriptions,
+
 } from "antd";
 import React from "react";
 import { LoadingOutlined } from "@ant-design/icons";
-import { moneyFormat } from "../../common/utils";
+import { moneyFormat, showErrorMsg } from "../../common/utils";
+import { useHistory } from "react-router-dom";
+
+import adminService from "../../services/adminService";
 
 const OrderShow = ({ order, getOrder }) => {
+  let history = useHistory();
   const [loading, setLoading] = React.useState(false);
+  const [schedule, setSchedule] = React.useState();
 
-  React.useEffect(() => {}, []);
+  const confirmOrder = () => {
+    // setLoading(true);
+    // adminService
+    //   .getScheduleById({ schedule_id: order.schedule_id })
+    //   .then((result) => {
+    //     if (result?.data) {
+    //       setSchedule(result.data)
+    //     }
+    //   })
+    //   .catch((err) => showErrorMsg(err))
+    //   .finally(() => setLoading(false));
+  };
 
+  const getScheduleById = () => {
+    setLoading(true);
+    adminService
+      .getScheduleById({ schedule_id: order.schedule_id })
+      .then((result) => {
+        if (result?.data) {
+          setSchedule(result.data.data)
+        }
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
+  React.useEffect(() => {getScheduleById()}, []);
+
+  const productComp = (prod) => {
+    return (
+      <List.Item key={`prod${prod.id}`}>
+        <Skeleton avatar title={false} loading={false} active>
+          <List.Item.Meta
+            avatar={
+              <Avatar
+                style={{ width: "5rem", height: "5rem" }}
+                src={
+                  prod.productFilename
+                    ? `${process.env.REACT_APP_SERVICE_URL}/images/${prod.productFilename}`
+                    : `/images/emptyPic.jpeg`
+                }
+              />
+            }
+            // title={
+            //  null
+            // }
+            description={
+              <Row justify="space-between">
+                <Col span={14}>
+                  <Row>
+                    <Col span={24}>
+                      <Button
+                        type="link"
+                        onClick={() =>
+                          history.push(`/product/${prod.product_id}/${1}`)
+                        }
+                      >
+                        {prod.product}
+                      </Button>
+                    </Col>
+                    <Col span={24}>{prod.prodDesc}</Col>
+                  </Row>
+                </Col>
+                <Col span={10}>
+                  <Row style={{ width: "100%" }}>
+                    <Col span={20} justify="right">
+                      <Row justify="end">
+                        <Col span={24}>{`Нэгж үнэ :${prod.productPrice}`}</Col>
+                        <Col span={24}>
+                          {/* prod has id: orderDtlId, product_id: product_id, package_id: package_id */}
+                          <InputNumber
+                            value={prod.qty}
+                            min={1}
+                           disabled
+                          />
+                        </Col>
+                        <Col span={24}>
+                          <b>{"Нийт :" + moneyFormat(prod.amount)}</b>
+                        </Col>
+                      </Row>
+                    </Col>
+                   
+                  </Row>
+                </Col>
+              </Row>
+            }
+          />
+        </Skeleton>
+      </List.Item>
+    );
+  };
+
+  const packageComp = (pack) => {
+    return (
+      <List.Item key={pack.id}>
+        <Skeleton avatar title={false} loading={false} active>
+          <List.Item.Meta
+            avatar={
+              <Avatar
+                style={{ width: "5rem", height: "5rem" }}
+                src={
+                  pack.packageFilename
+                    ? `${process.env.REACT_APP_SERVICE_URL}/images/${pack.packageFilename}`
+                    : `/images/emptyPic.jpeg`
+                }
+              />
+            }
+            description={
+              <Row justify="space-between">
+                <Col span={14}>
+                  <Row>
+                    <Col span={24}>
+                      <Button
+                        type="link"
+                        onClick={() =>
+                          history.push(`/product/${pack.package_id}/${2}`)
+                        }
+                      >
+                        {pack.package}
+                      </Button>
+                    </Col>
+                    <Col span={24}>{pack.packageDesc}</Col>
+                  </Row>
+                </Col>
+                <Col span={10}>
+                  <Row style={{ width: "100%" }}>
+                    <Col span={20} justify="right">
+                      <Row justify="end">
+                        <Col span={24}>{`Нэгж үнэ :${pack.packagePrice}`}</Col>
+                        <Col span={24}>
+                          <InputNumber
+                            value={pack.qty}
+                            min={1}
+                           disabled
+                          />
+                        </Col>
+                        <Col span={24}>
+                          <b>{"Нийт :" + moneyFormat(pack.amount)}</b>
+                        </Col>
+                      </Row>
+                    </Col>
+                    
+                  </Row>
+                </Col>
+              </Row>
+            }
+          />
+        </Skeleton>
+      </List.Item>
+    );
+  };
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
       <Row gutter={[0, 16]}>
-        <Alert
-          type="info"
-          description="Өмнөх step ний төлбөр төлөх дээр create invoice дуудсан байгаа. 
-        Бусад газрууд бол нэхэмжлэх үүсгэсэн сагсыг буцахгүйгээр шууд цуцалдаг юм байна лээ. Дунд нь нэг step нэмээд нэ"
-        />
         <Col span={24}>
           <Divider orientation="left">
-            Захиалга харах <Tag color="green">Баталгаажсан</Tag>
-            <Tag color="orange">Нэхэмжлэх төлөлт хүлээгдэж байна</Tag>
+            Захиалга харах 
           </Divider>
         </Col>
         <Col span={24}>
-          <List
-            dataSource={[{ title: "sss" }, { title: "sss" }]}
-            renderItem={(item, index) => (
-              <List.Item
-                key={index}
-                actions={[<a key="list-loadmore-more">more</a>]}
-              >
-                <Skeleton avatar title={false} loading={false} active>
-                  <List.Item.Meta
-                    avatar={
-                      <Avatar
-                        style={{ width: "5rem", height: "5rem" }}
-                        src="https://blog-images-1.pharmeasy.in/blog/production/wp-content/uploads/2021/04/23175719/shutterstock_440493100-1.jpg"
-                      />
-                    }
-                    title={<a href="https://ant.design">Luuvaa</a>}
-                    description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                  />
-                </Skeleton>
-              </List.Item>
+        <Col span={24}>
+            {order && (
+              <List
+                dataSource={order.detailList}
+                renderItem={(item) => {
+                  if (item.type === 1) return productComp(item);
+                  return packageComp(item);
+                }}
+              />
             )}
-          />
+          </Col>
         </Col>
         <Col span={24}>
           <Row justify="end">
@@ -63,6 +204,22 @@ const OrderShow = ({ order, getOrder }) => {
             </Col>
           </Row>
         </Col>
+        {schedule &&
+        <Col span={24}>
+          <Descriptions bordered>
+            <Descriptions.Item label="Захиалга хүргэх огноо">{schedule.delivery_start_day}</Descriptions.Item>
+            <Descriptions.Item label="Захиалга хүлээн авах">
+            <Popconfirm
+              title="Захиалга хүлээн авсанаа баталгаажуулахдаа итгэлтэй байна уу?"
+              onConfirm={() => confirmOrder()}
+            >
+             <Button type="primary" >Баталгаажуулах</Button>
+            </Popconfirm>
+              
+              </Descriptions.Item>
+          </Descriptions>
+        </Col>
+}
       </Row>
     </Spin>
   );
