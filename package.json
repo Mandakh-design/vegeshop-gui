@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "antd": "^5.0.0-rc.0",
+    "antd-table-saveas-excel": "^2.2.1",
     "array-move": "^4.0.0",
     "axios": "^1.2.2",
     "http-proxy-middleware": "^2.0.6",

@@ -1,4 +1,4 @@
-import { Spin, Col, Row, QRCode, Button, Popconfirm, message } from "antd";
+import { Spin, Col, Row, QRCode, Button, Popconfirm, message, Card, List } from "antd";
 import React from "react";
 import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
 import adminService from "../../services/adminService";
@@ -54,6 +54,7 @@ const QpayInvoice = ({ order, getOrder }) => {
             <QRCode value={order?.qr_text} />
           </Row>
         </Col>
+      
         <Col span={24}>
           <Row justify="space-between">
             <Col>
@@ -79,6 +80,27 @@ const QpayInvoice = ({ order, getOrder }) => {
             </Col>
           </Row>
         </Col>
+
+        {order?.invoice_urls && order?.invoice_urls.length > 0 && 
+       <Col span={24}>
+        <List
+    grid={{
+      gutter: 0,
+      xs: 1,
+      sm: 2,
+      md: 4,
+      lg: 4,
+      xl: 6,
+      xxl: 3,
+    }}
+    dataSource={order.invoice_urls}
+    renderItem={(item) => (
+      <List.Item>
+        <Card title={item.description} onClick={()=>{ window.open(item.link); }}><img style={{width:"100%"}} alt="example" src={item.logo} /></Card>
+      </List.Item>
+    )}
+  />
+        </Col>}
       </Row>
     </Spin>
   );
