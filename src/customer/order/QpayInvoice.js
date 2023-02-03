@@ -86,12 +86,12 @@ const QpayInvoice = ({ order, getOrder }) => {
         <List
     grid={{
       gutter: 0,
-      xs: 1,
+      xs: 2,
       sm: 2,
       md: 4,
       lg: 4,
-      xl: 6,
-      xxl: 3,
+      xl: 5,
+      xxl: 6,
     }}
     dataSource={order.invoice_urls}
     renderItem={(item) => (
