@@ -9,6 +9,7 @@ import {
   message,
   Empty,
   Avatar,
+  Affix,
 } from "antd";
 import { MinusOutlined, PlusOutlined } from "@ant-design/icons";
 import React, { useState } from "react";
@@ -70,69 +71,79 @@ const OrderDrawer = ({ getOrder, scheduleOrder, onClose }) => {
   return (
     <Spin spinning={loading}>
       {scheduleOrder?.detailList ? (
-        <Row gutter={[0, 16]}>
-          {scheduleOrder.detailList.map((p) => {
-            return (
-              <Col span={24} key={p.id}>
-                <Card key={p.id}>
-                  <Row justify="space-between" style={{ marginBottom: "2px" }}>
-                    <Col>{getDrawerAvatar(p)}</Col>
-                    <Col>
-                      <Popconfirm
-                        title="Сагснаас устгахдаа итгэлтэй байна уу?"
-                        placement="topRight"
-                        onConfirm={() =>
-                          deleteProductFromOrder(p.id, scheduleOrder.id)
-                        }
+        <Row>
+          <Col
+            span={24}
+            style={{ height: window.innerHeight - 150, overflow: "auto" }}
+          >
+            <Row gutter={[0, 16]}>
+              {scheduleOrder.detailList.map((p) => {
+                return (
+                  <Col span={24} key={p.id}>
+                    <Card key={p.id}>
+                      <Row
+                        justify="space-between"
+                        style={{ marginBottom: "2px" }}
                       >
-                        <Button
-                          type="primary"
-                          danger
-                          size="small"
-                          ghost
-                          icon={<CloseOutlined />}
-                        />
-                      </Popconfirm>
-                    </Col>
-                  </Row>
-                  <Row justify="space-between">
-                    <Col>Нэр: </Col>
-                    <Col>{p.product ?? p.package}</Col>
-                  </Row>
-                  <Row justify="space-between">
-                    <Col>Үнэ: </Col>
-                    <Col>{moneyFormat(p.price)}</Col>
-                  </Row>
-                  <Row justify="space-between">
-                    <Col>Тоо: </Col>
-                    <Col>
-                      <Space>
-                        <Button
-                          icon={<MinusOutlined />}
-                          onClick={() => changeScheduleDetail(p.id, 2)}
-                          size="small"
-                          disabled={p.qty === 1}
-                          type="link"
-                          ghost
-                        />
-                        {p.type === 1 ? p.qty + "кг" : p.qty + "ш"}
-                        <Button
-                          icon={<PlusOutlined />}
-                          type="link"
-                          onClick={() => changeScheduleDetail(p.id, 1)}
-                          size="small"
-                        />
-                      </Space>
-                    </Col>
-                  </Row>
-                  <Row justify="space-between">
-                    <Col>Нийт үнэ: </Col>
-                    <Col>{moneyFormat(p.amount)}</Col>
-                  </Row>
-                </Card>
-              </Col>
-            );
-          })}
+                        <Col>{getDrawerAvatar(p)}</Col>
+                        <Col>
+                          <Popconfirm
+                            title="Сагснаас устгахдаа итгэлтэй байна уу?"
+                            placement="topRight"
+                            onConfirm={() =>
+                              deleteProductFromOrder(p.id, scheduleOrder.id)
+                            }
+                          >
+                            <Button
+                              type="primary"
+                              danger
+                              size="small"
+                              ghost
+                              icon={<CloseOutlined />}
+                            />
+                          </Popconfirm>
+                        </Col>
+                      </Row>
+                      <Row justify="space-between">
+                        <Col>Нэр: </Col>
+                        <Col>{p.product ?? p.package}</Col>
+                      </Row>
+                      <Row justify="space-between">
+                        <Col>Үнэ: </Col>
+                        <Col>{moneyFormat(p.price)}</Col>
+                      </Row>
+                      <Row justify="space-between">
+                        <Col>Тоо: </Col>
+                        <Col>
+                          <Space>
+                            <Button
+                              icon={<MinusOutlined />}
+                              onClick={() => changeScheduleDetail(p.id, 2)}
+                              size="small"
+                              disabled={p.qty === 1}
+                              type="link"
+                              ghost
+                            />
+                            {p.type === 1 ? p.qty + "кг" : p.qty + "ш"}
+                            <Button
+                              icon={<PlusOutlined />}
+                              type="link"
+                              onClick={() => changeScheduleDetail(p.id, 1)}
+                              size="small"
+                            />
+                          </Space>
+                        </Col>
+                      </Row>
+                      <Row justify="space-between">
+                        <Col>Нийт үнэ: </Col>
+                        <Col>{moneyFormat(p.amount)}</Col>
+                      </Row>
+                    </Card>
+                  </Col>
+                );
+              })}
+            </Row>
+          </Col>
           <Col span={24}>
             <Row justify="space-between">
               <Col>
