@@ -11,6 +11,7 @@ import OrderList from "../customer/order/OrderList";
 import Distributor from "../distributor/Distributor";
 import ProductDetail from "../customer/ProductDetail";
 import UserProfile from "../customer/UserProfile";
+import AboutUs from "../aboutUs/AboutUs";
 
 const MainRoutes = () => {
   const { loggedUser } = React.useContext(contextLogin);
@@ -31,6 +32,13 @@ const MainRoutes = () => {
             <Row>
               <Col span={24}>
                 <Landing />
+              </Col>
+            </Row>
+          </Route>
+          <Route exact path="/about">
+            <Row>
+              <Col span={24}>
+                <AboutUs />
               </Col>
             </Row>
           </Route>

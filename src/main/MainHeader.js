@@ -174,6 +174,13 @@ const MainHeader = ({ userLoading }) => {
           )}
           {!userLoading && (
             <Space size="small">
+              <Button
+                type="link"
+                style={{ color: "green" }}
+                onClick={() => history.push("/about")}
+              >
+                Бидний тухай
+              </Button>
               {loggedUser?.role && (
                 <Button
                   type="link"
