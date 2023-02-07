@@ -33,7 +33,10 @@ const getProductListFormPackage = (data) =>
 const deletePackageDtl = (data) => axios.post(`/api/v1/deletePackageDtl`, data);
 
 const getNewsList = (data) => 
-  axios.get(`/api/v1/getNewsLis`, data);
+  axios.get(`/api/v1/getNewsLis`, { params: data });
+
+const saveNews = (data) => 
+  axios.post(`/api/v1/saveNews`, data);
 
 const savePackageDtl = (data) => axios.post(`/api/v1/savePackageDtl`, data);
 const getScheduleList = (data) =>
@@ -166,4 +169,5 @@ export default {
   saveUser,
 
   getNewsList,
+  saveNews,
 };

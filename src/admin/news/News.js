@@ -116,7 +116,7 @@ const News = () => {
   };
 
   React.useEffect(() => {
-    // getNewsList();
+    getNewsList();
   }, []);
 
   const showNewsEdit = (id) => {
