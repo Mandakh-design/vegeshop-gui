@@ -5,33 +5,30 @@ import {
   Col,
   Form,
   Input,
-  InputNumber,
   message,
   Row,
-  Select,
   Spin,
 } from "antd";
 import adminService from "../../services/adminService";
 import FileUploadAndSave from "../../controls/FileUploadAndSave";
 import NewsDetailList from "./NewsDetailList";
 
-const NewsEdit = ({ productId, category, onClose, changeState }) => {
+const NewsEdit = ({ newsId, onClose, changeState }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState();
-  const [categoryList, setCategoryList] = useState();
+  const [selectedNews, setSelectedNews] = useState();
 
-  const saveProduct = (value) => {
+  const saveNews = (value) => {
     setLoading(true);
-    const model = { ...selectedProduct, ...value };
+    const model = { ...selectedNews, ...value };
     adminService
-      .saveProduct(model)
+      .saveNews(model)
       .then((result) => {
         setLoading(false);
         if (result.data) {
           message.success("Амжилттай хадгалагдлаа");
-          if (!productId || productId === 0) onClose();
-          else getProductInfo();
+          if (!newsId || newsId === 0) onClose();
+          else getNewsInfo();
         }
       })
       .catch((err) => {
@@ -40,15 +37,15 @@ const NewsEdit = ({ productId, category, onClose, changeState }) => {
       });
   };
 
-  const getProductInfo = () => {
-    if (productId) {
+  const getNewsInfo = () => {
+    if (newsId) {
       setLoading(true);
       adminService
-        .getProductById({ id: productId })
+        .getNewsById({ id: newsId })
         .then((result) => {
           setLoading(false);
           if (result.data.data) {
-            setSelectedProduct(result.data.data);
+            setSelectedNews(result.data.data);
             form.setFieldsValue(result.data.data);
           }
         })
@@ -56,73 +53,24 @@ const NewsEdit = ({ productId, category, onClose, changeState }) => {
           setLoading(false);
           message.warning(err);
         });
-    } else {
-      setSelectedProduct({ category_id: category.id });
-      form.setFieldsValue({
-        category_id: category.id,
-        description: "",
-        name: "",
-        price: "",
-        qty: "",
-      });
-    }
+    } 
   };
 
   React.useEffect(() => {
-    setCategoryList([category]);
-    getProductInfo();
-  }, [category, productId, changeState]);
+    // getNewsInfo();
+  }, [newsId, changeState]);
 
   return (
     <Spin spinning={loading}>
-      <Form form={form} onFinish={saveProduct} layout="vertical">
+      <Form form={form} onFinish={saveNews} layout="vertical">
         <Row justify="space-between" gutter={[16, 0]}>
-          <Col span={12}>
-            <Form.Item name="category_id" label="Ангилал">
-              <Select disabled>
-                {categoryList?.map((c) => {
-                  return (
-                    <Select.Option key={c.id} value={c.id}>
-                      {c.name}
-                    </Select.Option>
-                  );
-                })}
-              </Select>
-            </Form.Item>
-          </Col>
-          <Col span={12}>
+          <Col span={24}>
             <Form.Item
               label="Нэр"
               name="name"
               rules={[{ required: true, message: "Заавал оруулна уу" }]}
             >
               <Input placeholder="Нэр оруулна уу" />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="Үлдэгдэл"
-              name="qty"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <InputNumber
-                placeholder="Үлдэгдэл оруулна уу"
-                style={{ width: "100%" }}
-                addonAfter="кг"
-              />
-            </Form.Item>
-          </Col>
-          <Col span={12}>
-            <Form.Item
-              label="Үнийн дүн"
-              name="price"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <InputNumber
-                placeholder="Үнийн дүн оруулна уу"
-                style={{ width: "100%" }}
-                addonAfter="₮"
-              />
             </Form.Item>
           </Col>
           <Col span={24}>
@@ -141,10 +89,10 @@ const NewsEdit = ({ productId, category, onClose, changeState }) => {
               rules={[{ required: true, message: "Заавал оруулна уу" }]}
             >
               <FileUploadAndSave
-                filename={selectedProduct?.filename}
+                filename={selectedNews?.filename}
                 setFilename={(file) => {
                   form.setFieldsValue({ filename: file });
-                  setSelectedProduct({ ...selectedProduct, filename: file });
+                  setSelectedNews({ ...selectedNews, filename: file });
                 }}
               />
             </Form.Item>
@@ -159,9 +107,9 @@ const NewsEdit = ({ productId, category, onClose, changeState }) => {
             </Button>
           </Col>
 
-          {productId && (
+          {newsId && (
             <Col span={24}>
-              <NewsDetailList productId={productId} />
+              <NewsDetailList newsId={newsId} />
             </Col>
           )}
 

@@ -10,7 +10,6 @@ import {
   Row,
   Select,
   Spin,
-  Table,
   Modal,
   Space,
   Popconfirm,
@@ -21,10 +20,10 @@ import FileUploadAndSave from "../../controls/FileUploadAndSave";
 import { renderDateNoSec, showErrorMsg } from "../../common/utils";
 import ChangeOrderTable from "../../common/ChangeOrderTable";
 
-const NewsDetailList = ({ productId, onClose, changeState }) => {
+const NewsDetailList = ({ newsId, onClose, changeState }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [productDetailVisible, setProductDetailVisible] = useState(false);
+  const [newsDetailVisible, setNewsDetailVisible] = useState(false);
   const [detailList, setDetailList] = useState();
   const [selectedType, setSelectedType] = useState();
   const [selectedFileName, setSelectedFileName] = useState();
@@ -64,27 +63,6 @@ const NewsDetailList = ({ productId, onClose, changeState }) => {
       },
     },
     {
-      title: "Дүн",
-      dataIndex: "type",
-      key: "type",
-      render: (text, record) => {
-        if (text === 1) return record.value_str;
-        if (text === 2) return renderDateNoSec(record.value_date);
-        return (
-          <Button
-            type="primary"
-            ghost
-            onClick={() => {
-              setSelectedFileName(record.filename);
-              setPhotoVisible(true);
-            }}
-          >
-            Зураг харах
-          </Button>
-        );
-      },
-    },
-    {
       title: "",
       dataIndex: "action",
       key: "action",
@@ -96,7 +74,7 @@ const NewsDetailList = ({ productId, onClose, changeState }) => {
               ghost
               icon={<EditOutlined />}
               onClick={() => {
-                setProductDetailVisible(true);
+                setNewsDetailVisible(true);
                 setSelectedDetailId(record.id);
                 setSelectedType(record.type);
                 setSelectedFileName(record.filename);
@@ -122,18 +100,18 @@ const NewsDetailList = ({ productId, onClose, changeState }) => {
     },
   ];
 
-  const saveProductDetail = (value) => {
+  const saveNewsDetail = (value) => {
     setLoading(true);
     const model = { ...value };
-    model.product_id = productId;
+    model.news_id = newsId;
     model.id = selectedDetailId;
     adminService
-      .saveProductDetail(model)
+      .saveNewsDetail(model)
       .then((result) => {
         if (result.data) {
           message.success("Амжилттай хадгалагдлаа");
-          setProductDetailVisible(false);
-          getProductDetailList();
+          setNewsDetailVisible(false);
+          getNewsDetailList();
         }
       })
       .catch((err) => {
@@ -145,11 +123,11 @@ const NewsDetailList = ({ productId, onClose, changeState }) => {
   const deleteDetail = (id) => {
     setLoading(true);
     adminService
-      .deleteProductDetail({ id: id })
+      .deleteNewsDetail({ id: id })
       .then((result) => {
         if (result.data) {
           message.success("Амжилттай устгагдлаа");
-          getProductDetailList();
+          getNewsDetailList();
         }
       })
       .catch((err) => {
@@ -159,10 +137,10 @@ const NewsDetailList = ({ productId, onClose, changeState }) => {
       .finally(() => setLoading(false));
   };
 
-  const saveProductDetailOrder = (data) => {
+  const saveNewsDetailOrder = (data) => {
     setLoading(true);
     adminService
-      .saveProductDetailOrder(data)
+      .saveNewsDetailOrder(data)
       .then((result) => {
         if (result?.data) {
           message.success("Амжилттай хадгалагдлаа");
@@ -172,11 +150,11 @@ const NewsDetailList = ({ productId, onClose, changeState }) => {
       .finally(() => setLoading(false));
   };
 
-  const getProductDetailList = () => {
-    if (productId) {
+  const getNewsDetailList = () => {
+    if (newsId) {
       setLoading(true);
       adminService
-        .getProductDetailListById({ id: productId })
+        .getNewsDetailListById({ id: newsId })
         .then((result) => {
           if (result.data.data) {
             setDetailList(result.data.data);
@@ -189,8 +167,8 @@ const NewsDetailList = ({ productId, onClose, changeState }) => {
   };
 
   React.useEffect(() => {
-    getProductDetailList();
-  }, [productId, changeState]);
+    // getNewsDetailList();
+  }, [newsId, changeState]);
 
   return (
     <Spin spinning={loading}>
@@ -202,7 +180,7 @@ const NewsDetailList = ({ productId, onClose, changeState }) => {
               column={columns}
               orderKey="viewOrder"
               setData={(data) => {
-                saveProductDetailOrder(data);
+                saveNewsDetailOrder(data);
                 setDetailList(data);
               }}
               isBorder={true}
@@ -213,7 +191,7 @@ const NewsDetailList = ({ productId, onClose, changeState }) => {
                       type="primary"
                       ghost
                       onClick={() => {
-                        setProductDetailVisible(true);
+                        setNewsDetailVisible(true);
                         setSelectedDetailId(null);
                         setSelectedFileName(null);
                         setSelectedType(null);
@@ -239,18 +217,18 @@ const NewsDetailList = ({ productId, onClose, changeState }) => {
       </Row>
       <Modal
         title="Барааны дэлгэрэнгүй"
-        open={productDetailVisible}
+        open={newsDetailVisible}
         onCancel={() => {
-          setProductDetailVisible(false);
+          setNewsDetailVisible(false);
           setSelectedFileName(null);
         }}
         cancelButtonProps={{ hidden: true }}
         onOk={form.submit}
         width="60%"
       >
-        {productDetailVisible && (
+        {newsDetailVisible && (
           <Spin spinning={loading}>
-            <Form form={form} onFinish={saveProductDetail} layout="vertical">
+            <Form form={form} onFinish={saveNewsDetail} layout="vertical">
               <Row gutter={[16, 0]}>
                 <Col span={24}>
                   <Form.Item
