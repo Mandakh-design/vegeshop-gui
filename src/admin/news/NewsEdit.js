@@ -13,7 +13,7 @@ import {
 } from "antd";
 import adminService from "../../services/adminService";
 import FileUploadAndSave from "../../controls/FileUploadAndSave";
-import ProductDetailList from "./ProductDetailList";
+import NewsDetailList from "./NewsDetailList";
 
 const NewsEdit = ({ productId, category, onClose, changeState }) => {
   const [form] = Form.useForm();
@@ -161,7 +161,7 @@ const NewsEdit = ({ productId, category, onClose, changeState }) => {
 
           {productId && (
             <Col span={24}>
-              <ProductDetailList productId={productId} />
+              <NewsDetailList productId={productId} />
             </Col>
           )}
 
