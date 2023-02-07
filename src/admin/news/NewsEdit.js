@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Button, Col, Form, Input, message, Row, Spin } from "antd";
 import adminService from "../../services/adminService";
 import FileUploadAndSave from "../../controls/FileUploadAndSave";
-import NewsDetailList from "./NewsDetailList";
+import { showErrorMsg } from "../../common/utils";
 
 const NewsEdit = ({ newsId, onClose, changeState }) => {
   const [form] = Form.useForm();
@@ -19,8 +19,8 @@ const NewsEdit = ({ newsId, onClose, changeState }) => {
         setLoading(false);
         if (result.data) {
           message.success("Амжилттай хадгалагдлаа");
-          if (!newsId || newsId === 0) onClose();
-          else getNewsInfo();
+          setSelectedNews(null);
+          onClose();
         }
       })
       .catch((err) => {
@@ -30,27 +30,27 @@ const NewsEdit = ({ newsId, onClose, changeState }) => {
   };
 
   const getNewsInfo = () => {
-    if (newsId) {
-      setLoading(true);
-      adminService
-        .getNewsById({ id: newsId })
-        .then((result) => {
-          setLoading(false);
-          if (result.data.data) {
-            setSelectedNews(result.data.data);
-            form.setFieldsValue(result.data.data);
-          }
-        })
-        .catch((err) => {
-          setLoading(false);
-          message.warning(err);
-        });
-    }
+    setLoading(true);
+    adminService
+      .getNewsList({ id: newsId })
+      .then((result) => {
+        setLoading(false);
+        if (result.data.data) {
+          setSelectedNews(result.data.data[0]);
+          form.setFieldsValue(result.data.data[0]);
+        }
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
   };
 
   React.useEffect(() => {
-    // getNewsInfo();
-  }, [newsId, changeState]);
+    if (newsId) getNewsInfo();
+    else {
+      form.setFieldsValue({ name: "", description: "", filename: "" });
+      setSelectedNews(null);
+    }
+  }, [newsId, changeState, form]);
 
   return (
     <Spin spinning={loading}>
@@ -98,47 +98,11 @@ const NewsEdit = ({ newsId, onClose, changeState }) => {
               Хадгалах
             </Button>
           </Col>
-
-          {newsId && (
+          {/* {newsId && (
             <Col span={24}>
               <NewsDetailList newsId={newsId} />
             </Col>
-          )}
-
-          {/* <Col span={12}>
-            <Form.Item
-              label="Хөнгөлөлт"
-              name="discount"
-              initialValue={0}
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <InputNumber
-                placeholder="Хөнгөлөлт оруулна уу"
-                style={{ width: "100%" }}
-                addonAfter="%"
-                onChange={(e) => {
-                  let tAmount =
-                    form.getFieldsValue().price -
-                    (form.getFieldsValue().price * e) / 100;
-                  form.setFieldsValue({ total_amount: tAmount });
-                }}
-              />
-            </Form.Item>
-          </Col> */}
-          {/* <Col span={12}>
-            <Form.Item
-              label="Хөнгөлөлтийн дараах үнийн дүн"
-              name="total_amount"
-              rules={[{ required: true, message: "Заавал оруулна уу" }]}
-            >
-              <InputNumber
-                placeholder="Хөнгөлөлтийн дараах үнийн дүн"
-                disabled
-                style={{ width: "100%" }}
-                addonAfter="₮"
-              />
-            </Form.Item>
-          </Col> */}
+          )} */}
         </Row>
       </Form>
     </Spin>

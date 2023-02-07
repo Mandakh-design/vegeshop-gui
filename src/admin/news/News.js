@@ -3,7 +3,6 @@ import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
-  Form,
   message,
   Modal,
   Popconfirm,
@@ -18,7 +17,6 @@ import NewsEdit from "./NewsEdit";
 import FileUploadAndSave from "../../controls/FileUploadAndSave";
 
 const News = () => {
-  const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [newsList, setNewsList] = useState();
 
@@ -172,11 +170,11 @@ const News = () => {
         >
           {newsVisible && (
             <NewsEdit
-              productId={selectedNewsId}
+              newsId={selectedNewsId}
               changeState={changeState}
               onClose={() => {
                 setNewsVisible(false);
-                form.submit();
+                getNewsList();
               }}
             />
           )}

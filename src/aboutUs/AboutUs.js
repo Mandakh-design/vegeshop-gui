@@ -1,78 +1,62 @@
 import React, { useState } from "react";
-import { Card, Col, Divider, Row } from "antd";
+import { Card, Col, Divider, Row, Spin } from "antd";
 import Meta from "antd/es/card/Meta";
+import adminService from "../services/adminService";
+import { showErrorMsg } from "../common/utils";
 
 const AboutUs = () => {
-  React.useEffect(() => {}, []);
+  const [loading, setLoading] = useState(false);
+  const [newsList, setNewsList] = useState();
 
-  const [newsList, setNewsList] = useState([
-    {
-      title: "Boxed Water Partners With Rag & Bone To Tap Consumer Creativity",
-      description:
-        "Curabitur egestas est vitae sem blandit tincidunt. Nunc cursus interdum odio sit amet gravida.",
-    },
-    {
-      title: "Barbecue Party Tips For A Truly Amazing Event",
-      description:
-        "Ut et feugiat dui. Nam fringilla, sem et mollis tincidunt, eros orci congue magna, eget lacinia erat metus vel tortor. Praesent efficitur ultricies felis.",
-    },
-    {
-      title: "Boxed Water Partners With Rag & Bone To Tap Consumer Creativity",
-      description:
-        "Curabitur egestas est vitae sem blandit tincidunt. Nunc cursus interdum odio sit amet gravida.",
-    },
-    {
-      title: "Barbecue Party Tips For A Truly Amazing Event",
-      description:
-        "Ut et feugiat dui. Nam fringilla, sem et mollis tincidunt, eros orci congue magna, eget lacinia erat metus vel tortor. Praesent efficitur ultricies felis.",
-    },
-    {
-      title: "Boxed Water Partners With Rag & Bone To Tap Consumer Creativity",
-      description:
-        "Curabitur egestas est vitae sem blandit tincidunt. Nunc cursus interdum odio sit amet gravida.",
-    },
-    {
-      title: "Barbecue Party Tips For A Truly Amazing Event",
-      description:
-        "Ut et feugiat dui. Nam fringilla, sem et mollis tincidunt, eros orci congue magna, eget lacinia erat metus vel tortor. Praesent efficitur ultricies felis.",
-    },
-  ]);
+  const getNewsList = () => {
+    setLoading(true);
+    adminService
+      .getNewsList()
+      .then((result) => {
+        if (result?.data?.data) setNewsList(result.data.data);
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
+  React.useEffect(() => {
+    getNewsList();
+  }, []);
+
   return (
-    <Row justify="center">
-      <Col
-        xs={22}
-        sm={22}
-        md={16}
-        lg={16}
-        xl={14}
-        style={{ textAlign: "center" }}
-      >
-        <Divider orientation="center">Мэдээ мэдээлэл</Divider>
-        <Row gutter={[16, 16]}>
-          {newsList?.map((n, index) => {
-            return (
-              <Col key={index} xs={24} sm={24} md={8} lg={8} xl={8}>
-                <Card
-                  hoverable
-                  cover={
-                    <img
-                      alt="example"
-                      src={
-                        index % 2 === 0
-                          ? "https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
-                          : "/images/post_7.jpg"
-                      }
-                    />
-                  }
-                >
-                  <Meta title={n.title} description={n.description} />
-                </Card>
-              </Col>
-            );
-          })}
-        </Row>
-      </Col>
-    </Row>
+    <Spin spinning={loading}>
+      <Row justify="center">
+        <Col
+          xs={22}
+          sm={22}
+          md={16}
+          lg={16}
+          xl={14}
+          style={{ textAlign: "center" }}
+        >
+          <Divider orientation="center">Мэдээ мэдээлэл</Divider>
+          <Row gutter={[16, 16]}>
+            {newsList?.map((n, index) => {
+              return (
+                <Col key={index} xs={24} sm={24} md={8} lg={8} xl={8}>
+                  <Card
+                    hoverable
+                    cover={
+                      <img
+                        alt="example"
+                        src={`${process.env.REACT_APP_SERVICE_URL}/images/${n.filename}`}
+                      />
+                    }
+                  >
+                    <Meta title={n.name} description={n.description} />
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
+        </Col>
+      </Row>
+    </Spin>
   );
 };
 export default AboutUs;
