@@ -1,14 +1,6 @@
 import React, { useState } from "react";
 
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  message,
-  Row,
-  Spin,
-} from "antd";
+import { Button, Col, Form, Input, message, Row, Spin } from "antd";
 import adminService from "../../services/adminService";
 import FileUploadAndSave from "../../controls/FileUploadAndSave";
 import NewsDetailList from "./NewsDetailList";
@@ -53,7 +45,7 @@ const NewsEdit = ({ newsId, onClose, changeState }) => {
           setLoading(false);
           message.warning(err);
         });
-    } 
+    }
   };
 
   React.useEffect(() => {

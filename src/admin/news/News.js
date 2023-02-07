@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import { EditOutlined } from "@ant-design/icons";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import {
   Button,
   Col,
   Form,
   message,
   Modal,
+  Popconfirm,
   Row,
   Space,
   Spin,
-  Switch,
   Table,
 } from "antd";
 import adminService from "../../services/adminService";
 import { showErrorMsg } from "../../common/utils";
 import NewsEdit from "./NewsEdit";
+import FileUploadAndSave from "../../controls/FileUploadAndSave";
 
 const News = () => {
   const [form] = Form.useForm();
@@ -24,6 +25,8 @@ const News = () => {
   const [selectedNewsId, setSelectedNewsId] = useState(false);
   const [newsVisible, setNewsVisible] = useState(null);
   const [changeState, setChangeState] = useState();
+  const [photoVisible, setPhotoVisible] = useState(false);
+  const [selectedFileName, setSelectedFileName] = useState(null);
 
   const columns = [
     {
@@ -44,29 +47,26 @@ const News = () => {
       title: "Тайлбар",
       dataIndex: "description",
       key: "description",
-      // render: (text, record) => {
-      //   return (
-      //     <Tooltip title={text}>
-      //       <Button icon={<EyeOutlined />} type="primary" ghost />
-      //     </Tooltip>
-      //   );
-      // },
     },
-    // {
-    //   title: "Идэвхитэй эсэх",
-    //   dataIndex: "active_flag",
-    //   key: "active_flag",
-    //   render: (text, record) => {
-    //     return (
-    //       <Switch
-    //         checkedChildren="Тийм"
-    //         unCheckedChildren="Үгүй"
-    //         checked={text}
-    //         onChange={(e) => saveNews(record, e)}
-    //       />
-    //     );
-    //   },
-    // },
+    {
+      title: "Зураг",
+      dataIndex: "filename",
+      key: "filename",
+      render: (text, record) => {
+        return (
+          <Button
+            type="primary"
+            ghost
+            onClick={() => {
+              setSelectedFileName(record.filename);
+              setPhotoVisible(true);
+            }}
+          >
+            Зураг харах
+          </Button>
+        );
+      },
+    },
     {
       title: "",
       dataIndex: "action",
@@ -82,6 +82,12 @@ const News = () => {
                 showNewsEdit(record.id);
               }}
             />
+            <Popconfirm
+              onConfirm={() => deleteNews(record.id)}
+              title="Устгахдаа итгэлтэй байна уу?"
+            >
+              <Button icon={<DeleteOutlined />} type="text" danger />
+            </Popconfirm>
           </Space>
         );
       },
@@ -91,6 +97,7 @@ const News = () => {
   const getNewsList = (value) => {
     setLoading(true);
     adminService
+      .getNewsList()
       .then((result) => {
         if (result.data) setNewsList(result.data.data);
       })
@@ -98,20 +105,19 @@ const News = () => {
       .finally(() => setLoading(false));
   };
 
-  const saveNews = (value, e) => {
+  const deleteNews = (id) => {
     setLoading(true);
-    const model = { ...value };
-    model.active_flag = e;
     adminService
-      .saveNews(model)
+      .deleteNews({ id: id })
       .then((result) => {
-        if (result.data) {
-          form.submit();
+        if (result?.data) {
+          message.success("Амжилттай устгагдлаа!");
+          getNewsList();
         }
       })
       .catch((err) => {
-        message.warning(err);
         setLoading(false);
+        showErrorMsg(err);
       });
   };
 
@@ -173,6 +179,21 @@ const News = () => {
                 form.submit();
               }}
             />
+          )}
+        </Modal>
+        <Modal
+          title="Зураг"
+          open={photoVisible}
+          okButtonProps={{ hidden: true }}
+          cancelButtonProps={{ hidden: true }}
+          footer={null}
+          onCancel={() => {
+            setPhotoVisible(false);
+            setSelectedFileName(null);
+          }}
+        >
+          {photoVisible && selectedFileName && (
+            <FileUploadAndSave filename={selectedFileName} type={2} />
           )}
         </Modal>
       </Row>

@@ -32,11 +32,10 @@ const getProductListFormPackage = (data) =>
   axios.get(`/api/v1/getProductListFormPackage`, { params: data });
 const deletePackageDtl = (data) => axios.post(`/api/v1/deletePackageDtl`, data);
 
-const getNewsList = (data) => 
-  axios.get(`/api/v1/getNewsLis`, { params: data });
+const getNewsList = (data) =>
+  axios.get(`/api/v1/getNewsList`, { params: data });
 
-const saveNews = (data) => 
-  axios.post(`/api/v1/saveNews`, data);
+const saveNews = (data) => axios.post(`/api/v1/saveNews`, data);
 
 const savePackageDtl = (data) => axios.post(`/api/v1/savePackageDtl`, data);
 const getScheduleList = (data) =>
@@ -93,6 +92,7 @@ const getInvoiceQpay = (inv_id) =>
   axios.get(`/api/v1/getInvoiceQpay?qpayInvoiceId=${inv_id}`);
 const orderConfirmation = (data) =>
   axios.post(`/api/v1/orderConfirmation`, data);
+const deleteNews = (data) => axios.post(`/api/v1/deleteNews`, data);
 
 const config = {
   headers: {
@@ -143,6 +143,7 @@ export default {
   getOrderInvoiceInfo,
   getOrderDetail,
   addProductToScheduleOrder,
+  deleteNews,
   getLandingProduct,
   searchData,
   getPackageWithDtl,
