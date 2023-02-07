@@ -245,7 +245,7 @@ const OrderInvoice = ({ order, getOrder }) => {
         setLoading(false);
         if (result?.data?.data) {
           if (result?.data?.data) {
-            setScheduleList(result.data.data.scheduleList);
+            setScheduleList(result.data.data.scheduleHdrList);
             setLocationMapList([result.data.data.location]);
             form.setFieldsValue({
               location_id: result.data.data.location.id,
@@ -319,8 +319,8 @@ const OrderInvoice = ({ order, getOrder }) => {
           </Col>
           <Col xs={24} sm={24} md={24} lg={24} xl={8}>
             <Form.Item
-              name="schedule_id"
-              label="Хуваарь сонгох"
+              name="schedule_hdr_id"
+              label="Хүргэх хуваарь сонгох"
               rules={[{ required: true, message: "Заавал сонгоно уу" }]}
             >
               <Select
@@ -330,7 +330,7 @@ const OrderInvoice = ({ order, getOrder }) => {
                 {scheduleList?.map((s) => {
                   return (
                     <Select.Option key={s.id} value={s.id}>
-                      {"Хүргэлт гарах өдөр: " + s.delivery_start_day}
+                      {"Гарах өдөр: " + s.delivery_start_day + " /" + s.hdr_date_str + "/"}
                     </Select.Option>
                   );
                 })}

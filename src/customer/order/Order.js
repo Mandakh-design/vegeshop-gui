@@ -110,29 +110,30 @@ const Order = () => {
                 items={[
                   {
                     title: "Хаяг, мэдээлэл",
-                    description: "2022-01-01 18:40:33",
+                    // description: "2022-01-01 18:40:33",
                   },
                   {
                     title: "Захиалах",
-                    description: "2022-01-01 18:40:33",
+                    // description: "2022-01-01 18:40:33",
                   },
                   {
                     title: "Нэхэмжлэх үүсгэх",
-                    description: "2022-01-01 18:40:33",
+                    // description: "2022-01-01 18:40:33",
                   },
                   {
                     title: "Төлбөр төлөх",
-                    description: "2022-01-01 18:40:33",
+                    // description: "2022-01-01 18:40:33",
                   },
                   {
                     title: "Баталгаажсан",
-                    description: "2022-01-01 18:40:33",
+                    // description: "2022-01-01 18:40:33",
                   },
                 ]}
               />
             </Col>
             <Col xs={24} sm={24} md={16} lg={18} xl={18}>
-              {step === 0 && (
+              <Row>
+              <Col span={24}>{step === 0 && (
                 <UserInfo order={orderDetail} getOrder={getOrderDetail} />
               )}
               {step === 1 && (
@@ -146,8 +147,14 @@ const Order = () => {
               )}
               {step === 4 && (
                 <OrderShow order={orderDetail} getOrder={getOrderDetail} />
-              )}
+              )}</Col>
+              <Col span={24}>
+
+              </Col>
+              
+              </Row>
             </Col>
+            
           </Row>
         </Col>
       </Row>
