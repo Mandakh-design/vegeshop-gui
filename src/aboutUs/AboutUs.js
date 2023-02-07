@@ -5,19 +5,6 @@ import Meta from "antd/es/card/Meta";
 const AboutUs = () => {
   React.useEffect(() => {}, []);
 
-  const imgStyle = {
-    position: "absolute",
-    inset: "0px",
-    boxSizing: "border-box",
-    padding: "0px",
-    border: "none",
-    margin: "auto",
-    minWidth: "100%",
-    maxWidth: "100%",
-    minHeight: "100%",
-    maxHeight: "100%",
-  };
-
   const [newsList, setNewsList] = useState([
     {
       title: "Boxed Water Partners With Rag & Bone To Tap Consumer Creativity",
