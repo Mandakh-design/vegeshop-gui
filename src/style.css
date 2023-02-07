@@ -1,3 +1,7 @@
 .ant-card-meta-title {
     margin: 0;
   }
+
+  .ant-card .ant-card-meta-title {
+  white-space: normal;
+}  
