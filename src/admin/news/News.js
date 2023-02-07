@@ -17,7 +17,7 @@ import {
 import { EyeOutlined } from "@ant-design/icons";
 import adminService from "../../services/adminService";
 import { moneyFormat, showErrorMsg } from "../../common/utils";
-import ProductEdit from "./ProductEdit";
+import NewsEdit from "./NewsEdit";
 
 const News = () => {
   const [form] = Form.useForm();
@@ -252,7 +252,7 @@ const News = () => {
           footer={null}
         >
           {productVisible && (
-            <ProductEdit
+            <NewsEdit
               productId={selectedProductId}
               category={selectedCategory}
               changeState={changeState}
