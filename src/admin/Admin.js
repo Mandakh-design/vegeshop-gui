@@ -29,6 +29,7 @@ const items = [
   getItem("Хэрэглэгч", "3", <TeamOutlined />),
   getItem("Хуваарь", "5", <EnvironmentOutlined />),
   getItem("Захиалга", "2", <UnorderedListOutlined />),
+  getItem("Мэдээ", "7", <UnorderedListOutlined />),
 ];
 const Admin = () => {
   const [collapsed, setCollapsed] = useState(false);
@@ -76,7 +77,7 @@ const Admin = () => {
             {selectedMenuKey === "3" && <Users />}
             {selectedMenuKey === "5" && <Schedule />}
             {selectedMenuKey === "2" && <AdminOrderList />}
-            {selectedMenuKey === "2" && <News />}
+            {selectedMenuKey === "7" && <News />}
             {selectedMenuKey === "4" && <>Бүтээгдэхүүн</>}
           </Col>
         </Content>
