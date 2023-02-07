@@ -13,6 +13,7 @@ import Product from "./product/Product";
 import Users from "./users/Users";
 import Schedule from "./schedule/Schedule";
 import AdminOrderList from "./userOrders/AdminOrderList";
+import News from "./news/News";
 const { Content, Footer, Sider } = Layout;
 function getItem(label, key, icon, children) {
   return {
@@ -75,6 +76,7 @@ const Admin = () => {
             {selectedMenuKey === "3" && <Users />}
             {selectedMenuKey === "5" && <Schedule />}
             {selectedMenuKey === "2" && <AdminOrderList />}
+            {selectedMenuKey === "2" && <News />}
             {selectedMenuKey === "4" && <>Бүтээгдэхүүн</>}
           </Col>
         </Content>
