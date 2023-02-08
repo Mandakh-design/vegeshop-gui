@@ -21,6 +21,7 @@ const AdminOrderList = () => {
   const [loading, setLoading] = useState(false);
   const [scheduleList, setScheduleList] = useState();
   const [orderList, setOrderList] = useState();
+  const [locationList, setLocationList] = useState();
 
   const columns = [
     {
@@ -79,7 +80,7 @@ const AdminOrderList = () => {
       dataIndex: "action",
       key: "action",
       render: (text, record) => {
-        if (record.status === 4)
+        if (record.status === 3)
           return (
             <Popconfirm
               title="Захиалга баталгаажуулахдаа итгэлтэй байна уу"
@@ -164,6 +165,10 @@ const AdminOrderList = () => {
       .finally(() => setLoading(false));
   };
   const exportOrder = () => {
+    if (!orderList || orderList.length === 0) {
+      message.warning("Жагсаалт хоосон байна!");
+      return;
+    }
     let newDate = new Date();
     let date = newDate.getDate();
     let month = newDate.getMonth() + 1;
@@ -189,15 +194,30 @@ const AdminOrderList = () => {
       .finally(() => setLoading(false));
   };
 
+  const getLocationList = () => {
+    adminService
+      .getLocationList()
+      .then((result) => {
+        if (result?.data?.data) setLocationList(result.data.data);
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
   const getScheduleList = () => {
     setLoading(true);
     adminService
       .getScheduleList()
       .then((result) => {
-        if (result?.data?.data) setScheduleList(result.data.data);
+        if (result?.data?.data) {
+          setScheduleList(result.data.data);
+          getLocationList();
+        }
       })
-      .catch((err) => showErrorMsg(err))
-      .finally(() => setLoading(false));
+      .catch((err) => {
+        showErrorMsg(err);
+        setLoading(false);
+      });
   };
 
   useEffect(() => {
@@ -216,7 +236,7 @@ const AdminOrderList = () => {
                   name="schedule_id"
                   rules={[{ required: true, message: "Заавал сонгоно уу" }]}
                 >
-                  <Select placeholder="Хуваарь сонгоно уу">
+                  <Select placeholder="Хуваарь сонгоно уу" allowClear>
                     {scheduleList?.map((s) => {
                       return (
                         <Select.Option key={s.id} value={s.id}>
@@ -227,7 +247,7 @@ const AdminOrderList = () => {
                   </Select>
                 </Form.Item>
               </Col>
-              <Col span={8}>
+              <Col span={12}>
                 <Form.Item
                   label="Төлөв"
                   name="status"
@@ -235,12 +255,35 @@ const AdminOrderList = () => {
                   rules={[{ required: true, message: "Заавал сонгоно уу" }]}
                 >
                   <Select placeholder="Төлөв сонгоно уу" onChange={form.submit}>
-                    <Select.Option key={1} value={4}>
+                    <Select.Option key={1} value={3}>
                       Хүргэлтэнд гарах захиалга
                     </Select.Option>
-                    <Select.Option key={2} value={6}>
+                    <Select.Option key={2} value={4}>
                       Баталгаажсан захиалга
                     </Select.Option>
+                  </Select>
+                </Form.Item>
+              </Col>
+              <Col span={16}>
+                <Form.Item label="Байршил" name="location_id">
+                  <Select
+                    placeholder="Байршил сонгоно уу"
+                    allowClear
+                    onChange={form.submit}
+                    showSearch
+                    filterOption={(input, option) =>
+                      option.children
+                        .toLowerCase()
+                        .indexOf(input.toLowerCase()) >= 0
+                    }
+                  >
+                    {locationList?.map((p) => {
+                      return (
+                        <Select.Option key={p.id} value={p.id}>
+                          {p.district + " " + p.khoroo + " " + p.name}
+                        </Select.Option>
+                      );
+                    })}
                   </Select>
                 </Form.Item>
               </Col>
