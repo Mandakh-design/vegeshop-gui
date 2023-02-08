@@ -106,16 +106,12 @@ const Order = () => {
                 <OrderInvoice />
               )}
               {step === 2 && (
-                <OrderPayment />
+                <OrderPayment onSuccess={()=>getOrderDetail()} />
               )}
               {step === 3 && (
                 <OrderShow order={order} getOrder={getOrderDetail} />
               )}
             </Col>
-              <Col span={24}>
-
-              </Col>
-              
               </Row>
             </Col>
             

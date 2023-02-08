@@ -6,7 +6,7 @@ import adminService from "../../services/adminService";
 import { moneyFormat, showErrorMsg } from "../../common/utils";
 import contextLogin from "../../main/contextLogin";
 import orderService from "../../services/orderService";
-const OrderPayment = ({  }) => {
+const OrderPayment = ({ onSuccess }) => {
   const { loggedUser } = React.useContext(contextLogin);
   const [loading, setLoading] = React.useState(false);
 
@@ -96,7 +96,7 @@ const OrderPayment = ({  }) => {
         <Col xs={24} sm={24} md={16} lg={16} xl={16}>
         {order.invoice_id && 
           <QpayInvoice order={order} onSuccess={()=>{
-            getOrderDetail();
+            onSuccess();
           }}/>
         }
         </Col>
