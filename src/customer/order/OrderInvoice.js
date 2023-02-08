@@ -25,13 +25,14 @@ import { moneyFormat, showErrorMsg } from "../../common/utils";
 import { useHistory } from "react-router-dom";
 import contextLogin from "../../main/contextLogin";
 
-const OrderInvoice = ({ order, getOrder }) => {
+const OrderInvoice = ({  }) => {
   let history = useHistory();
-  const { loggedUser } = React.useContext(contextLogin);
+  const { loggedUser, reload, setReload } = React.useContext(contextLogin);
   const [form] = Form.useForm();
   const [loading, setLoading] = React.useState(false);
   const [locationMapList, setLocationMapList] = React.useState();
   const [scheduleList, setScheduleList] = React.useState();
+  const [order, setOrder] = React.useState();
 
   const deleteProductFromOrder = (dtl_id, order_id) => {
     setLoading(true);
@@ -39,7 +40,7 @@ const OrderInvoice = ({ order, getOrder }) => {
       .deleteOrderDtl({ id: dtl_id, order_id: order_id })
       .then((result) => {
         if (result?.data) {
-          getOrder();
+          getOrderInvoiceInfo();
           message.success("Амжилттай устгагдлаа");
         }
       })
@@ -53,7 +54,7 @@ const OrderInvoice = ({ order, getOrder }) => {
     adminService
       .changeScheduleDetail({ id: id, type: type, count: count })
       .then((result) => {
-        if (result?.data) getOrder();
+        if (result?.data) getOrderInvoiceInfo();
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
@@ -182,6 +183,7 @@ const OrderInvoice = ({ order, getOrder }) => {
                           <InputNumber
                             value={pack.qty}
                             min={1}
+                            disabled={order?.status > 1}
                             onChange={(e) =>
                               changeScheduleDetail(pack.id, 1, e)
                             }
@@ -200,6 +202,7 @@ const OrderInvoice = ({ order, getOrder }) => {
                             marginTop: "1rem",
                             verticalAlign: "middle",
                           }}
+                          disabled={order?.status > 1}
                           title="Устгахдаа итгэлтэй байна уу?"
                           onConfirm={() =>
                             deleteProductFromOrder(pack.id, order.id)
@@ -218,25 +221,6 @@ const OrderInvoice = ({ order, getOrder }) => {
       </List.Item>
     );
   };
-
-  const getLocationMap = (e) => {
-    setLoading(true);
-    adminService
-      .getScheduleLocationList({ schedule_id: e })
-      .then((result) => {
-        if (result?.data?.data) {
-          setLocationMapList(result.data.data);
-          form.setFieldsValue({
-            location_map_id: result.data.data.find(
-              (m) => m.location_id === loggedUser.location_id
-            ).id,
-          });
-        }
-      })
-      .catch((err) => showErrorMsg(err))
-      .finally(() => setLoading(false));
-  };
-
   const getOrderInvoiceInfo = () => {
     setLoading(true);
     adminService
@@ -247,9 +231,10 @@ const OrderInvoice = ({ order, getOrder }) => {
           if (result?.data?.data) {
             setScheduleList(result.data.data.scheduleHdrList);
             setLocationMapList([result.data.data.location]);
+            setOrder(result.data.data.order)
             form.setFieldsValue({
               location_id: result.data.data.location.id,
-              schedule_id: order.schedule_id,
+              schedule_hdr_id: result.data.data.order.schedule_hdr_id,
             });
           }
         }
@@ -261,14 +246,18 @@ const OrderInvoice = ({ order, getOrder }) => {
   };
 
   const submit = (value) => {
+    if(order.total_amount < 1000){
+      message.warning("Захиалах барааны дүн хүрэлцэхгүй байна.")
+    }else {
     setLoading(true);
     adminService
-      .submitOrder(value)
+      .submitOrder({...value, order_id : order.id})
       .then((result) => {
-        if (result?.data) getOrder();
+        if (result?.data) setReload(reload + 1);
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
+    }
   };
 
   const returnOrderStep = (status) => {
@@ -276,7 +265,7 @@ const OrderInvoice = ({ order, getOrder }) => {
     adminService
       .changeOrderStep({ status: status })
       .then((result) => {
-        if (result?.data) getOrder();
+        if (result?.data) setReload(reload + 1);
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
@@ -288,7 +277,9 @@ const OrderInvoice = ({ order, getOrder }) => {
 
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
+
       <Form form={form} onFinish={submit} layout="vertical">
+        {order &&
         <Row gutter={[16, 16]}>
           <Col span={24}>
             <Alert
@@ -324,6 +315,7 @@ const OrderInvoice = ({ order, getOrder }) => {
               rules={[{ required: true, message: "Заавал сонгоно уу" }]}
             >
               <Select
+              disabled={order?.status > 1}
                 placeholder="Хуваарь сонгоно уу"
                 style={{ width: "100%" }}
               >
@@ -349,8 +341,14 @@ const OrderInvoice = ({ order, getOrder }) => {
             )}
           </Col>
           <Col span={24}>
+          <Space style={{float:"right"}}>
+                <h3>Нийт дүн: {moneyFormat(order.total_amount)}</h3>
+                <Button size="large" disabled={order?.status > 1} type="primary" onClick={form.submit}>
+                  Захиалга баталгаажуулах
+                </Button>
+              </Space>
             <Row justify="space-between">
-              <Button
+              {/* <Button
                 size="large"
                 type="primary"
                 ghost
@@ -360,16 +358,17 @@ const OrderInvoice = ({ order, getOrder }) => {
                 }}
               >
                 Буцах
-              </Button>
-              <Space>
+              </Button> */}
+              {/* <Space>
                 <h3>Нийт дүн: {moneyFormat(order.total_amount)}</h3>
-                <Button size="large" type="primary" onClick={form.submit}>
+                <Button size="large" disabled={order?.status > 1} type="primary" onClick={form.submit}>
                   Төлбөр төлөх
                 </Button>
-              </Space>
+              </Space> */}
             </Row>
           </Col>
         </Row>
+}
       </Form>
     </Spin>
   );

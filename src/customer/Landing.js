@@ -9,6 +9,7 @@ import adminService from "../services/adminService";
 import { moneyFormat, showErrorMsg } from "../common/utils";
 import { useHistory } from "react-router-dom";
 import contextLogin from "../main/contextLogin";
+import orderService from "../services/orderService";
 
 const Landing = () => {
   let history = useHistory();
@@ -19,13 +20,15 @@ const Landing = () => {
   const [productList, setProductList] = React.useState();
   const [packageList, setPackageList] = React.useState();
 
-  const getOrder = () => {
+  
+  const getOrderDetailCount = () => {
     setLoading(true);
-    adminService
-      .getOrderDetail({ status: 0 })
+    orderService
+      .getOrderDetailCount()
       .then((result) => {
-        if (result?.data?.data)
-          setOrderDtlCount(result.data.data[0].detailList.length);
+        if (result?.data) {
+          setOrderDtlCount(result.data.data);
+        }
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
@@ -41,7 +44,7 @@ const Landing = () => {
       .addProductToScheduleOrder(product)
       .then((result) => {
         if (result.data) {
-          getOrder();
+          getOrderDetailCount();
           message.success("Сагсанд нэмэгдлээ");
         }
       })

@@ -42,6 +42,9 @@ const getScheduleList = (data) =>
   axios.get(`/api/v1/getScheduleList`, { params: data });
 const getLocationList = (data) =>
   axios.get(`/api/v1/getLocation`, { params: data });
+
+  const getLocationAndOrder = (data) =>
+  axios.get(`/api/v1/getLocationAndOrder`, { params: data });
 const getDistrictList = (data) =>
   axios.get(`/api/v1/getDistrict`, { params: data });
 const getKhorooList = (data) =>
@@ -129,6 +132,7 @@ export default {
   deletePackageDtl,
   getScheduleList,
   getLocationList,
+  getLocationAndOrder,
   getDistrictList,
   getKhorooList,
   deleteSchedule,

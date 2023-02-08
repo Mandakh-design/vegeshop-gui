@@ -17,11 +17,16 @@ import { useHistory } from "react-router-dom";
 import { CloseOutlined } from "@ant-design/icons";
 import adminService from "../services/adminService";
 import { moneyFormat, showErrorMsg } from "../common/utils";
+import orderService from "../services/orderService";
+import contextLogin from "../main/contextLogin";
 
-const OrderDrawer = ({ getOrder, scheduleOrder, onClose }) => {
+const OrderDrawer = ({ onClose }) => {
   let history = useHistory();
-
+  const {
+    loggedUser,
+  } = React.useContext(contextLogin);
   const [loading, setLoading] = useState(false);
+  const [scheduleOrder, setScheduleOrder] = useState();
 
   const deleteProductFromOrder = (dtl_id, order_id) => {
     setLoading(true);
@@ -29,7 +34,7 @@ const OrderDrawer = ({ getOrder, scheduleOrder, onClose }) => {
       .deleteOrderDtl({ id: dtl_id, order_id: order_id })
       .then((result) => {
         if (result?.data) {
-          getOrder();
+          // getOrder();
           message.success("Амжилттай устгагдлаа");
         }
       })
@@ -62,11 +67,31 @@ const OrderDrawer = ({ getOrder, scheduleOrder, onClose }) => {
     adminService
       .changeScheduleDetail({ id: id, type: type })
       .then((result) => {
-        if (result?.data) getOrder();
+        if (result?.data) getOrderDetail();
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
   };
+
+  const getOrderDetail = () => {
+    setLoading(true);
+    console.log(loggedUser)
+    orderService
+      .getOrderDetail({ order_id : loggedUser.current_order_id})
+      .then((result) => {
+        if (result?.data) {
+          setScheduleOrder(result.data.data)
+        }
+      })
+      .catch((err) => {
+        showErrorMsg(err);
+      })
+      .finally(() => setLoading(false));
+  };
+
+  React.useEffect(() => {
+    getOrderDetail();
+  }, []);
 
   return (
     <Spin spinning={loading}>

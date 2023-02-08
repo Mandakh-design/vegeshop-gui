@@ -6,6 +6,7 @@ import OrderInvoice from "./OrderInvoice";
 import OrderPayment from "./OrderPayment";
 import OrderShow from "./OrderShow";
 import adminService from "../../services/adminService";
+import orderService from "../../services/orderService";
 import { useHistory } from "react-router-dom";
 import { showErrorMsg } from "../../common/utils";
 import UserInfo from "./UserInfo";
@@ -16,70 +17,32 @@ const Order = () => {
 
   let history = useHistory();
   const [loading, setLoading] = React.useState(false);
-  const [orderDetail, setOrderDetail] = React.useState();
+  const [order, setOrder] = React.useState();
   const [step, setStep] = React.useState();
 
-  const setOrderStep = (status, location_status) => {
-    if (status === 0 && location_status === false) {
-      setStep(0);
-      return;
-    }
-    if (status === 0 && location_status === true) {
-      setStep(1);
-      return;
-    }
-    if (status === 1) {
-      setStep(1);
-      return;
-    }
-    if (status === 2) {
-      setStep(2);
-      return;
-    }
-    if (status === 3) {
-      setStep(3);
-      return;
-    }
-    if (status === 4) {
-      setStep(4);
-      return;
-    }
-    if (status === 5) {
-      setStep(5);
-      return;
-    }
-  };
-
-  const getUserInfo = (status) => {
+  const getOrderDetail = () => {
     setLoading(true);
-    adminService
-      .getLoggedUser()
+    orderService
+      .getOrderDetail({order_id : loggedUser.current_order_id})
       .then((result) => {
-        if (result?.data?.data) {
-          setOrderStep(status, result.data.data.location_status);
-        }
-      })
-      .catch((err) => {
-        showErrorMsg(err);
-      })
-      .finally(() => setLoading(false));
-  };
-
-  const getOrderDetail = (order_id) => {
-    setLoading(true);
-    adminService
-      .getOrderDetail({order_id})
-      .then((result) => {
+        setLoading(false);
         if (result.data.data) {
-          setOrderDetail(result.data.data[0]);
-          getUserInfo(result.data.data[0].status);
-
+          setOrder(result.data.data);
+         
           let length = 0;
-          if (result.data.data[0].detailList?.length > 0)
-            length = result.data.data[0].detailList.length;
+          if (result.data.data.detailList?.length > 0)
+            length = result.data.data.detailList.length;
           setOrderDtlCount(length);
 
-          if (!result.data.data[0].detailList) {
+          if(loggedUser.location_status){
+            if(result.data.data.status == 0)
+              setStep(1)
+            else if(result.data.data.status == 1 || result.data.data.status == 2)
+              setStep(2)
+            else setStep(3)
+          }else setStep(0)
+
+          if (!result.data.data.detailList) {
             history.push("/");
             message.warning("Сагс хоосон байна!");
           }
@@ -94,10 +57,13 @@ const Order = () => {
   React.useEffect(() => {
     getOrderDetail();
   }, [loggedUser]);
-
+  const onChange = (value) => {
+    setStep(value);
+  };
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
       <Row justify="center">
+        {order &&
         <Col span={24}>
           <Row>
             <Col span={24}>
@@ -107,6 +73,7 @@ const Order = () => {
               <Steps
                 direction="vertical"
                 current={step}
+                onChange={onChange}
                 items={[
                   {
                     title: "Хаяг, мэдээлэл",
@@ -114,18 +81,16 @@ const Order = () => {
                   },
                   {
                     title: "Захиалах",
+                    disabled: !loggedUser.location_status
+                  },
+                  {
+                    title: "Баталгаажуулах",
+                    disabled: !loggedUser.location_status || order.status < 1
                     // description: "2022-01-01 18:40:33",
                   },
                   {
-                    title: "Нэхэмжлэх үүсгэх",
-                    // description: "2022-01-01 18:40:33",
-                  },
-                  {
-                    title: "Төлбөр төлөх",
-                    // description: "2022-01-01 18:40:33",
-                  },
-                  {
-                    title: "Баталгаажсан",
+                    title: "Захиалгын мэдээлэл",
+                    disabled: !loggedUser.location_status || order.status < 4
                     // description: "2022-01-01 18:40:33",
                   },
                 ]}
@@ -133,21 +98,20 @@ const Order = () => {
             </Col>
             <Col xs={24} sm={24} md={16} lg={18} xl={18}>
               <Row>
-              <Col span={24}>{step === 0 && (
-                <UserInfo order={orderDetail} getOrder={getOrderDetail} />
+              <Col span={24}>
+                {step === 0 && (
+                <UserInfo  />
               )}
-              {step === 1 && (
-                <OrderInvoice order={orderDetail} getOrder={getOrderDetail} />
+              {step === 1 && ( 
+                <OrderInvoice />
               )}
               {step === 2 && (
-                <OrderPayment order={orderDetail} getOrder={getOrderDetail} />
+                <OrderPayment />
               )}
               {step === 3 && (
-                <QpayInvoice order={orderDetail} getOrder={(oId=>getOrderDetail(oId))} />
+                <OrderShow order={order} getOrder={getOrderDetail} />
               )}
-              {step === 4 && (
-                <OrderShow order={orderDetail} getOrder={getOrderDetail} />
-              )}</Col>
+            </Col>
               <Col span={24}>
 
               </Col>
@@ -157,6 +121,7 @@ const Order = () => {
             
           </Row>
         </Col>
+}
       </Row>
     </Spin>
   );

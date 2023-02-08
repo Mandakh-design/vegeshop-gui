@@ -19,8 +19,10 @@ import { moneyFormat, showErrorMsg } from "../../common/utils";
 import { useHistory } from "react-router-dom";
 
 import adminService from "../../services/adminService";
+import contextLogin from "../../main/contextLogin"
 
-const OrderShow = ({ order, getOrder }) => {
+const OrderShow = ({ order }) => {
+  const { reload, setReload } = React.useContext(contextLogin);
   let history = useHistory();
   const [loading, setLoading] = React.useState(false);
   const [schedule, setSchedule] = React.useState();
@@ -35,7 +37,7 @@ const OrderShow = ({ order, getOrder }) => {
             "Амжилттай баталгаажлаа. Нүүр хуудас руу шилжүүлж байна."
           );
           setTimeout(() => {
-            getOrder();
+            setReload(reload + 1);
           }, 2000);
         }
       })
@@ -46,7 +48,7 @@ const OrderShow = ({ order, getOrder }) => {
   const getScheduleById = () => {
     setLoading(true);
     adminService
-      .getScheduleById({ schedule_id: order.schedule_id })
+      .getScheduleById({ schedule_hdr_id: order.schedule_hdr_id })
       .then((result) => {
         if (result?.data) {
           setSchedule(result.data.data);
@@ -203,7 +205,7 @@ const OrderShow = ({ order, getOrder }) => {
           <Col span={24}>
             <Descriptions bordered>
               <Descriptions.Item label="Захиалга хүргэх огноо">
-                {schedule.delivery_start_day}
+                {schedule.hdr_date_str}
               </Descriptions.Item>
               <Descriptions.Item label="Захиалга хүлээн авах">
                 <Popconfirm

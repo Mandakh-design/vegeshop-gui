@@ -22,6 +22,7 @@ import {
 } from "@ant-design/icons";
 import contextLogin from "./contextLogin";
 import adminService from "../services/adminService";
+import orderService from "../services/orderService";
 import { showErrorMsg } from "../common/utils";
 import OrderDrawer from "./OrderDrawer";
 
@@ -30,8 +31,7 @@ const MainHeader = ({ userLoading }) => {
     loggedUser,
     reload,
     setReload,
-    orderDtlCount,
-    setOrderDtlCount,
+    orderDtlCount, setOrderDtlCount,
     setLoggedUser,
   } = React.useContext(contextLogin);
   let history = useHistory();
@@ -39,26 +39,20 @@ const MainHeader = ({ userLoading }) => {
 
   const [open, setOpen] = React.useState(false);
   const [loading, setLoading] = useState(false);
-  const [scheduleOrder, setScheduleOrder] = useState();
   const showDrawer = () => {
     setOpen(true);
-    getOrder(1);
   };
   const onClose = () => {
     setOpen(false);
   };
 
-  const getOrder = () => {
+  const getOrderDetailCount = () => {
     setLoading(true);
-    adminService
-      .getOrderDetail({ status: 0 })
+    orderService
+      .getOrderDetailCount()
       .then((result) => {
-        if (result?.data?.data) {
-          let length = 0;
-          if (result.data.data[0].detailList?.length > 0)
-            length = result.data.data[0].detailList.length;
-          setOrderDtlCount(length);
-          setScheduleOrder(result.data.data[0]);
+        if (result?.data) {
+          setOrderDtlCount(result.data.data);
         }
       })
       .catch((err) => showErrorMsg(err))
@@ -66,8 +60,7 @@ const MainHeader = ({ userLoading }) => {
   };
 
   React.useEffect(() => {
-    if (loggedUser) getOrder();
-    else setOrderDtlCount();
+    if (loggedUser) getOrderDetailCount();
   }, [userLoading, loggedUser]);
 
   const userMenu = (
@@ -264,8 +257,8 @@ const MainHeader = ({ userLoading }) => {
         >
           {open && (
             <OrderDrawer
-              scheduleOrder={scheduleOrder}
-              getOrder={getOrder}
+              // scheduleOrder={scheduleOrder}
+              // getOrder={getOrder}
               onClose={onClose}
             />
           )}

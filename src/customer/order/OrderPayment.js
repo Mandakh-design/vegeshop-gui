@@ -5,26 +5,17 @@ import QpayInvoice from "./QpayInvoice";
 import adminService from "../../services/adminService";
 import { moneyFormat, showErrorMsg } from "../../common/utils";
 import contextLogin from "../../main/contextLogin";
-const OrderPayment = ({ order, getOrder }) => {
+import orderService from "../../services/orderService";
+const OrderPayment = ({  }) => {
   const { loggedUser } = React.useContext(contextLogin);
   const [loading, setLoading] = React.useState(false);
 
   const [placement, setPlacement] = React.useState("Qpay");
   const [qpayVisible, setQpayVisible] = React.useState(false);
+  const [order, setOrder] = React.useState();
 
   const placementChange = (e) => {
     setPlacement(e.target.value);
-  };
-
-  const returnOrderStep = (status) => {
-    setLoading(true);
-    adminService
-      .changeOrderStep({ status: status })
-      .then((result) => {
-        if (result?.data) getOrder();
-      })
-      .catch((err) => showErrorMsg(err))
-      .finally(() => setLoading(false));
   };
 
   const createInvoice = () => {
@@ -35,24 +26,43 @@ const OrderPayment = ({ order, getOrder }) => {
         amount: order.total_amount,
         description: `selba: ${loggedUser.phone}, ${order.total_amount}`,
         phone: loggedUser.phone,
-        nextStatus: 3,
+        nextStatus: 2,
       })
       .then((result) => {
         if (result?.data?.message == "success") {
           message.success("Нэхэмжлэх амжилттай үүслээ.");
-          getOrder();
+          getOrderDetail();
         }
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
   };
+  
+  const getOrderDetail = () => {
+    setLoading(true);
+    orderService
+      .getOrderDetail({order_id : loggedUser.current_order_id})
+      .then((result) => {
+        setLoading(false);
+        if (result.data.data) {
+          setOrder(result.data.data);
+        }
+      })
+      .catch((err) => {
+        showErrorMsg(err);
+        setLoading(false);
+      });
+  };
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {getOrderDetail()}, []);
 
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
-      <Row>
-        <Col span={24} style={{ marginBottom: "1rem", fontSize: "18px" }}>
+      {order &&
+      <Row justify="start">
+        <Col xs={24} sm={24} md={8} lg={8} xl={8}>
+          <Row>
+          <Col span={24} style={{ marginBottom: "1rem", fontSize: "18px" }}>
           Төлөх:<b>{" " + placement}</b>
         </Col>
         <Col span={24}>
@@ -70,29 +80,28 @@ const OrderPayment = ({ order, getOrder }) => {
           </Radio.Group>
         </Col>
         <Col span={24}>
-          <Row justify="end">
+          <Row >
             <h3>Нийт дүн: {moneyFormat(order.total_amount)}</h3>
           </Row>
         </Col>
         <Col span={24}>
-          <Row justify="space-between">
-            <Button
-              size="large"
-              type="primary"
-              ghost
-              icon={<LeftOutlined />}
-              onClick={() => {
-                returnOrderStep(1);
-              }}
-            >
-              Буцах
-            </Button>
-            <Button type="primary" size="large" onClick={() => createInvoice()}>
+        <Row >
+        <Button type="primary"  size="large" onClick={() => createInvoice()}>
               Нэхэмжлэх үүсгэх
             </Button>
+            </Row>
+        </Col>
           </Row>
         </Col>
+        <Col xs={24} sm={24} md={16} lg={16} xl={16}>
+        {order.invoice_id && 
+          <QpayInvoice order={order} onSuccess={()=>{
+            getOrderDetail();
+          }}/>
+        }
+        </Col>
       </Row>
+}
       <Modal
         width="50%"
         open={qpayVisible}
@@ -102,7 +111,9 @@ const OrderPayment = ({ order, getOrder }) => {
           setQpayVisible(false);
         }}
       >
-        {qpayVisible && placement === "Qpay" && <QpayInvoice order={order} />}
+        {qpayVisible && placement === "Qpay" && <QpayInvoice order={order} onSuccess={()=>{
+          getOrderDetail();
+        }}/>}
         {qpayVisible && placement !== "Qpay" && <>Not configed Payment</>}
       </Modal>
     </Spin>
