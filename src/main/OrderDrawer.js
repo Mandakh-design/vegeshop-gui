@@ -22,9 +22,7 @@ import contextLogin from "../main/contextLogin";
 
 const OrderDrawer = ({ onClose }) => {
   let history = useHistory();
-  const {
-    loggedUser,
-  } = React.useContext(contextLogin);
+  const { loggedUser } = React.useContext(contextLogin);
   const [loading, setLoading] = useState(false);
   const [scheduleOrder, setScheduleOrder] = useState();
 
@@ -34,14 +32,14 @@ const OrderDrawer = ({ onClose }) => {
       .deleteOrderDtl({ id: dtl_id, order_id: order_id })
       .then((result) => {
         if (result?.data) {
-          // getOrder();
+          getOrderDetail();
           message.success("Амжилттай устгагдлаа");
         }
       })
       .catch((err) => {
+        setLoading(false);
         showErrorMsg(err);
-      })
-      .finally(() => setLoading(false));
+      });
   };
 
   const getDrawerAvatar = (item) => {
@@ -75,12 +73,11 @@ const OrderDrawer = ({ onClose }) => {
 
   const getOrderDetail = () => {
     setLoading(true);
-    console.log(loggedUser)
     orderService
-      .getOrderDetail({ order_id : loggedUser.current_order_id})
+      .getOrderDetail({ order_id: loggedUser.current_order_id })
       .then((result) => {
         if (result?.data) {
-          setScheduleOrder(result.data.data)
+          setScheduleOrder(result.data.data);
         }
       })
       .catch((err) => {
@@ -95,7 +92,7 @@ const OrderDrawer = ({ onClose }) => {
 
   return (
     <Spin spinning={loading}>
-      {scheduleOrder?.detailList ? (
+      {scheduleOrder?.detailList && scheduleOrder?.detailList.length > 0 ? (
         <Row>
           <Col
             span={24}

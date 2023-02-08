@@ -20,7 +20,6 @@ const Landing = () => {
   const [productList, setProductList] = React.useState();
   const [packageList, setPackageList] = React.useState();
 
-  
   const getOrderDetailCount = () => {
     setLoading(true);
     orderService
@@ -159,15 +158,10 @@ const Landing = () => {
                     title={item.name}
                     description={
                       <div style={{ marginBottom: "1rem" }}>
-                        {item.type === 1 ? (
+                        {item.type === 1 && (
                           <span>
                             <InboxOutlined />
                             {" " + item.description}
-                          </span>
-                        ) : (
-                          <span>
-                            <FolderOpenOutlined />
-                            {" Багц бүтээгдэхүүн"}
                           </span>
                         )}
                       </div>

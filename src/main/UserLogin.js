@@ -88,7 +88,7 @@ const AppLogin = () => {
                   />
                 </Form.Item>
               </Col>
-              <Col xs={24} sm={18} md={18} lg={18} xl={18} xxl={18}>
+              <Col xs={24} sm={18} md={18} lg={18} xl={18} xxl={17}>
                 <Form.Item
                   label="Нэг удаагийн нууц үг"
                   name="password"
@@ -105,7 +105,7 @@ const AppLogin = () => {
                   />
                 </Form.Item>
               </Col>
-              <Col xs={24} sm={6} md={6} lg={6} xl={6} xxl={6}>
+              <Col xs={24} sm={6} md={6} lg={6} xl={6} xxl={7}>
                 <Form.Item label=" ">
                   <Button
                     type="primary"

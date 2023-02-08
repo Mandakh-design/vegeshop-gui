@@ -31,7 +31,8 @@ const MainHeader = ({ userLoading }) => {
     loggedUser,
     reload,
     setReload,
-    orderDtlCount, setOrderDtlCount,
+    orderDtlCount,
+    setOrderDtlCount,
     setLoggedUser,
   } = React.useContext(contextLogin);
   let history = useHistory();
@@ -187,30 +188,34 @@ const MainHeader = ({ userLoading }) => {
                   {loggedUser.role}
                 </Button>
               )}
-              <Col xs={0} sm={1} md={1} lg={1} xl={1} xxl={1}>
-                <Badge count={orderDtlCount}>
-                  <Button
-                    shape="round"
-                    type="primary"
-                    ghost
-                    icon={<ShoppingCartOutlined />}
-                    onClick={showDrawer}
-                  >
-                    Сагс
-                  </Button>
-                </Badge>
-              </Col>
-              <Col xs={1} sm={0} md={0} lg={0} xl={0} xxl={0}>
-                <Badge count={orderDtlCount}>
-                  <Button
-                    shape="round"
-                    type="primary"
-                    ghost
-                    icon={<ShoppingCartOutlined />}
-                    onClick={showDrawer}
-                  />
-                </Badge>
-              </Col>
+              {loggedUser && (
+                <Col xs={0} sm={1} md={1} lg={1} xl={1} xxl={1}>
+                  <Badge count={orderDtlCount}>
+                    <Button
+                      shape="round"
+                      type="primary"
+                      ghost
+                      icon={<ShoppingCartOutlined />}
+                      onClick={showDrawer}
+                    >
+                      Сагс
+                    </Button>
+                  </Badge>
+                </Col>
+              )}
+              {loggedUser && (
+                <Col xs={1} sm={0} md={0} lg={0} xl={0} xxl={0}>
+                  <Badge count={orderDtlCount}>
+                    <Button
+                      shape="round"
+                      type="primary"
+                      ghost
+                      icon={<ShoppingCartOutlined />}
+                      onClick={showDrawer}
+                    />
+                  </Badge>
+                </Col>
+              )}
               {!loggedUser && (
                 <Col>
                   <Button
