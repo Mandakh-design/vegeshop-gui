@@ -43,7 +43,7 @@ const getScheduleList = (data) =>
 const getLocationList = (data) =>
   axios.get(`/api/v1/getLocation`, { params: data });
 
-  const getLocationAndOrder = (data) =>
+const getLocationAndOrder = (data) =>
   axios.get(`/api/v1/getLocationAndOrder`, { params: data });
 const getDistrictList = (data) =>
   axios.get(`/api/v1/getDistrict`, { params: data });
@@ -96,6 +96,12 @@ const getInvoiceQpay = (inv_id) =>
 const orderConfirmation = (data) =>
   axios.post(`/api/v1/orderConfirmation`, data);
 const deleteNews = (data) => axios.post(`/api/v1/deleteNews`, data);
+const getNewsDetailListById = (data) =>
+  axios.get(`/api/v1/getNewsDetailListById`, { params: data });
+const saveNewsDetail = (data) => axios.post(`/api/v1/saveNewsDetail`, data);
+const deleteNewsDetail = (data) => axios.post(`/api/v1/deleteNewsDetail`, data);
+const saveNewsDetailOrder = (data) =>
+  axios.post(`/api/v1/saveNewsDetailOrder`, data);
 
 const config = {
   headers: {
@@ -157,6 +163,10 @@ export default {
   changeOrderStep,
   uploadImages,
   saveProductDetail,
+  getNewsDetailListById,
+  saveNewsDetail,
+  deleteNewsDetail,
+  saveNewsDetailOrder,
   deleteProductDetail,
   getProductDetailListById,
   saveProductDetailOrder,

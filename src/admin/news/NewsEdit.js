@@ -4,6 +4,7 @@ import { Button, Col, Form, Input, message, Row, Spin } from "antd";
 import adminService from "../../services/adminService";
 import FileUploadAndSave from "../../controls/FileUploadAndSave";
 import { showErrorMsg } from "../../common/utils";
+import NewsDetailList from "./NewsDetailList";
 
 const NewsEdit = ({ newsId, onClose, changeState }) => {
   const [form] = Form.useForm();
@@ -98,11 +99,11 @@ const NewsEdit = ({ newsId, onClose, changeState }) => {
               Хадгалах
             </Button>
           </Col>
-          {/* {newsId && (
+          {newsId && (
             <Col span={24}>
               <NewsDetailList newsId={newsId} />
             </Col>
-          )} */}
+          )}
         </Row>
       </Form>
     </Spin>

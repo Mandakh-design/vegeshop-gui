@@ -17,7 +17,7 @@ import {
 } from "antd";
 import adminService from "../../services/adminService";
 import FileUploadAndSave from "../../controls/FileUploadAndSave";
-import { renderDateNoSec, showErrorMsg } from "../../common/utils";
+import { showErrorMsg } from "../../common/utils";
 import ChangeOrderTable from "../../common/ChangeOrderTable";
 
 const NewsDetailList = ({ newsId, onClose, changeState }) => {
@@ -158,7 +158,6 @@ const NewsDetailList = ({ newsId, onClose, changeState }) => {
         .then((result) => {
           if (result.data.data) {
             setDetailList(result.data.data);
-            form.setFieldsValue(result.data.data);
           }
         })
         .catch((err) => message.warning(err))
@@ -167,7 +166,7 @@ const NewsDetailList = ({ newsId, onClose, changeState }) => {
   };
 
   React.useEffect(() => {
-    // getNewsDetailList();
+    getNewsDetailList();
   }, [newsId, changeState]);
 
   return (
@@ -216,7 +215,7 @@ const NewsDetailList = ({ newsId, onClose, changeState }) => {
         </Col>
       </Row>
       <Modal
-        title="Барааны дэлгэрэнгүй"
+        title="Мэдээний дэлгэрэнгүй"
         open={newsDetailVisible}
         onCancel={() => {
           setNewsDetailVisible(false);
@@ -248,16 +247,16 @@ const NewsDetailList = ({ newsId, onClose, changeState }) => {
                     <Input.TextArea placeholder="Тайлбар оруулна уу" />
                   </Form.Item>
                 </Col>
-
                 <Col span={12}>
                   <Form.Item
                     label="Төрөл"
                     name="type"
-                    rules={[{ required: true, message: "Заавал сонгоно уу" }]}
+                    // rules={[{ required: true, message: "Заавал сонгоно уу" }]}
                   >
                     <Select
                       placeholder="Төрөл сонгоно уу"
                       onChange={(e) => setSelectedType(e)}
+                      allowClear
                     >
                       <Select.Option value={1} key={1}>
                         Бичвэр
