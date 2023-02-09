@@ -18,10 +18,10 @@ import {
   ShoppingCartOutlined,
   UserOutlined,
   LoadingOutlined,
+  QuestionCircleOutlined,
   CloseOutlined,
 } from "@ant-design/icons";
 import contextLogin from "./contextLogin";
-import adminService from "../services/adminService";
 import orderService from "../services/orderService";
 import { showErrorMsg } from "../common/utils";
 import OrderDrawer from "./OrderDrawer";
@@ -127,7 +127,7 @@ const MainHeader = ({ userLoading }) => {
   return (
     <Spin spinning={loading}>
       <Row justify="space-between">
-        <Col xs={0} sm={8} md={6} lg={6} xl={6} xxl={7}>
+        <Col xs={0} sm={0} md={6} lg={6} xl={6} xxl={7}>
           <Space>
             <img
               role="presentation"
@@ -150,7 +150,7 @@ const MainHeader = ({ userLoading }) => {
             </Typography.Text>
           </Space>
         </Col>
-        <Col xs={2} sm={0} md={0} lg={0} xl={0} xxl={0}>
+        <Col xs={2} sm={2} md={0} lg={0} xl={0} xxl={0}>
           <img
             role="presentation"
             onClick={() => {
@@ -168,13 +168,24 @@ const MainHeader = ({ userLoading }) => {
           )}
           {!userLoading && (
             <Space size="small">
-              <Button
-                type="link"
-                style={{ color: "green" }}
-                onClick={() => history.push("/about")}
-              >
-                Бидний тухай
-              </Button>
+              <Col xs={0} sm={2} md={1} lg={1} xl={1} xxl={1}>
+                <Button
+                  type="link"
+                  style={{ color: "green" }}
+                  onClick={() => history.push("/about")}
+                  icon={<QuestionCircleOutlined />}
+                >
+                  Бидний тухай
+                </Button>
+              </Col>
+              <Col xs={1} sm={0} md={0} lg={0} xl={0} xxl={0}>
+                <Button
+                  type="link"
+                  style={{ color: "green" }}
+                  onClick={() => history.push("/about")}
+                  icon={<QuestionCircleOutlined />}
+                />
+              </Col>
               {loggedUser?.role && (
                 <Button
                   type="link"
