@@ -98,7 +98,7 @@ const NewsDetail = () => {
               {newsDtlList.map((d) => {
                 return (
                   <Col span={24} key={d.id}>
-                    <Card>
+                    <Card hoverable>
                       <Row justify="space-between" gutter={[16, 16]}>
                         <Col
                           xs={24}
