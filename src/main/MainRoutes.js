@@ -54,6 +54,13 @@ const MainRoutes = () => {
               </Col>
             </Row>
           </Route>
+          <Route exact path="/about">
+            <Row>
+              <Col span={24}>
+                <AboutUs />
+              </Col>
+            </Row>
+          </Route>
           <Route exact path="/orderList">
             <Row>
               <Col span={24}>
