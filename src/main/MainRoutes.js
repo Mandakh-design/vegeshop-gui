@@ -35,13 +35,6 @@ const MainRoutes = () => {
               </Col>
             </Row>
           </Route>
-          <Route exact path="/about">
-            <Row>
-              <Col span={24}>
-                <AboutUs />
-              </Col>
-            </Row>
-          </Route>
           {loggedUser.role === "admin" && (
             <Route exact path="/admin">
               <Admin />
@@ -96,6 +89,13 @@ const MainRoutes = () => {
           <Row style={{ padding: "10px 15px 0px 15px" }}>
             <Col span={24}>
               <UserLogin />
+            </Col>
+          </Row>
+        </Route>
+        <Route exact path="/about">
+          <Row>
+            <Col span={24}>
+              <AboutUs />
             </Col>
           </Row>
         </Route>
