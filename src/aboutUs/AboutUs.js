@@ -3,8 +3,10 @@ import { Card, Col, Divider, Row, Spin } from "antd";
 import Meta from "antd/es/card/Meta";
 import adminService from "../services/adminService";
 import { showErrorMsg } from "../common/utils";
+import { useHistory } from "react-router-dom";
 
 const AboutUs = () => {
+  let history = useHistory();
   const [loading, setLoading] = useState(false);
   const [newsList, setNewsList] = useState();
 
@@ -41,6 +43,7 @@ const AboutUs = () => {
                 <Col key={index} xs={24} sm={24} md={8} lg={8} xl={8}>
                   <Card
                     hoverable
+                    onClick={() => history.push(`/newsDetail/${n.id}`)}
                     cover={
                       <img
                         alt="example"
