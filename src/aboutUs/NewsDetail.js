@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Col, Row, Spin } from "antd";
+import { Card, Col, Divider, Row, Spin } from "antd";
 import adminService from "../services/adminService";
-import { showErrorMsg } from "../common/utils";
+import { renderDateNoSec, showErrorMsg } from "../common/utils";
 import { useParams } from "react-router-dom";
 
 const NewsDetail = () => {
@@ -43,7 +43,7 @@ const NewsDetail = () => {
 
   return (
     <Spin spinning={loading}>
-      <Row justify="center">
+      <Row justify="center" gutter={[0, 16]}>
         <Col xs={24} sm={23} md={23} lg={22} xl={22} xxl={20}>
           {news && (
             <Row justify="space-between" gutter={[16, 16]}>
@@ -73,13 +73,75 @@ const NewsDetail = () => {
                   {news.description}
                 </Col>
               </Col>
-              <Col xs={24} sm={24} md={24} lg={12} xl={11} xxl={10}>
+              <Col
+                xs={24}
+                sm={24}
+                md={22}
+                lg={12}
+                xl={11}
+                xxl={10}
+                style={{ alignItems: "center" }}
+              >
                 <img
                   alt="example"
                   width="100%"
                   src={`${process.env.REACT_APP_SERVICE_URL}/images/${news.filename}`}
                 />
               </Col>
+            </Row>
+          )}
+        </Col>
+        <Divider>Дэлгэрэнгүй мэдээлэл</Divider>
+        <Col xs={24} sm={23} md={23} lg={22} xl={22} xxl={20}>
+          {newsDtlList && (
+            <Row gutter={[16, 16]}>
+              {newsDtlList.map((d) => {
+                return (
+                  <Col span={24} key={d.id}>
+                    <Card>
+                      <Row justify="space-between" gutter={[16, 16]}>
+                        <Col
+                          xs={24}
+                          sm={14}
+                          md={14}
+                          lg={17}
+                          xl={18}
+                          xxl={20}
+                          style={{
+                            fontSize: "20px",
+                            alignSelf: "center",
+                            fontStyle: "inherit",
+                            fontWeight: "bold",
+                          }}
+                        >
+                          <span>{d.name}</span>
+                          <Col
+                            style={{
+                              fontWeight: "lighter",
+                              color: "grey",
+                            }}
+                          >
+                            {d.description}
+                          </Col>
+                        </Col>
+                        <Col xs={24} sm={10} md={10} lg={7} xl={6} xxl={4}>
+                          {d.type === 1 && <span>{d.value_str}</span>}
+                          {d.type === 2 && (
+                            <span>{renderDateNoSec(d.value_date)}</span>
+                          )}
+                          {d.type === 3 && (
+                            <img
+                              alt="example"
+                              width="100%"
+                              src={`${process.env.REACT_APP_SERVICE_URL}/images/${d.filename}`}
+                            />
+                          )}
+                        </Col>
+                      </Row>
+                    </Card>
+                  </Col>
+                );
+              })}
             </Row>
           )}
         </Col>
