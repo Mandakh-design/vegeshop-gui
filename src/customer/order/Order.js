@@ -29,10 +29,10 @@ const Order = () => {
         setLoading(false);
         if (result.data.data) {
           setOrder(result.data.data);
-          let length = 0;
-          if (result.data.data.detailList?.length > 0)
-            length = result.data.data.detailList.length;
-          setOrderDtlCount(length);
+          if (result.data.data.detailList?.length > 0 && result.data.data.status < 2 && !result.data.data.invoice_id){
+            const length = result.data.data.detailList.length;
+            setOrderDtlCount(length);
+          }
 
           if (loggedUser.location_status) {
             if (result.data.data.status == 0) setStep(1);
@@ -101,7 +101,8 @@ const Order = () => {
                     {step === 2 && (
                       <OrderPayment
                         onSuccess={() => {
-                          setReload(reload + 1);
+                        
+                          window.location.reload();
                         }}
                         order_id={id}
                       />
