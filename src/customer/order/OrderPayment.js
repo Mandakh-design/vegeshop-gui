@@ -1,6 +1,6 @@
-import { Col, Row, Spin, Button, Radio, Modal, message } from "antd";
+import { Col, Row, Spin, Button, Radio, Modal, message, Tooltip } from "antd";
 import React from "react";
-import { LoadingOutlined } from "@ant-design/icons";
+import { LoadingOutlined, CheckOutlined } from "@ant-design/icons";
 import QpayInvoice from "./QpayInvoice";
 import adminService from "../../services/adminService";
 import { moneyFormat, showErrorMsg } from "../../common/utils";
@@ -61,7 +61,7 @@ const OrderPayment = ({ onSuccess, order_id }) => {
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
       {order && (
-        <Row justify="start">
+        <Row justify="space-between">
           <Col xs={24} sm={24} md={8} lg={8} xl={8}>
             <Row>
               <Col span={24} style={{ marginBottom: "1rem", fontSize: "18px" }}>
@@ -88,27 +88,49 @@ const OrderPayment = ({ onSuccess, order_id }) => {
               </Col>
               <Col span={24}>
                 <Row>
-                  <Button
-                    type="primary"
-                    size="large"
-                    onClick={() => createInvoice()}
+                  <Tooltip
+                    title={order.status > 2 ? "Төлбөр төлөгдсөн байна" : ""}
                   >
-                    Нэхэмжлэх үүсгэх
-                  </Button>
+                    <Button
+                      type="primary"
+                      size="large"
+                      disabled={order.status > 2}
+                      onClick={() => createInvoice()}
+                    >
+                      Нэхэмжлэх үүсгэх
+                    </Button>
+                  </Tooltip>
                 </Row>
               </Col>
             </Row>
           </Col>
-          <Col xs={24} sm={24} md={16} lg={16} xl={16}>
-            {order.invoice_id && (
+          {order.invoice_id && order.status < 3 && (
+            <Col xs={24} sm={24} md={16} lg={16} xl={16}>
               <QpayInvoice
                 order={order}
                 onSuccess={() => {
                   onSuccess();
                 }}
               />
-            )}
-          </Col>
+            </Col>
+          )}
+          {order.status >= 3 && (
+            <Col
+              xs={24}
+              sm={24}
+              md={16}
+              lg={16}
+              xl={16}
+              style={{
+                textAlign: "center",
+                fontSize: "10rem",
+                color: "#17a34a",
+                alignSelf: "center",
+              }}
+            >
+              <CheckOutlined />
+            </Col>
+          )}
         </Row>
       )}
       <Modal

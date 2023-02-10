@@ -35,12 +35,7 @@ const Order = () => {
 
           if (loggedUser.location_status) {
             if (result.data.data.status == 0) setStep(1);
-            else if (
-              result.data.data.status == 1 ||
-              result.data.data.status == 2
-            )
-              setStep(2);
-            else setStep(3);
+            else setStep(2);
           } else setStep(0);
 
           if (!result.data.data.detailList) {
@@ -89,11 +84,11 @@ const Order = () => {
                       disabled: !loggedUser.location_status || order.status < 1,
                       // description: "2022-01-01 18:40:33",
                     },
-                    {
-                      title: "Захиалгын мэдээлэл",
-                      disabled: !loggedUser.location_status || order.status < 4,
-                      // description: "2022-01-01 18:40:33",
-                    },
+                    // {
+                    //   title: "Захиалгын мэдээлэл",
+                    //   disabled: !loggedUser.location_status || order.status < 4,
+                    //   // description: "2022-01-01 18:40:33",
+                    // },
                   ]}
                 />
               </Col>

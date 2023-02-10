@@ -1,4 +1,14 @@
-import { Spin, Col, Row, QRCode, Button, Popconfirm, message, Card, List } from "antd";
+import {
+  Spin,
+  Col,
+  Row,
+  QRCode,
+  Button,
+  Popconfirm,
+  message,
+  Card,
+  List,
+} from "antd";
 import React from "react";
 import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
 import adminService from "../../services/adminService";
@@ -30,24 +40,24 @@ const QpayInvoice = ({ order, onSuccess }) => {
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
   };
- 
 
   React.useEffect(() => {}, []);
 
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
-      <Row justify="center" gutter={[16,16]}>
+      <Row justify="center" gutter={[16, 16]}>
         <Col span={24}>
-          <Row justify="center" gutter={[16,16]}>
+          <Row justify="center" gutter={[16, 16]}>
             <Col span={24}>
-            <QRCode value={order?.qr_text} />
+              <QRCode value={order?.qr_text} />
             </Col>
             <Col span={24}>
-            <Button
+              <Button
                 icon={<ReloadOutlined />}
                 type="primary"
                 ghost
                 size="large"
+                disabled={order.status > 2}
                 onClick={() => checkInvoiceQpay()}
               >
                 Төлөлт шалгах
@@ -55,26 +65,38 @@ const QpayInvoice = ({ order, onSuccess }) => {
             </Col>
           </Row>
         </Col>
-        {order?.invoice_urls && order?.invoice_urls.length > 0 && 
-       <Col span={24}>
-        <List
-    grid={{
-      gutter: 0,
-      xs: 2,
-      sm: 2,
-      md: 4,
-      lg: 4,
-      xl: 5,
-      xxl: 6,
-    }}
-    dataSource={order.invoice_urls}
-    renderItem={(item) => (
-      <List.Item>
-        <Card title={item.description} onClick={()=>{ window.open(item.link); }}><img style={{width:"100%"}} alt="example" src={item.logo} /></Card>
-      </List.Item>
-    )}
-  />
-        </Col>}
+        {order?.invoice_urls && order?.invoice_urls.length > 0 && (
+          <Col span={24}>
+            <List
+              grid={{
+                gutter: 0,
+                xs: 2,
+                sm: 2,
+                md: 4,
+                lg: 4,
+                xl: 5,
+                xxl: 6,
+              }}
+              dataSource={order.invoice_urls}
+              renderItem={(item) => (
+                <List.Item>
+                  <Card
+                    title={item.description}
+                    onClick={() => {
+                      window.open(item.link);
+                    }}
+                  >
+                    <img
+                      style={{ width: "100%" }}
+                      alt="example"
+                      src={item.logo}
+                    />
+                  </Card>
+                </List.Item>
+              )}
+            />
+          </Col>
+        )}
       </Row>
     </Spin>
   );
