@@ -11,7 +11,8 @@ import { showErrorMsg } from "../../common/utils";
 import UserInfo from "./UserInfo";
 
 const Order = () => {
-  const { loggedUser, setOrderDtlCount } = React.useContext(contextLogin);
+  const { loggedUser, setOrderDtlCount, reload, setReload } =
+    React.useContext(contextLogin);
 
   const { id } = useParams();
   let history = useHistory();
@@ -99,7 +100,9 @@ const Order = () => {
                     {step === 1 && <OrderInvoice order_id={id} />}
                     {step === 2 && (
                       <OrderPayment
-                        onSuccess={() => getOrderDetail()}
+                        onSuccess={() => {
+                          setReload(reload + 1);
+                        }}
                         order_id={id}
                       />
                     )}

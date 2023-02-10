@@ -11,7 +11,6 @@ const OrderPayment = ({ onSuccess, order_id }) => {
   const [loading, setLoading] = React.useState(false);
 
   const [placement, setPlacement] = React.useState("Qpay");
-  const [qpayVisible, setQpayVisible] = React.useState(false);
   const [order, setOrder] = React.useState();
 
   const placementChange = (e) => {
@@ -56,7 +55,7 @@ const OrderPayment = ({ onSuccess, order_id }) => {
 
   React.useEffect(() => {
     getOrderDetail();
-  }, [order_id]);
+  }, [order_id, loggedUser]);
 
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
@@ -133,25 +132,6 @@ const OrderPayment = ({ onSuccess, order_id }) => {
           )}
         </Row>
       )}
-      <Modal
-        width="50%"
-        open={qpayVisible}
-        title={"Төлбөр төлөх"}
-        footer={null}
-        onCancel={() => {
-          setQpayVisible(false);
-        }}
-      >
-        {qpayVisible && placement === "Qpay" && (
-          <QpayInvoice
-            order={order}
-            onSuccess={() => {
-              getOrderDetail();
-            }}
-          />
-        )}
-        {qpayVisible && placement !== "Qpay" && <>Not configed Payment</>}
-      </Modal>
     </Spin>
   );
 };

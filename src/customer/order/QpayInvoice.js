@@ -8,11 +8,16 @@ import {
   message,
   Card,
   List,
+  Space,
 } from "antd";
 import React from "react";
-import { LoadingOutlined, ReloadOutlined } from "@ant-design/icons";
+import {
+  LoadingOutlined,
+  ReloadOutlined,
+  CloseOutlined,
+} from "@ant-design/icons";
 import adminService from "../../services/adminService";
-import { moneyFormat, showErrorMsg } from "../../common/utils";
+import { showErrorMsg } from "../../common/utils";
 
 const QpayInvoice = ({ order, onSuccess }) => {
   const [loading, setLoading] = React.useState(false);
@@ -41,7 +46,18 @@ const QpayInvoice = ({ order, onSuccess }) => {
       .finally(() => setLoading(false));
   };
 
-  React.useEffect(() => {}, []);
+  const cancelOrder = () => {
+    setLoading(true);
+    adminService
+      .cancelScheduleOrder({ order_id: order.id })
+      .then((result) => {
+        if (result?.data) onSuccess();
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
+  React.useEffect(() => {}, [order.status]);
 
   return (
     <Spin indicator={<LoadingOutlined />} spinning={loading}>
@@ -52,16 +68,26 @@ const QpayInvoice = ({ order, onSuccess }) => {
               <QRCode value={order?.qr_text} />
             </Col>
             <Col span={24}>
-              <Button
-                icon={<ReloadOutlined />}
-                type="primary"
-                ghost
-                size="large"
-                disabled={order.status > 2}
-                onClick={() => checkInvoiceQpay()}
-              >
-                Төлөлт шалгах
-              </Button>
+              <Space>
+                <Button
+                  icon={<ReloadOutlined />}
+                  type="primary"
+                  ghost
+                  size="large"
+                  disabled={order.status > 2}
+                  onClick={() => checkInvoiceQpay()}
+                >
+                  Төлөлт шалгах
+                </Button>
+                <Popconfirm
+                  onConfirm={cancelOrder}
+                  title="Цуцлахдаа итгэлтэй байна уу?"
+                >
+                  <Button icon={<CloseOutlined />} danger size="large">
+                    Цуцлах
+                  </Button>
+                </Popconfirm>
+              </Space>
             </Col>
           </Row>
         </Col>

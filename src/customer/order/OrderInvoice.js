@@ -177,7 +177,7 @@ const OrderInvoice = ({ order_id }) => {
                           <InputNumber
                             value={pack.qty}
                             min={1}
-                            disabled={order?.status > 1}
+                            disabled={order?.status > 1 && order?.invoice_id}
                             onChange={(e) =>
                               changeScheduleDetail(pack.id, 1, e)
                             }
@@ -196,11 +196,15 @@ const OrderInvoice = ({ order_id }) => {
                             marginTop: "1rem",
                             verticalAlign: "middle",
                           }}
-                          disabled={order?.status > 1}
+                          disabled={order?.status > 1 && order?.invoice_id}
                           title="Устгахдаа итгэлтэй байна уу?"
                           onConfirm={() => deleteProductFromOrder(pack.id)}
                         >
-                          <Button disabled={order?.status > 1} icon={<DeleteOutlined />} danger />
+                          <Button
+                            disabled={order?.status > 1 && order?.invoice_id}
+                            icon={<DeleteOutlined />}
+                            danger
+                          />
                         </Popconfirm>
                       </Row>
                     </Col>
@@ -306,7 +310,7 @@ const OrderInvoice = ({ order_id }) => {
                 rules={[{ required: true, message: "Заавал сонгоно уу" }]}
               >
                 <Select
-                  disabled={order?.status > 1}
+                  disabled={order?.status > 1 && order?.invoice_id}
                   placeholder="Хуваарь сонгоно уу"
                   style={{ width: "100%" }}
                 >
@@ -340,32 +344,13 @@ const OrderInvoice = ({ order_id }) => {
                 <h3>Нийт дүн: {moneyFormat(order.total_amount)}</h3>
                 <Button
                   size="large"
-                  disabled={order?.status > 1}
+                  disabled={order?.status > 1 && order?.invoice_id}
                   type="primary"
                   onClick={form.submit}
                 >
                   Захиалга баталгаажуулах
                 </Button>
               </Space>
-              <Row justify="space-between">
-                {/* <Button
-                size="large"
-                type="primary"
-                ghost
-                icon={<LeftOutlined />}
-                onClick={() => {
-                  returnOrderStep(0);
-                }}
-              >
-                Буцах
-              </Button> */}
-                {/* <Space>
-                <h3>Нийт дүн: {moneyFormat(order.total_amount)}</h3>
-                <Button size="large" disabled={order?.status > 1} type="primary" onClick={form.submit}>
-                  Төлбөр төлөх
-                </Button>
-              </Space> */}
-              </Row>
             </Col>
           </Row>
         )}
