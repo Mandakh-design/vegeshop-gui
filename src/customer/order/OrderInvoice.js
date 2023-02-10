@@ -200,7 +200,7 @@ const OrderInvoice = ({ order_id }) => {
                           title="Устгахдаа итгэлтэй байна уу?"
                           onConfirm={() => deleteProductFromOrder(pack.id)}
                         >
-                          <Button icon={<DeleteOutlined />} danger />
+                          <Button disabled={order?.status > 1} icon={<DeleteOutlined />} danger />
                         </Popconfirm>
                       </Row>
                     </Col>
