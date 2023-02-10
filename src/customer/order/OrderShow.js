@@ -1,5 +1,4 @@
 import {
-  Tag,
   Col,
   Row,
   Spin,
@@ -9,7 +8,6 @@ import {
   Skeleton,
   Button,
   InputNumber,
-  Popconfirm,
   Descriptions,
   message,
 } from "antd";
@@ -19,7 +17,7 @@ import { moneyFormat, showErrorMsg } from "../../common/utils";
 import { useHistory } from "react-router-dom";
 
 import adminService from "../../services/adminService";
-import contextLogin from "../../main/contextLogin"
+import contextLogin from "../../main/contextLogin";
 
 const OrderShow = ({ order }) => {
   const { reload, setReload } = React.useContext(contextLogin);
@@ -60,7 +58,7 @@ const OrderShow = ({ order }) => {
 
   React.useEffect(() => {
     getScheduleById();
-  }, []);
+  }, [order]);
 
   const productComp = (prod) => {
     return (
@@ -206,14 +204,6 @@ const OrderShow = ({ order }) => {
             <Descriptions bordered>
               <Descriptions.Item label="Захиалга хүргэх огноо">
                 {schedule.hdr_date_str}
-              </Descriptions.Item>
-              <Descriptions.Item label="Захиалга хүлээн авах">
-                <Popconfirm
-                  title="Захиалга хүлээн авсанаа баталгаажуулахдаа итгэлтэй байна уу?"
-                  onConfirm={() => confirmOrder()}
-                >
-                  <Button type="primary">Баталгаажуулах</Button>
-                </Popconfirm>
               </Descriptions.Item>
             </Descriptions>
           </Col>

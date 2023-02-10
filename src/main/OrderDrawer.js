@@ -144,7 +144,6 @@ const OrderDrawer = ({ onClose }) => {
                               size="small"
                               disabled={p.qty === 1}
                               type="link"
-                              ghost
                             />
                             {p.type === 1 ? p.qty + "кг" : p.qty + "ш"}
                             <Button
@@ -176,7 +175,7 @@ const OrderDrawer = ({ onClose }) => {
                   type="primary"
                   onClick={() => {
                     onClose();
-                    history.push("/order");
+                    history.push(`/order/${loggedUser.current_order_id}`);
                   }}
                 >
                   Баталгаажуулах

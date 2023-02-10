@@ -48,7 +48,7 @@ const MainRoutes = () => {
                 <Distributor />
               </Route>
             )}
-          <Route exact path="/order">
+          <Route exact path="/order/:id">
             <Row>
               <Col span={24}>
                 <Order />

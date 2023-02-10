@@ -102,6 +102,8 @@ const saveNewsDetail = (data) => axios.post(`/api/v1/saveNewsDetail`, data);
 const deleteNewsDetail = (data) => axios.post(`/api/v1/deleteNewsDetail`, data);
 const saveNewsDetailOrder = (data) =>
   axios.post(`/api/v1/saveNewsDetailOrder`, data);
+const getUserOrderList = (data) =>
+  axios.get(`/api/v1/getUserOrderList`, { params: data });
 
 const config = {
   headers: {
@@ -155,6 +157,7 @@ export default {
   addProductToScheduleOrder,
   deleteNews,
   getLandingProduct,
+  getUserOrderList,
   searchData,
   getPackageWithDtl,
   deleteOrderDtl,
