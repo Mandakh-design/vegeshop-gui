@@ -17,7 +17,7 @@ const App = () => {
       locale={mnMn}
       theme={{
         token: {
-          colorPrimary: "#17a34a",
+          colorPrimary: "#af1f21",
         },
       }}
     >
