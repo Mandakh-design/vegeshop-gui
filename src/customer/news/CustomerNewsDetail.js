@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { Card, Col, Divider, Row, Spin } from "antd";
-import adminService from "../services/adminService";
-import { renderDateNoSec, showErrorMsg } from "../common/utils";
 import { useParams } from "react-router-dom";
+import adminService from "../../services/adminService";
+import { renderDateNoSec, showErrorMsg } from "../../common/utils";
 
-const NewsDetail = () => {
+const CustomerNewsDetail = () => {
   const { id } = useParams();
   const [loading, setLoading] = useState(false);
   const [news, setNews] = useState();
@@ -149,4 +149,4 @@ const NewsDetail = () => {
     </Spin>
   );
 };
-export default NewsDetail;
+export default CustomerNewsDetail;

@@ -8,6 +8,7 @@ import { showErrorMsg } from "../common/utils";
 import MainHeader from "./MainHeader";
 import LoadingComponent from "./LoadingComponent";
 import adminService from "../services/adminService";
+import AboutUs from "../aboutUs/AboutUs";
 
 const AppLogin = () => {
   const { setLoggedUser, reload } = React.useContext(contextLogin);
@@ -99,7 +100,7 @@ const AppLogin = () => {
               top: 0,
               zIndex: 1,
               width: "100%",
-              paddingInline:"15px"
+              paddingInline: "15px",
             }}
           >
             <MainHeader userLoading={loading} />
@@ -113,7 +114,7 @@ const AppLogin = () => {
             textAlign: "center",
           }}
         >
-          SELBA service ©2023
+          <AboutUs />
         </Layout.Footer>
       </Layout>
     </>

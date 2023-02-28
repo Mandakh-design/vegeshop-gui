@@ -11,8 +11,10 @@ import OrderList from "../customer/order/OrderList";
 import Distributor from "../distributor/Distributor";
 import ProductDetail from "../customer/ProductDetail";
 import UserProfile from "../customer/UserProfile";
+import Products from "../customer/Products";
+import Packages from "../customer/Packages";
 import AboutUs from "../aboutUs/AboutUs";
-import NewsDetail from "../aboutUs/NewsDetail";
+import CustomerNewsDetail from "../customer/news/CustomerNewsDetail";
 
 const MainRoutes = () => {
   const { loggedUser } = React.useContext(contextLogin);
@@ -33,6 +35,20 @@ const MainRoutes = () => {
             <Row>
               <Col span={24}>
                 <Landing />
+              </Col>
+            </Row>
+          </Route>
+          <Route exact path="/products">
+            <Row>
+              <Col span={24}>
+                <Products />
+              </Col>
+            </Row>
+          </Route>
+          <Route exact path="/packages">
+            <Row>
+              <Col span={24}>
+                <Packages />
               </Col>
             </Row>
           </Route>
@@ -79,7 +95,7 @@ const MainRoutes = () => {
           <Route exact path="/newsDetail/:id">
             <Row>
               <Col span={24}>
-                <NewsDetail />
+                <CustomerNewsDetail />
               </Col>
             </Row>
           </Route>
@@ -107,6 +123,20 @@ const MainRoutes = () => {
             </Col>
           </Row>
         </Route>
+        <Route exact path="/products">
+          <Row>
+            <Col span={24}>
+              <Products />
+            </Col>
+          </Row>
+        </Route>
+        <Route exact path="/packages">
+          <Row>
+            <Col span={24}>
+              <Packages />
+            </Col>
+          </Row>
+        </Route>
         <Route exact path="/about">
           <Row>
             <Col span={24}>
@@ -117,7 +147,7 @@ const MainRoutes = () => {
         <Route exact path="/newsDetail/:id">
           <Row>
             <Col span={24}>
-              <NewsDetail />
+              <CustomerNewsDetail />
             </Col>
           </Row>
         </Route>

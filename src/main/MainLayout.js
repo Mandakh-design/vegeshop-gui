@@ -1,4 +1,4 @@
-import { Layout, Col, Row, Breadcrumb } from "antd";
+import { Layout } from "antd";
 import React from "react";
 import contextLogin from "./contextLogin";
 // import Sidebar from "./Sidebar";
@@ -6,9 +6,7 @@ import MainRoutes from "./MainRoutes";
 
 const MainLayout = () => {
   const { loggedUser } = React.useContext(contextLogin);
-  React.useEffect(() => {
-    
-  }, [loggedUser]);
+  React.useEffect(() => {}, [loggedUser]);
 
   const layoutStyle = () => {
     // if (
@@ -25,22 +23,21 @@ const MainLayout = () => {
     //       marginLeft: 80,
     //     };
     //   }
-
     //   return {
     //     marginLeft: 230,
     //   };
     // }
   };
-  
+
   return (
     <Layout
-      // style={{
-      //   marginTop: "65px",
-      // }}
-      // hasSider={
-      //   loggedUser &&
-      //   loggedUser.role 
-      // }
+    // style={{
+    //   marginTop: "65px",
+    // }}
+    // hasSider={
+    //   loggedUser &&
+    //   loggedUser.role
+    // }
     >
       {/* {loggedUser &&
         loggedUser.role=== "admin" && (
@@ -50,7 +47,7 @@ const MainLayout = () => {
           />
         )} */}
       <Layout style={layoutStyle()}>
-        <MainRoutes/>
+        <MainRoutes />
       </Layout>
     </Layout>
   );

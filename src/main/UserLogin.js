@@ -8,6 +8,7 @@ import {
   Button,
   Divider,
   message,
+  Alert,
 } from "antd";
 import { PhoneOutlined, KeyOutlined, UserOutlined } from "@ant-design/icons";
 import React from "react";
@@ -90,7 +91,7 @@ const AppLogin = () => {
               </Col>
               <Col xs={24} sm={18} md={18} lg={18} xl={18} xxl={17}>
                 <Form.Item
-                  label="Нэг удаагийн нууц үг"
+                  label="Нууц үг"
                   name="password"
                   rules={[{ required: true, message: "Заавал оруулна уу" }]}
                 >
@@ -118,13 +119,21 @@ const AppLogin = () => {
                 </Form.Item>
               </Col>
               <Col span={24}>
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                  style={{ width: "100%" }}
-                >
-                  НЭВТРЭХ
-                </Button>
+                <Form.Item>
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    style={{ width: "100%" }}
+                  >
+                    НЭВТРЭХ
+                  </Button>
+                </Form.Item>
+              </Col>
+              <Col span={24}>
+                <Alert
+                  type="info"
+                  description="Шинээр бүртгүүлэх болон нууц үг мартсан хэрэглэгч бол утасны дугаараа оруулан код илгээх дарж нууц үг авна уу."
+                />
               </Col>
             </Row>
           </Form>

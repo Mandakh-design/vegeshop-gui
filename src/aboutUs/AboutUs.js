@@ -1,61 +1,46 @@
+import { FacebookOutlined, InstagramOutlined } from "@ant-design/icons";
+import { Button, Col, Divider, Row, Spin } from "antd";
 import React, { useState } from "react";
-import { Card, Col, Divider, Row, Spin } from "antd";
-import Meta from "antd/es/card/Meta";
-import adminService from "../services/adminService";
-import { showErrorMsg } from "../common/utils";
-import { useHistory } from "react-router-dom";
 
 const AboutUs = () => {
-  let history = useHistory();
-  const [loading, setLoading] = useState(false);
-  const [newsList, setNewsList] = useState();
-
-  const getNewsList = () => {
-    setLoading(true);
-    adminService
-      .getNewsList()
-      .then((result) => {
-        if (result?.data?.data) setNewsList(result.data.data);
-      })
-      .catch((err) => showErrorMsg(err))
-      .finally(() => setLoading(false));
+  const textStyle = {
+    fontStyle: "inherit",
+    fontWeight: "bold",
+    fontSize: "initial",
   };
 
-  React.useEffect(() => {
-    getNewsList();
-  }, []);
+  const [loading, setLoading] = useState(false);
+  React.useEffect(() => {}, []);
 
   return (
     <Spin spinning={loading}>
-      <Row justify="center">
-        <Col
-          xs={22}
-          sm={22}
-          md={16}
-          lg={16}
-          xl={14}
-          style={{ textAlign: "center" }}
-        >
-          <Divider orientation="center">Мэдээ мэдээлэл</Divider>
-          <Row gutter={[16, 16]}>
-            {newsList?.map((n, index) => {
-              return (
-                <Col key={index} xs={24} sm={24} md={8} lg={8} xl={8}>
-                  <Card
-                    hoverable
-                    onClick={() => history.push(`/newsDetail/${n.id}`)}
-                    cover={
-                      <img
-                        alt="example"
-                        src={`${process.env.REACT_APP_SERVICE_URL}/images/${n.filename}`}
-                      />
-                    }
-                  >
-                    <Meta title={n.name} description={n.description} />
-                  </Card>
-                </Col>
-              );
-            })}
+      <Row style={{ padding: "0px 50px 0px 50px" }}>
+        <Col span={24}>
+          <Row style={textStyle}>Бидний тухай</Row>
+        </Col>
+        <Col span={24}>
+          <Divider />
+        </Col>
+        <Col span={24}>
+          <Row justify="space-between">
+            <Col>SELBA service ©2023</Col>
+            <Col style={textStyle}>
+              Бидэнтэй холбогдох
+              <Row>
+                <Button
+                  size="large"
+                  type="link"
+                  icon={<FacebookOutlined />}
+                  onClick={() =>
+                    window.open(
+                      "https://www.facebook.com/SelbaService/",
+                      "_blank"
+                    )
+                  }
+                />
+                <Button size="large" type="link" icon={<InstagramOutlined />} />
+              </Row>
+            </Col>
           </Row>
         </Col>
       </Row>
