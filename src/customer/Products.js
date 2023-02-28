@@ -1,4 +1,4 @@
-import { Spin, Row, Col, Card, List } from "antd";
+import { Spin, Row, Col, Card, List, Tabs } from "antd";
 import { FolderOpenOutlined, InboxOutlined } from "@ant-design/icons";
 import React from "react";
 import adminService from "../services/adminService";
@@ -13,6 +13,7 @@ const Products = () => {
 
   const [loading, setLoading] = React.useState(false);
   const [productList, setProductList] = React.useState();
+  const [items, setItems] = React.useState();
   // const [packageList, setPackageList] = React.useState();
 
   const searchData = (value) => {
@@ -29,13 +30,47 @@ const Products = () => {
       .finally(() => setLoading(false));
   };
 
+  const getCategoryList = () => {
+    setLoading(true);
+    adminService
+      .getCategory()
+      .then((result) => {
+        if (result?.data?.data) getItems(result.data.data);
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
   React.useEffect(() => {
+    getCategoryList();
+
+    // Түр дуудчи
     searchData();
   }, []);
+
+  const getItems = (categoryList) => {
+    if (!categoryList || categoryList.length === 0) {
+      setItems();
+      return;
+    }
+    let itmList = [];
+    categoryList.map((c) => {
+      itmList.push({
+        key: c.id,
+        label: `${c.name}`,
+      });
+      return null;
+    });
+
+    setItems(itmList);
+  };
 
   return (
     <Spin spinning={loading}>
       <Row justify="center">
+        <Col span={24}>
+          {items && <Tabs defaultActiveKey="1" items={items} />}
+        </Col>
         <Col span={24}>
           <h3 style={{ color: "green" }}>Бүтээгдэхүүнүүд</h3>
         </Col>
