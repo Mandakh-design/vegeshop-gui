@@ -119,7 +119,7 @@ const MainHeaderUser = () => {
 
   return (
     <Spin spinning={loading}>
-      <Row gutter={[16, 0]} justify="end">
+      <Row gutter={[16, 0]} justify="end" style={{ marginRight: "1px" }}>
         <Col>
           <Badge count={orderDtlCount}>
             <Button

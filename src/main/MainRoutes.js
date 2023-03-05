@@ -184,14 +184,7 @@ const MainRoutes = () => {
                 {window.location.href.includes("admin") ? (
                   RenderChildRoutes()
                 ) : (
-                  <Col
-                    xs={23}
-                    sm={23}
-                    md={23}
-                    lg={22}
-                    xl={22}
-                    style={{ margin: "25px 0px 25px 0px" }}
-                  >
+                  <Col style={{ margin: "15px 10px 0px 10px" }}>
                     <Card>{RenderChildRoutes()}</Card>
                   </Col>
                 )}
