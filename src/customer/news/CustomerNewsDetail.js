@@ -3,6 +3,7 @@ import { Card, Col, Divider, Row, Spin } from "antd";
 import { useParams } from "react-router-dom";
 import adminService from "../../services/adminService";
 import { renderDateNoSec, showErrorMsg } from "../../common/utils";
+import Meta from "antd/es/card/Meta";
 
 const CustomerNewsDetail = () => {
   const { id } = useParams();
@@ -91,59 +92,43 @@ const CustomerNewsDetail = () => {
             </Row>
           )}
         </Col>
-        <Divider>Дэлгэрэнгүй мэдээлэл</Divider>
-        <Col xs={24} sm={23} md={23} lg={22} xl={22} xxl={20}>
-          {newsDtlList && (
-            <Row gutter={[16, 16]}>
-              {newsDtlList.map((d) => {
-                return (
-                  <Col span={24} key={d.id}>
-                    <Card hoverable>
-                      <Row justify="space-between" gutter={[16, 16]}>
-                        <Col
-                          xs={24}
-                          sm={14}
-                          md={14}
-                          lg={17}
-                          xl={18}
-                          xxl={20}
-                          style={{
-                            fontSize: "20px",
-                            alignSelf: "center",
-                            fontStyle: "inherit",
-                            fontWeight: "bold",
-                          }}
-                        >
-                          <span>{d.name}</span>
-                          <Col
-                            style={{
-                              fontWeight: "lighter",
-                              color: "grey",
-                            }}
-                          >
-                            {d.description}
-                          </Col>
-                        </Col>
-                        <Col xs={24} sm={10} md={10} lg={7} xl={6} xxl={4}>
+        <Col xs={24} sm={0} md={0} lg={0} xl={0} xxl={0}>
+          <Divider>Мэдээлэл</Divider>
+        </Col>
+        <Col xs={24} sm={23} md={23} lg={22} xl={22} xxl={22}>
+          <Row gutter={[16, 16]}>
+            {newsDtlList?.map((d, index) => {
+              return (
+                <Col key={index} xs={24} sm={12} md={8} lg={6} xl={5}>
+                  <Card
+                    hoverable
+                    cover={
+                      d.type === 3 && (
+                        <img
+                          alt="example"
+                          width="100%"
+                          src={`${process.env.REACT_APP_SERVICE_URL}/images/${d.filename}`}
+                        />
+                      )
+                    }
+                  >
+                    <Meta
+                      title={d.name}
+                      description={
+                        <>
+                          {d.description} <br />
                           {d.type === 1 && <span>{d.value_str}</span>}
                           {d.type === 2 && (
                             <span>{renderDateNoSec(d.value_date)}</span>
                           )}
-                          {d.type === 3 && (
-                            <img
-                              alt="example"
-                              width="100%"
-                              src={`${process.env.REACT_APP_SERVICE_URL}/images/${d.filename}`}
-                            />
-                          )}
-                        </Col>
-                      </Row>
-                    </Card>
-                  </Col>
-                );
-              })}
-            </Row>
-          )}
+                        </>
+                      }
+                    />
+                  </Card>
+                </Col>
+              );
+            })}
+          </Row>
         </Col>
       </Row>
     </Spin>
