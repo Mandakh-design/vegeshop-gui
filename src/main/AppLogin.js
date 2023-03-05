@@ -103,7 +103,7 @@ const AppLogin = () => {
               paddingInline: "15px",
             }}
           >
-            <MainHeader userLoading={loading} />
+            <MainHeader />
           </Layout.Header>
           <Layout.Content>
             {loading ? <LoadingComponent /> : <MainLayout />}
