@@ -1,52 +1,15 @@
-import { Spin, Row, Col, Card, List, Button, message } from "antd";
-import { ShoppingCartOutlined, InboxOutlined } from "@ant-design/icons";
+import { Spin, Row, Col, Card, List, Modal } from "antd";
+import { InboxOutlined } from "@ant-design/icons";
 import React from "react";
 import adminService from "../services/adminService";
 import { moneyFormat, showErrorMsg } from "../common/utils";
-import { useHistory } from "react-router-dom";
-import contextLogin from "../main/contextLogin";
-import orderService from "../services/orderService";
+import ProductDetail from "./ProductDetail";
 
 const Packages = () => {
-  let history = useHistory();
-  const token = localStorage.getItem("token");
-  const { loggedUser, setOrderDtlCount } = React.useContext(contextLogin);
-
   const [loading, setLoading] = React.useState(false);
   const [packageList, setPackageList] = React.useState();
-
-  const getOrderDetailCount = () => {
-    setLoading(true);
-    orderService
-      .getOrderDetailCount()
-      .then((result) => {
-        if (result?.data) {
-          setOrderDtlCount(result.data.data);
-        }
-      })
-      .catch((err) => showErrorMsg(err))
-      .finally(() => setLoading(false));
-  };
-
-  const addProductToOrder = (id, type) => {
-    setLoading(true);
-    let product = {};
-    if (type === 1) product.product_id = id;
-    else product.package_id = id;
-    product.count = 1;
-    adminService
-      .addProductToScheduleOrder(product)
-      .then((result) => {
-        if (result.data) {
-          getOrderDetailCount();
-          message.success("Сагсанд нэмэгдлээ");
-        }
-      })
-      .catch((err) => {
-        showErrorMsg(err);
-        setLoading(false);
-      });
-  };
+  const [selectedProduct, setSelectedProduct] = React.useState();
+  const [modalVisible, setModalVisible] = React.useState();
 
   const searchData = (value) => {
     setLoading(true);
@@ -89,6 +52,11 @@ const Packages = () => {
               <List.Item key={item.id}>
                 <Card
                   size="small"
+                  onClick={() => {
+                    setSelectedProduct(item);
+                    setModalVisible(true);
+                  }}
+                  hoverable
                   cover={
                     item.filename ? (
                       <img
@@ -104,32 +72,32 @@ const Packages = () => {
                       />
                     )
                   }
-                  actions={[
-                    <Button
-                      key="order"
-                      type="primary"
-                      icon={<ShoppingCartOutlined />}
-                      ghost
-                      onClick={() => {
-                        if (loggedUser && token) addProductToOrder(item.id, 2);
-                        else history.push(`/login`);
-                      }}
-                    >
-                      Захиалах
-                    </Button>,
-                    <Button
-                      key="order"
-                      type="primary"
-                      ghost
-                      onClick={() => {
-                        if (loggedUser && token)
-                          history.push(`/product/${item.id}/${item.type}`);
-                        else history.push(`/login`);
-                      }}
-                    >
-                      Дэлгэрэнгүй
-                    </Button>,
-                  ]}
+                  // actions={[
+                  //   <Button
+                  //     key="order"
+                  //     type="primary"
+                  //     icon={<ShoppingCartOutlined />}
+                  //     ghost
+                  //     onClick={() => {
+                  //       if (loggedUser && token) addProductToOrder(item.id, 2);
+                  //       else history.push(`/login`);
+                  //     }}
+                  //   >
+                  //     Захиалах
+                  //   </Button>,
+                  //   <Button
+                  //     key="order"
+                  //     type="primary"
+                  //     ghost
+                  //     onClick={() => {
+                  //       if (loggedUser && token)
+                  //         history.push(`/product/${item.id}/${item.type}`);
+                  //       else history.push(`/login`);
+                  //     }}
+                  //   >
+                  //     Дэлгэрэнгүй
+                  //   </Button>,
+                  // ]}
                 >
                   <Card.Meta
                     title={item.name}
@@ -151,6 +119,27 @@ const Packages = () => {
           />
         </Col>
       </Row>
+      <Modal
+        open={modalVisible}
+        title={selectedProduct?.name}
+        width="90%"
+        footer={null}
+        onCancel={() => {
+          setModalVisible(false);
+          setSelectedProduct();
+        }}
+      >
+        {modalVisible && selectedProduct && (
+          <ProductDetail
+            idFromProp={selectedProduct.id}
+            typeFromProp="2"
+            onClose={() => {
+              setModalVisible(false);
+              setSelectedProduct();
+            }}
+          />
+        )}
+      </Modal>
     </Spin>
   );
 };

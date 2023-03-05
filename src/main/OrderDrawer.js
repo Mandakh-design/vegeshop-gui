@@ -22,7 +22,7 @@ import contextLogin from "../main/contextLogin";
 
 const OrderDrawer = ({ onClose }) => {
   let history = useHistory();
-  const { loggedUser } = React.useContext(contextLogin);
+  const { loggedUser, setOrderDtlCount } = React.useContext(contextLogin);
   const [loading, setLoading] = useState(false);
   const [scheduleOrder, setScheduleOrder] = useState();
 
@@ -71,6 +71,19 @@ const OrderDrawer = ({ onClose }) => {
       .finally(() => setLoading(false));
   };
 
+  const getOrderDetailCount = () => {
+    setLoading(true);
+    orderService
+      .getOrderDetailCount()
+      .then((result) => {
+        if (result?.data) {
+          setOrderDtlCount(result.data.data);
+        }
+      })
+      .catch((err) => showErrorMsg(err))
+      .finally(() => setLoading(false));
+  };
+
   const getOrderDetail = () => {
     setLoading(true);
     orderService
@@ -78,6 +91,7 @@ const OrderDrawer = ({ onClose }) => {
       .then((result) => {
         if (result?.data) {
           setScheduleOrder(result.data.data);
+          getOrderDetailCount();
         }
       })
       .catch((err) => {

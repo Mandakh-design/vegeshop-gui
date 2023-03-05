@@ -11,6 +11,7 @@ import {
   Spin,
   Timeline,
   Tooltip,
+  InputNumber,
 } from "antd";
 import {
   CopyOutlined,
@@ -24,25 +25,29 @@ import adminService from "../services/adminService";
 import contextLogin from "../main/contextLogin";
 import { useHistory } from "react-router-dom";
 import FileUploadAndSave from "../controls/FileUploadAndSave";
+import orderService from "../services/orderService";
 
-const ProductDetail = () => {
+const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
   const { id, type } = useParams();
   let history = useHistory();
-  const { setOrderDtlCount } = React.useContext(contextLogin);
+  const { loggedUser, setOrderDtlCount } = React.useContext(contextLogin);
 
   const [form] = Form.useForm();
   const [loading, setLoading] = useState();
   const [productDetail, setProductDetail] = useState();
   const [productDetailList, setProductDetailList] = useState();
+  const [productId, setProductId] = useState();
+  const [componentType, setComponentType] = useState();
   const [visible, setVisible] = useState(false);
 
-  const getOrder = () => {
+  const getOrderDetailCount = () => {
     setLoading(true);
-    adminService
-      .getOrderDetail({ status: 0 })
+    orderService
+      .getOrderDetailCount()
       .then((result) => {
-        if (result?.data?.data)
-          setOrderDtlCount(result.data.data[0].detailList.length);
+        if (result?.data) {
+          setOrderDtlCount(result.data.data);
+        }
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
@@ -51,7 +56,7 @@ const ProductDetail = () => {
   const getProductDtlList = () => {
     setLoading(true);
     adminService
-      .getProductDetailListById({ id: id })
+      .getProductDetailListById({ id: productId })
       .then((result) => {
         if (result?.data?.data) setProductDetailList(result.data.data);
       })
@@ -59,10 +64,10 @@ const ProductDetail = () => {
       .finally(() => setLoading(false));
   };
 
-  const getProductInfo = () => {
+  const getProductInfo = (eId) => {
     setLoading(true);
     adminService
-      .getProduct({ id: id })
+      .getProduct({ id: eId })
       .then((result) => {
         if (result?.data?.data) {
           setProductDetail(result.data.data[0]);
@@ -75,10 +80,10 @@ const ProductDetail = () => {
       });
   };
 
-  const getPackageInfo = () => {
+  const getPackageInfo = (eId) => {
     setLoading(true);
     adminService
-      .getPackageWithDtl({ id: id })
+      .getPackageWithDtl({ id: eId })
       .then((result) => {
         if (result?.data?.data) setProductDetail(result.data.data);
       })
@@ -129,14 +134,14 @@ const ProductDetail = () => {
 
     setLoading(true);
     let product = {};
-    if (type === "1") product.product_id = id;
-    else product.package_id = id;
+    if (componentType === "1") product.product_id = productId;
+    else product.package_id = productId;
     product.count = value.count;
     adminService
       .addProductToScheduleOrder(product)
       .then((result) => {
         if (result.data) {
-          getOrder();
+          getOrderDetailCount();
           message.success("Сагсанд нэмэгдлээ");
         }
       })
@@ -148,9 +153,13 @@ const ProductDetail = () => {
 
   React.useEffect(() => {
     form.setFieldsValue({ count: 1 });
-    if (type === "1") getProductInfo();
-    else if (type === "2") getPackageInfo();
-  }, []);
+    let compId = idFromProp ?? id;
+    let compType = typeFromProp ?? type;
+    setProductId(compId);
+    setComponentType(compType);
+    if (compType === "1") getProductInfo(compId);
+    else if (compType === "2") getPackageInfo(compId);
+  }, [idFromProp, id, typeFromProp, type]);
 
   return (
     <Spin spinning={loading}>
@@ -215,7 +224,7 @@ const ProductDetail = () => {
                               <h2>{moneyFormat(productDetail.price)}</h2>
                             </Space>
                           </Col>
-                          {/* <Col span={24}>
+                          <Col span={24}>
                             <Form.Item name="count" initialValue={1}>
                               <InputNumber
                                 placeholder=""
@@ -225,8 +234,8 @@ const ProductDetail = () => {
                                 }
                               />
                             </Form.Item>
-                          </Col> */}
-                          {type === "2" && (
+                          </Col>
+                          {componentType === "2" && (
                             <Col span={24}>
                               <Row gutter={[16, 16]}>
                                 <Col xs={24} sm={12} md={12} lg={12} xl={12}>
@@ -246,7 +255,10 @@ const ProductDetail = () => {
                                     size="large"
                                     style={{ width: "100%" }}
                                     onClick={() => {
-                                      history.push("/order");
+                                      onClose();
+                                      history.push(
+                                        `/order/${loggedUser.current_order_id}`
+                                      );
                                     }}
                                   >
                                     ЗАХИАЛАХ
@@ -255,7 +267,7 @@ const ProductDetail = () => {
                               </Row>
                             </Col>
                           )}
-                          {type === "2" && (
+                          {componentType === "2" && (
                             <Col span={24}>
                               <Row>
                                 <Col span={24}>
@@ -314,7 +326,7 @@ const ProductDetail = () => {
                   </Row>
                 </Col>
                 <Col xs={24} sm={24} md={24} lg={8} xl={8}>
-                  {type === "2" && (
+                  {componentType === "2" && (
                     <Row gutter={[0, 16]}>
                       <Col span={24}>
                         <Divider orientation="left">Багцын мэдээлэл</Divider>
@@ -336,7 +348,7 @@ const ProductDetail = () => {
                       </Col>
                     </Row>
                   )}
-                  {type === "1" && (
+                  {componentType === "1" && (
                     <Row gutter={[0, 16]}>
                       <Col span={24}>
                         <Divider orientation="left">
