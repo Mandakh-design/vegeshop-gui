@@ -1,4 +1,4 @@
-import { Spin, Row, Col, Card, List, Modal, Menu, message } from "antd";
+import { Spin, Row, Col, Card, List, Modal, Menu } from "antd";
 import { InboxOutlined } from "@ant-design/icons";
 import React from "react";
 import adminService from "../services/adminService";

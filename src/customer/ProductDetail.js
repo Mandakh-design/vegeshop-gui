@@ -30,6 +30,7 @@ import orderService from "../services/orderService";
 const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
   const { id, type } = useParams();
   let history = useHistory();
+  const token = localStorage.getItem("token");
   const { loggedUser, setOrderDtlCount } = React.useContext(contextLogin);
 
   const [form] = Form.useForm();
@@ -249,21 +250,42 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
                                     САГСАНД НЭМЭХ
                                   </Button>
                                 </Col>
-                                <Col xs={24} sm={12} md={12} lg={12} xl={12}>
-                                  <Button
-                                    type="primary"
-                                    size="large"
-                                    style={{ width: "100%" }}
-                                    onClick={() => {
-                                      onClose();
-                                      history.push(
-                                        `/order/${loggedUser.current_order_id}`
-                                      );
-                                    }}
-                                  >
-                                    ЗАХИАЛАХ
-                                  </Button>
-                                </Col>
+                                {id && (
+                                  <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                                    <Button
+                                      type="primary"
+                                      size="large"
+                                      style={{ width: "100%" }}
+                                      onClick={() => {
+                                        onClose();
+                                        history.push(
+                                          `/order/${loggedUser.current_order_id}`
+                                        );
+                                      }}
+                                    >
+                                      ЗАХИАЛАХ
+                                    </Button>
+                                  </Col>
+                                )}
+                                {idFromProp && (
+                                  <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                                    <Button
+                                      key="order"
+                                      type="primary"
+                                      size="large"
+                                      style={{ width: "100%" }}
+                                      onClick={() => {
+                                        if (loggedUser && token)
+                                          history.push(
+                                            `/product/${productDetail.id}/${productDetail.type}`
+                                          );
+                                        else history.push(`/login`);
+                                      }}
+                                    >
+                                      Дэлгэрэнгүй
+                                    </Button>
+                                  </Col>
+                                )}
                               </Row>
                             </Col>
                           )}
