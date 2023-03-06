@@ -97,11 +97,9 @@ const Products = () => {
               <List.Item key={item.id}>
                 <Card
                   size="small"
-                  onClick={() => {
-                    if (loggedUser && token)
-                      history.push(`/product/${item.id}/${item.type}`);
-                    else history.push(`/login`);
-                  }}
+                  onClick={() =>
+                    history.push(`/product/${item.id}/${item.type}`)
+                  }
                   hoverable
                   cover={
                     item.filename ? (

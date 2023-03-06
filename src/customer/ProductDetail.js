@@ -262,10 +262,14 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
                                       size="large"
                                       style={{ width: "100%" }}
                                       onClick={() => {
-                                        onClose();
-                                        history.push(
-                                          `/order/${loggedUser.current_order_id}`
-                                        );
+                                        if (loggedUser && token)
+                                          history.push(
+                                            `/order/${loggedUser.current_order_id}`
+                                          );
+                                        else {
+                                          message.warning("Нэвтэрнэ үү!");
+                                          history.push(`/login`);
+                                        }
                                       }}
                                     >
                                       ЗАХИАЛАХ
@@ -279,13 +283,11 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
                                       type="primary"
                                       size="large"
                                       style={{ width: "100%" }}
-                                      onClick={() => {
-                                        if (loggedUser && token)
-                                          history.push(
-                                            `/product/${productDetail.id}/${productDetail.type}`
-                                          );
-                                        else history.push(`/login`);
-                                      }}
+                                      onClick={() =>
+                                        history.push(
+                                          `/product/${productDetail.id}/${productDetail.type}`
+                                        )
+                                      }
                                     >
                                       Дэлгэрэнгүй
                                     </Button>
