@@ -46,7 +46,7 @@ const MainRoutes = () => {
             </Row>
           </Route>
           <Route exact path="/packages">
-            <Row>
+            <Row >
               <Col span={24}>
                 <Packages />
               </Col>
@@ -131,7 +131,7 @@ const MainRoutes = () => {
           </Row>
         </Route>
         <Route exact path="/packages">
-          <Row>
+          <Row >
             <Col span={24}>
               <Packages />
             </Col>
@@ -179,16 +179,12 @@ const MainRoutes = () => {
                 </Row>
               </Col>
             )}
-            <Col span={24}>
-              <Row justify="center">
+            <Col span={24} style={{ padding: "10px 15px 0px 15px" }}>
                 {window.location.href.includes("admin") ? (
                   RenderChildRoutes()
                 ) : (
-                  <Col style={{ margin: "15px 10px 0px 10px" }}>
                     <Card>{RenderChildRoutes()}</Card>
-                  </Col>
                 )}
-              </Row>
             </Col>
           </Row>
         </CSSTransition>
