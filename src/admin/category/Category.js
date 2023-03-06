@@ -16,7 +16,7 @@ import { showErrorMsg } from "../../common/utils";
 import adminService from "../../services/adminService";
 import CategoryEdit from "./CategoryEdit";
 
-const Category = ({ type }) => {
+const Category = ({ type, changeCategory }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -27,6 +27,7 @@ const Category = ({ type }) => {
     setModalVisible(false);
     form.setFieldsValue({ categoryId: null });
     setSelectedCategory(null);
+    changeCategory(null);
     getCategoryList();
   };
 
@@ -63,6 +64,7 @@ const Category = ({ type }) => {
           message.success("Амжилттай устгагдлаа");
           form.setFieldsValue({ categoryId: null });
           setSelectedCategory(null);
+          changeCategory(null);
           getCategoryList();
         }
       })
@@ -85,6 +87,7 @@ const Category = ({ type }) => {
                 onChange={(e) => {
                   let selected = categoryList.find((c) => c.id === e);
                   setSelectedCategory(selected);
+                  changeCategory(selected);
                 }}
               >
                 {categoryList?.map((c) => {

@@ -31,6 +31,8 @@ const Package = () => {
   const [packageDtlList, setPackageDtlList] = useState();
   const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
+  const [selectedCategory, setSelectedCategory] = useState();
+
   const columns = [
     {
       title: "№",
@@ -208,6 +210,7 @@ const Package = () => {
   };
 
   const getPackageList = () => {
+    if (!selectedCategory) return null;
     setLoading(true);
     adminService
       .getPackage()
@@ -262,7 +265,7 @@ const Package = () => {
     <Spin spinning={loading}>
       <Row>
         <Col span={24}>
-          <Category type={2} />
+          <Category type={2} changeCategory={(e) => setSelectedCategory(e)} />
         </Col>
         <Col span={24}>
           <Table
@@ -282,6 +285,10 @@ const Package = () => {
                       type="primary"
                       ghost
                       onClick={() => {
+                        if (!selectedCategory) {
+                          message.warning("Төрөл сонгоно уу!");
+                          return null;
+                        }
                         setPackageVisible(true);
                       }}
                     >
