@@ -230,21 +230,24 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
                               <h2>{moneyFormat(productDetail.price)}</h2>
                             </Space>
                           </Col>
-                          <Col span={24}>
-                            <Form.Item name="count" initialValue={1}>
-                              <InputNumber
-                                placeholder=""
-                                addonBefore="Тоо ширхэг"
-                                addonAfter={
-                                  productDetail.type === 1 ? "кг" : "ш"
-                                }
-                              />
-                            </Form.Item>
-                          </Col>
+                          {componentType === "2" && (
+                            <Col span={24}>
+                              <Form.Item name="count" initialValue={1}>
+                                <InputNumber
+                                  placeholder=""
+                                  addonBefore="Тоо ширхэг"
+                                  addonAfter={
+                                    productDetail.type === 1 ? "кг" : "ш"
+                                  }
+                                />
+                              </Form.Item>
+                            </Col>
+                          )}
+
                           {componentType === "2" && (
                             <Col span={24}>
                               <Row gutter={[16, 16]}>
-                                <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                                <Col xs={24} sm={12} md={24} lg={24} xl={12}>
                                   <Button
                                     type="primary"
                                     ghost
@@ -256,7 +259,7 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
                                   </Button>
                                 </Col>
                                 {id && (
-                                  <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                                  <Col xs={24} sm={12} md={24} lg={24} xl={12}>
                                     <Button
                                       type="primary"
                                       size="large"
@@ -277,9 +280,8 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
                                   </Col>
                                 )}
                                 {idFromProp && (
-                                  <Col xs={24} sm={12} md={12} lg={12} xl={12}>
+                                  <Col xs={24} sm={12} md={24} lg={24} xl={12}>
                                     <Button
-                                      key="order"
                                       type="primary"
                                       size="large"
                                       style={{ width: "100%" }}
