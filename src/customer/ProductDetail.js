@@ -56,10 +56,10 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
       .finally(() => setLoading(false));
   };
 
-  const getProductDtlList = () => {
+  const getProductDtlList = (eId) => {
     setLoading(true);
     adminService
-      .getProductDetailListById({ id: productId })
+      .getProductDetailListById({ id: eId })
       .then((result) => {
         if (result?.data?.data) setProductDetailList(result.data.data);
       })
@@ -74,7 +74,7 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
       .then((result) => {
         if (result?.data?.data) {
           setProductDetail(result.data.data[0]);
-          getProductDtlList();
+          getProductDtlList(eId);
         }
       })
       .catch((err) => {
