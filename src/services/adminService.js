@@ -76,7 +76,8 @@ const addProductToScheduleOrder = (data) =>
 const deleteProductDetail = (data) =>
   axios.post(`/api/v1/deleteProductDetail`, data);
 
-const getLandingProduct = () => axios.post(`/api/v1/getLandingProduct`);
+const getLandingProduct = (data) =>
+  axios.post(`/api/v1/getLandingProduct`, data);
 const searchData = (data) => axios.post(`/api/v1/searchData`, data);
 const deleteOrderDtl = (data) => axios.post(`/api/v1/deleteOrderDtl`, data);
 const createInvoice = (data) => axios.post(`/api/v1/createInvoice`, data);
