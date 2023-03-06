@@ -12,7 +12,7 @@ import {
 import adminService from "../../services/adminService";
 import FileUploadAndSave from "../../controls/FileUploadAndSave";
 
-const PackageEdit = ({ packageId, onClose, changeState }) => {
+const PackageEdit = ({ packageId, onClose, changeState, category }) => {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState();
@@ -21,6 +21,7 @@ const PackageEdit = ({ packageId, onClose, changeState }) => {
   const savePackage = (value) => {
     setLoading(true);
     const model = { ...selectedPackage, ...value };
+    model.categoryId = category?.id;
     adminService
       .savePackage(model)
       .then((result) => {
@@ -38,6 +39,7 @@ const PackageEdit = ({ packageId, onClose, changeState }) => {
       name: value?.name,
       price: value?.price,
       filename: value?.filename,
+      categoryName: category?.name,
     });
   };
 
@@ -64,12 +66,21 @@ const PackageEdit = ({ packageId, onClose, changeState }) => {
 
   React.useEffect(() => {
     getPackageInfo();
-  }, [packageId, changeState]);
+  }, [packageId, changeState, category]);
 
   return (
     <Spin spinning={loading}>
       <Form form={form} onFinish={savePackage} layout="vertical">
         <Row justify="space-between">
+          <Col span={24}>
+            <Form.Item
+              label="Төрлийн нэр"
+              name="categoryName"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
+              <Input placeholder="Төрлийн нэр оруулна уу" disabled />
+            </Form.Item>
+          </Col>
           <Col span={24}>
             <Form.Item
               label="Нэр"
@@ -79,18 +90,12 @@ const PackageEdit = ({ packageId, onClose, changeState }) => {
               <Input placeholder="Нэр оруулна уу" />
             </Form.Item>
           </Col>
-          {/* <Col span={24}>
-            <Form.Item label="Хөнгөлөлт" name="discount" initialValue={0}>
-              <InputNumber
-                placeholder="Хөнгөлөлт оруулна уу"
-                style={{ width: "100%" }}
-                max={100}
-                suffix={<b>%</b>}
-              />
-            </Form.Item>
-          </Col> */}
           <Col span={24}>
-            <Form.Item label="Үнийн дүн" name="price">
+            <Form.Item
+              label="Үнийн дүн"
+              name="price"
+              rules={[{ required: true, message: "Заавал оруулна уу" }]}
+            >
               <InputNumber
                 placeholder="Үнийн дүн оруулна уу"
                 style={{ width: "100%" }}

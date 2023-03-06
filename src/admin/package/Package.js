@@ -187,7 +187,7 @@ const Package = () => {
       .then((result) => {
         if (result.data) {
           message.success("Амжилттай устгагдлаа");
-          getPackageList();
+          getPackageList(selectedCategory);
         }
       })
       .catch((err) => {
@@ -209,11 +209,15 @@ const Package = () => {
       .finally(() => setLoading(false));
   };
 
-  const getPackageList = () => {
-    if (!selectedCategory) return null;
+  const getPackageList = (e) => {
+    setSelectedCategory(e);
+    if (!e) {
+      setPackageList(null);
+      return null;
+    }
     setLoading(true);
     adminService
-      .getPackage()
+      .getPackage({ category_id: e.id })
       .then((result) => {
         if (result.data?.data) {
           setPackageList(result.data.data);
@@ -238,7 +242,7 @@ const Package = () => {
       })
       .then((result) => {
         if (result.data) {
-          getPackageList();
+          getPackageList(selectedCategory);
         }
       })
       .catch((err) => {
@@ -250,22 +254,18 @@ const Package = () => {
   const onTableRowExpand = (expanded, record) => {
     const keys = [];
     if (expanded) {
-      keys.push(record.id); // I have set my record.id as row key. Check the documentation for more details.
+      keys.push(record.id);
     }
 
     setExpandedRowKeys(keys);
     if (keys.length > 0) getProductListFormPackage(keys[0]);
   };
 
-  React.useEffect(() => {
-    getPackageList();
-  }, []);
-
   return (
     <Spin spinning={loading}>
       <Row>
         <Col span={24}>
-          <Category type={2} changeCategory={(e) => setSelectedCategory(e)} />
+          <Category type={2} changeCategory={(e) => getPackageList(e)} />
         </Col>
         <Col span={24}>
           <Table
@@ -319,14 +319,15 @@ const Package = () => {
           }}
           footer={null}
         >
-          {packageVisible && (
+          {packageVisible && selectedCategory && (
             <PackageEdit
               packageId={selectedPackageId}
               changeState={changeState}
+              category={selectedCategory}
               onClose={() => {
                 setSelectedPackageId(null);
                 setPackageVisible(false);
-                getPackageList();
+                getPackageList(selectedCategory);
                 setChangeState(changeState + 1);
               }}
             />
@@ -340,7 +341,7 @@ const Package = () => {
           onCancel={() => {
             setProductMapVisible(false);
             setProductMapPackId(null);
-            getPackageList();
+            getPackageList(selectedCategory);
           }}
           footer={null}
         >
