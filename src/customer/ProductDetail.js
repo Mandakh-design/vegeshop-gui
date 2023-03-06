@@ -12,6 +12,7 @@ import {
   Timeline,
   Tooltip,
   InputNumber,
+  Card,
 } from "antd";
 import {
   CopyOutlined,
@@ -26,6 +27,7 @@ import contextLogin from "../main/contextLogin";
 import { useHistory } from "react-router-dom";
 import FileUploadAndSave from "../controls/FileUploadAndSave";
 import orderService from "../services/orderService";
+import Meta from "antd/es/card/Meta";
 
 const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
   const { id, type } = useParams();
@@ -178,8 +180,8 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
                   xs={24}
                   sm={24}
                   md={13}
-                  lg={8}
-                  xl={8}
+                  lg={13}
+                  xl={12}
                   style={{ padding: "1rem 2rem 2rem 2rem" }}
                 >
                   {/* {productImage(productDetail)} */}
@@ -189,7 +191,7 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
                     src={`${process.env.REACT_APP_SERVICE_URL}/images/${productDetail.filename}`}
                   />
                 </Col>
-                <Col xs={24} sm={24} md={11} lg={8} xl={8}>
+                <Col xs={24} sm={24} md={11} lg={11} xl={12}>
                   <Row>
                     <Col span={24}>
                       <Row justify="space-between">
@@ -322,7 +324,7 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
                               </Row>
                             </Col>
                           )}
-                          <Col span={24}>
+                          {/* <Col span={24}>
                             <Button
                               type="text"
                               icon={<HeartOutlined />}
@@ -350,14 +352,14 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
                             >
                               Төстэй бараа
                             </Button>
-                          </Col>
+                          </Col> */}
                         </Row>
                       </Form>
                     </Col>
                   </Row>
                 </Col>
-                <Col xs={24} sm={24} md={24} lg={8} xl={8}>
-                  {componentType === "2" && (
+                {componentType === "2" && (
+                  <Col xs={24} sm={24} md={24} lg={8} xl={8}>
                     <Row gutter={[0, 16]}>
                       <Col span={24}>
                         <Divider orientation="left">Багцын мэдээлэл</Divider>
@@ -378,56 +380,59 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
                         </Timeline>
                       </Col>
                     </Row>
-                  )}
+                  </Col>
+                )}
+                <Col>
                   {componentType === "1" && (
-                    <Row gutter={[0, 16]}>
-                      <Col span={24}>
-                        <Divider orientation="left">
-                          Барааны дэлгэрэнгүй
-                        </Divider>
+                    <Row>
+                      <Col xs={24} sm={0} md={0} lg={0} xl={0} xxl={0}>
+                        <Divider>Дэлгэрэнгүй</Divider>
                       </Col>
-                      <Col span={24}>
-                        <List
-                          dataSource={productDetailList}
-                          renderItem={(d) => (
-                            <List.Item key={d.id}>
-                              <Col span={24}>
-                                <Row justify="space-between">
-                                  <Col>
-                                    <b>{d.name}</b> <br />
-                                    <span style={{ color: "gray" }}>
-                                      {d.description}
-                                    </span>
-                                  </Col>
-                                  {d.type === 1 && (
-                                    <Col
-                                      span={d.span}
-                                      style={{ textAlign: "right" }}
-                                    >
-                                      {d.value_str}
-                                    </Col>
-                                  )}
-                                  {d.type === 2 && (
-                                    <Col
-                                      span={d.span}
-                                      style={{ textAlign: "right" }}
-                                    >
-                                      {renderDateNoSec(d.value_date)}
-                                    </Col>
-                                  )}
-                                  {d.type === 3 && (
-                                    <Col span={d.span}>
-                                      <FileUploadAndSave
-                                        filename={d.filename}
-                                        type={2}
+                      <Col xs={24} sm={23} md={23} lg={22} xl={22} xxl={22}>
+                        <Row gutter={[16, 16]}>
+                          {productDetailList?.map((d, index) => {
+                            return (
+                              <Col
+                                key={index}
+                                xs={24}
+                                sm={12}
+                                md={8}
+                                lg={6}
+                                xl={5}
+                              >
+                                <Card
+                                  hoverable
+                                  cover={
+                                    d.type === 3 && (
+                                      <img
+                                        alt="example"
+                                        width="100%"
+                                        src={`${process.env.REACT_APP_SERVICE_URL}/images/${d.filename}`}
                                       />
-                                    </Col>
-                                  )}
-                                </Row>
+                                    )
+                                  }
+                                >
+                                  <Meta
+                                    title={d.name}
+                                    description={
+                                      <>
+                                        {d.description} <br />
+                                        {d.type === 1 && (
+                                          <span>{d.value_str}</span>
+                                        )}
+                                        {d.type === 2 && (
+                                          <span>
+                                            {renderDateNoSec(d.value_date)}
+                                          </span>
+                                        )}
+                                      </>
+                                    }
+                                  />
+                                </Card>
                               </Col>
-                            </List.Item>
-                          )}
-                        />
+                            );
+                          })}
+                        </Row>
                       </Col>
                     </Row>
                   )}
