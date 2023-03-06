@@ -30,9 +30,9 @@ const Packages = () => {
 
   return (
     <Spin spinning={loading}>
-      <Row justify="center">
+      <Row justify="center" type="flex">
         <Col span={24}>
-          <h3 style={{ color: "green" }}>Багцалж савалсан бүтээгдэхүүнүүд</h3>
+          <h3 style={{ color: "green" }}>Хүргэлт хийх багцууд</h3>
         </Col>
         <Col span={24}>
           <List
@@ -50,70 +50,75 @@ const Packages = () => {
             }}
             renderItem={(item) => (
               <List.Item key={item.id}>
-                <Card
-                  size="small"
-                  onClick={() => {
-                    setSelectedProduct(item);
-                    setModalVisible(true);
-                  }}
-                  hoverable
-                  cover={
-                    item.filename ? (
-                      <img
-                        style={{ width: "100%", height: "15rem" }}
-                        alt="example"
-                        src={`${process.env.REACT_APP_SERVICE_URL}/images/${item.filename}`}
-                      />
-                    ) : (
-                      <img
-                        style={{ width: "100%", height: "15rem" }}
-                        alt="example"
-                        src={`/images/emptyPic.jpeg`}
-                      />
-                    )
-                  }
-                  // actions={[
-                  //   <Button
-                  //     key="order"
-                  //     type="primary"
-                  //     icon={<ShoppingCartOutlined />}
-                  //     ghost
-                  //     onClick={() => {
-                  //       if (loggedUser && token) addProductToOrder(item.id, 2);
-                  //       else history.push(`/login`);
-                  //     }}
-                  //   >
-                  //     Захиалах
-                  //   </Button>,
-                  //   <Button
-                  //     key="order"
-                  //     type="primary"
-                  //     ghost
-                  //     onClick={() => {
-                  //       if (loggedUser && token)
-                  //         history.push(`/product/${item.id}/${item.type}`);
-                  //       else history.push(`/login`);
-                  //     }}
-                  //   >
-                  //     Дэлгэрэнгүй
-                  //   </Button>,
-                  // ]}
-                >
-                  <Card.Meta
-                    title={item.name}
-                    description={
-                      <div style={{ marginBottom: "1rem" }}>
-                        {item.type === 1 && (
-                          <span>
-                            <InboxOutlined />
-                            {" " + item.description}
-                          </span>
-                        )}
-                      </div>
-                    }
+                 <Card
+              size="small"
+              onClick={() => {
+                setSelectedProduct(item);
+                setModalVisible(true);
+              }}
+              hoverable
+              
+              cover={
+                item.filename ? (
+                  <div   style={{ height:"14rem" , justifyContent:"center", alignItems:"center", display:"flex", position:"relative" }}>
+                    <img
+                      style={{display:"block", maxHeight:"14rem", maxWidth: "100%"}}
+                      alt="logo"
+                      src={`${process.env.REACT_APP_SERVICE_URL}/images/${item.filename}`}
+                    />
+                  </div>
+                ) : (
+                  <div   style={{ height:"14rem" , justifyContent:"center", alignItems:"center", display:"flex", position:"relative" }}>
+                    <img
+                      style={{display:"block", maxHeight:"14rem", maxWidth: "100%"}}
+                    alt="logo"
+                    src={`/images/emptyPic.jpeg`}
                   />
-                  {<b>Нэгж үнэ: {moneyFormat(item.price)}</b>}
-                </Card>
+                   </div>
+                )
+              }
+              // actions={[
+              //   <Button
+              //     key="order"
+              //     type="primary"
+              //     icon={<ShoppingCartOutlined />}
+              //     ghost
+              //     onClick={() => {
+              //       if (loggedUser && token) addProductToOrder(item.id, 2);
+              //       else history.push(`/login`);
+              //     }}
+              //   >
+              //     Захиалах
+              //   </Button>,
+              //   <Button
+              //     key="order"
+              //     type="primary"
+              //     ghost
+              //     onClick={() => {
+              //       if (loggedUser && token)
+              //         history.push(`/product/${item.id}/${item.type}`);
+              //       else history.push(`/login`);
+              //     }}
+              //   >
+              //     Дэлгэрэнгүй
+              //   </Button>,
+              // ]}
+            >
+              <Card.Meta
+                title={item.name}
+                description={
+                  <div >
+                    {item.type === 1 && (
+                      <span style={{ marginBottom: "1rem" }}>
+                        <InboxOutlined />
+                        {" " + item.description}
+                      </span>
+                    )}
+                    <b>Нэгж үнэ: {moneyFormat(item.price)}</b>
+                  </div>
+                }
+              />
+            </Card>
               </List.Item>
             )}
           />
