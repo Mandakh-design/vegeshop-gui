@@ -401,7 +401,6 @@ const ProductDetail = ({ idFromProp, typeFromProp, onClose }) => {
                                 xl={5}
                               >
                                 <Card
-                                  hoverable
                                   cover={
                                     d.type === 3 && (
                                       <img
