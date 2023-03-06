@@ -48,7 +48,7 @@ const MainHeader = () => {
           style={{ cursor: "pointer" }}
         />
       </Col>
-      <Col xs={6} sm={6} md={10} lg={11} xl={11} xxl={11}>
+      <Col xs={3} sm={2} md={10} lg={11} xl={11} xxl={11}>
         <Menu
           onClick={onClick}
           selectedKeys={[current]}
@@ -57,7 +57,7 @@ const MainHeader = () => {
         />
       </Col>
       {loggedUser && (
-        <Col xs={14} sm={14} md={11} lg={11} xl={12} xxl={12}>
+        <Col xs={17} sm={18} md={11} lg={11} xl={12} xxl={12}>
           <MainHeaderUser />
         </Col>
       )}
