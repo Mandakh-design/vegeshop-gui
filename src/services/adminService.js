@@ -64,7 +64,7 @@ const getScheduleLocationList = (data) =>
 const getScheduleById = (data) =>
   axios.get(`/api/v1/getScheduleById`, { params: data });
 
-  const getScheduleHdrList = (data) =>
+const getScheduleHdrList = (data) =>
   axios.get(`/api/v1/getScheduleHdrList`, { params: data });
 
 const saveScheduleLocationMap = (data) =>
@@ -91,7 +91,7 @@ const cancelScheduleOrder = (data) =>
   axios.post(`/api/v1/cancelScheduleOrder`, data);
 const getScheduleOrderList = (data) =>
   axios.get(`/api/v1/getScheduleOrderList`, { params: data });
-  const getScheduleOrderListByHdr = (data) =>
+const getScheduleOrderListByHdr = (data) =>
   axios.post(`/api/v1/getScheduleOrderListByHdr`, data);
 const createInvoiceQpay = (data) =>
   axios.post(`/api/v1/createInvoiceQpay`, data);
@@ -105,6 +105,9 @@ const getNewsDetailListById = (data) =>
   axios.get(`/api/v1/getNewsDetailListById`, { params: data });
 const saveNewsDetail = (data) => axios.post(`/api/v1/saveNewsDetail`, data);
 const deleteNewsDetail = (data) => axios.post(`/api/v1/deleteNewsDetail`, data);
+const getCategoryByType = (data) =>
+  axios.get(`/api/v1/getCategoryByType`, { params: data });
+const deleteCategory = (data) => axios.post(`/api/v1/deleteCategory`, data);
 const saveNewsDetailOrder = (data) =>
   axios.post(`/api/v1/saveNewsDetailOrder`, data);
 const getUserOrderList = (data) =>
@@ -134,6 +137,8 @@ export default {
   getCategory,
   savePackage,
   getPackage,
+  deleteCategory,
+  getCategoryByType,
   deletePackage,
   saveProduct,
   getProduct,

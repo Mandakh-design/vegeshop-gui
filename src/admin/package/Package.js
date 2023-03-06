@@ -16,6 +16,7 @@ import PackageEdit from "./PackageEdit";
 import ProductIntoPackage from "./ProductIntoPackage";
 import adminService from "../../services/adminService";
 import { moneyFormat, showErrorMsg } from "../../common/utils";
+import Category from "../category/Category";
 
 const Package = () => {
   const [loading, setLoading] = useState(false);
@@ -260,6 +261,9 @@ const Package = () => {
   return (
     <Spin spinning={loading}>
       <Row>
+        <Col span={24}>
+          <Category type={2} />
+        </Col>
         <Col span={24}>
           <Table
             rowKey="id"
