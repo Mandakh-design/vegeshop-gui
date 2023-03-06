@@ -17,20 +17,19 @@ const Products = () => {
   const [currentKey, setCurrentKey] = React.useState();
   // const [packageList, setPackageList] = React.useState();
 
-  const searchData = (value) => {
+  const searchData = (category_id) => {
+    setCurrentKey(category_id);
     setLoading(true);
     adminService
-      .getLandingProduct()
+      .getLandingProduct({ category_id: category_id })
       .then((result) => {
         if (result?.data?.data) {
-          // setPackageList(result.data.data.packageList);
           setProductList(result.data.data.productList);
         }
       })
       .catch((err) => showErrorMsg(err))
       .finally(() => setLoading(false));
   };
-
   const getCategoryList = () => {
     setLoading(true);
     adminService
