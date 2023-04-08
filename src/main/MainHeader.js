@@ -36,7 +36,15 @@ const MainHeader = () => {
 
   return (
     <Row justify="space-between">
-      <Col xs={4} sm={4} md={3} lg={2} xl={1} xxl={1}>
+      <Col
+        xs={4}
+        sm={4}
+        md={3}
+        lg={2}
+        xl={1}
+        xxl={1}
+        style={{ paddingTop: "5px" }}
+      >
         <img
           role="presentation"
           onClick={() => {
